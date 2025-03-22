@@ -66,7 +66,7 @@ export const projects: Project[] = [
     id: '6',
     title: 'FSH Dashboard',
     description: 'Custom WordPress plugin developed for Fresno State Housing that provides a comprehensive SEO & Analytics Dashboard for monitoring and managing housing resources. Features include performance metrics tracking, automated feed updates, data entry capabilities, and detailed analytics reporting. The dashboard provides administrators with real-time insights into website performance with a clean, user-friendly interface. Built with secure authentication and role-based access control, this solution helps housing administrators make data-driven decisions.\n\nVersion 1.0.12 introduced several improvements including release preparations, documentation updates, and security enhancements to ensure sensitive data is protected via proper .env configurations.',
-    imageUrl: '/images/previews/6.jpg',
+    imageUrl: '/images/projects/fsh-dash/image.png',
     folderName: 'fsh-dash',
     tags: ['WordPress', 'PHP', 'JavaScript', 'MySQL', 'Dashboard', 'Analytics', 'SEO'],
     featured: true
@@ -85,7 +85,7 @@ export const projects: Project[] = [
     id: '8',
     title: 'Campaign Website',
     description: 'A Webflow-based website for a confidential campaign. Designed with modern aesthetics and optimized for conversion and engagement.',
-    imageUrl: '/images/previews/8.jpg',
+    imageUrl: '/images/projects/campaign/image.png',
     folderName: 'campaign',
     tags: ['Webflow', 'Web Design', 'Campaign'],
     featured: false
@@ -147,11 +147,11 @@ export const photoCollections: PhotoCollection[] = [
   }
 ];
 
-export const experiences: Experience[] = [
+export const experiences = [
   {
     id: '1',
-    company: 'Freelance Web Developer',
     position: 'Full Stack Developer',
+    company: 'Freelance Web Developer',
     startDate: '2020-01',
     endDate: 'Present',
     description: 'Developing custom web applications and websites for clients. Implementing responsive designs, integrating APIs, and ensuring cross-browser compatibility.',
@@ -159,8 +159,8 @@ export const experiences: Experience[] = [
   },
   {
     id: '2',
-    company: 'Fresno State Housing',
     position: 'Web Developer',
+    company: 'Fresno State Housing',
     startDate: '2022-06',
     endDate: 'Present',
     description: 'Developing and maintaining websites and web applications for Fresno State Housing. Creating digital signage solutions, dashboards, and custom WordPress plugins to enhance housing operations.',
@@ -168,21 +168,12 @@ export const experiences: Experience[] = [
   },
   {
     id: '3',
-    company: 'Tech Solutions Inc.',
     position: 'Web Developer',
+    company: 'Tech Solutions Inc.',
     startDate: '2018-06',
     endDate: '2021-12',
     description: 'Developed and maintained client websites, collaborated with design team to implement responsive designs, and optimized site performance.',
     skills: ['JavaScript', 'CSS', 'HTML', 'React', 'PHP', 'WordPress']
-  },
-  {
-    id: '4',
-    company: 'Digital Agency',
-    position: 'Junior Developer',
-    startDate: '2017-03',
-    endDate: '2018-05',
-    description: 'Assisted in developing web applications and gained experience with modern frameworks and tools.',
-    skills: ['HTML', 'CSS', 'JavaScript', 'jQuery', 'Bootstrap']
   }
 ];
 
@@ -207,24 +198,16 @@ export const education: Education[] = [
 
 export const skills = [
   {
-    category: 'Front-end',
-    items: ['HTML5', 'CSS3', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Tailwind CSS', 'Material UI', 'Bootstrap']
+    category: 'Frontend Development',
+    items: ['React', 'Next.js', 'TypeScript', 'HTML/CSS', 'JavaScript']
   },
   {
-    category: 'Back-end',
-    items: ['Node.js', 'Express', 'PHP', 'WordPress', 'REST APIs', 'GraphQL']
+    category: 'Backend Development',
+    items: ['Node.js', 'PHP', 'MySQL', 'WordPress']
   },
   {
-    category: 'Databases',
-    items: ['MongoDB', 'MySQL', 'PostgreSQL', 'Firebase']
-  },
-  {
-    category: 'Tools & Platforms',
-    items: ['Git', 'GitHub', 'VS Code', 'Vercel', 'Netlify', 'Heroku', 'AWS', 'Webflow']
-  },
-  {
-    category: 'Design',
-    items: ['Figma', 'Adobe XD', 'Responsive Design', 'UI/UX Principles', 'Digital Signage']
+    category: 'Tools & Technologies',
+    items: ['Digital Signage', 'Version Control', 'API Integration', 'Responsive Design']
   }
 ];
 
