@@ -1,103 +1,175 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { FiArrowRight } from "react-icons/fi";
+import ProjectCard from "@/components/ProjectCard";
+import { projects } from "@/lib/data";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  // Get only featured projects for homepage
+  const featuredProjects = projects.filter(project => project.featured);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white to-gray-100 dark:from-black dark:to-gray-900">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-12">
+            <div className="md:w-1/2">
+              <motion.h1 
+                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                Hi, I'm <span className="text-blue-600 dark:text-blue-400">Brian McGauley</span>
+              </motion.h1>
+              <motion.p 
+                className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                I'm a full-stack web developer specializing in creating modern, responsive websites 
+                and applications. I combine technical expertise with creative design to build digital 
+                experiences that make an impact.
+              </motion.p>
+              <motion.div 
+                className="flex flex-wrap gap-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <Link 
+                  href="/projects"
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium flex items-center gap-2 transition-colors"
+                >
+                  View Projects <FiArrowRight />
+                </Link>
+                <Link
+                  href="/contact"
+                  className="px-6 py-3 border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600 rounded-md font-medium transition-colors"
+                >
+                  Contact Me
+                </Link>
+              </motion.div>
+            </div>
+            <motion.div 
+              className="md:w-1/2 relative"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <div className="w-full h-96 relative">
+                <Image
+                  src="/images/profile-placeholder.jpg"
+                  alt="Brian McGauley"
+                  fill
+                  className="object-cover rounded-lg shadow-lg"
+                />
+              </div>
+            </motion.div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Featured Projects Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold mb-4">Featured Projects</h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Some of my most recent and notable web development projects.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuredProjects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+          
+          <div className="mt-12 text-center">
+            <Link 
+              href="/projects"
+              className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 font-medium hover:underline"
+            >
+              View all projects <FiArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Photography Preview */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold mb-4">Photography</h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Capturing moments and exploring visual storytelling through photography.
+            </p>
+          </div>
+          
+          <div className="relative h-80 rounded-lg overflow-hidden shadow-lg">
+            <Image
+              src="/images/photography/preview.jpg"
+              alt="Photography Preview"
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+              <Link 
+                href="/photography"
+                className="px-6 py-3 bg-white text-black font-medium rounded-md hover:bg-gray-100 transition-colors"
+              >
+                Explore Collections
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Business & Nonprofit Teaser */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold mb-4">My Work</h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              I'm passionate about creating digital solutions that solve real problems and make a positive impact.
+            </p>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-8">
+            <div className="md:w-1/2 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+              <h3 className="text-2xl font-bold mb-4">Professional Experience</h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
+                Learn about my professional experience and technical skills in web development.
+              </p>
+              <Link 
+                href="/about#experience"
+                className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 font-medium hover:underline"
+              >
+                View Experience <FiArrowRight size={16} />
+              </Link>
+            </div>
+            
+            <div className="md:w-1/2 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+              <h3 className="text-2xl font-bold mb-4">Skills & Technologies</h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
+                Explore my technical skills and the technologies I work with to build great digital products.
+              </p>
+              <Link 
+                href="/about#skills"
+                className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 font-medium hover:underline"
+              >
+                View Skills <FiArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
