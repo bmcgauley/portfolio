@@ -1,7 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import { 
   experiences, 
+  education,
   skills
 } from "@/lib/data";
 
@@ -27,16 +27,37 @@ export default function AboutPage() {
             <div className="md:w-2/3">
               <h2 className="text-2xl font-bold mb-4">Bio</h2>
               <p className="text-gray-700 dark:text-gray-300 mb-4">
-                I'm Brian McGauley, a Full Stack Developer with extensive experience in web development. I specialize in creating modern, responsive websites and applications, implementing custom solutions, and ensuring cross-browser compatibility.
+                I&apos;m Brian McGauley, a Web Developer currently pursuing a Bachelor&apos;s Degree in Business Administration with a focus on Computer Information Systems at California State University, Fresno. With a strong academic background and practical experience, I specialize in developing innovative web solutions and business process improvements.
               </p>
               <p className="text-gray-700 dark:text-gray-300 mb-4">
-                Currently, I work as a Web Developer at Fresno State Housing while also maintaining my freelance web development practice. My work involves developing and maintaining websites, creating digital signage solutions, and building custom WordPress plugins to enhance operations.
+                Currently working as a Web Developer at Fresno State Student Housing, I&apos;ve successfully led various initiatives including analytics automation, SEO optimization, and digital signage solutions. I also serve as a Teaching Assistant, helping students master technical concepts and providing mentorship.
               </p>
               <p className="text-gray-700 dark:text-gray-300">
-                I have a strong foundation in both frontend and backend technologies, with expertise in React, Next.js, Node.js, PHP, and various database systems. I'm passionate about delivering high-quality web solutions that meet client needs and exceed expectations.
+                My diverse skill set spans across frontend and backend development, database management, analytics, and business analysis. I&apos;m passionate about leveraging technology to optimize processes and deliver impactful solutions.
               </p>
             </div>
           </div>
+        </section>
+
+        {/* Education Section */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-6">Education</h2>
+          {education.map((edu) => (
+            <div key={edu.id} className="mb-8 last:mb-0 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <div className="flex flex-col sm:flex-row justify-between mb-2">
+                <h3 className="text-xl font-semibold">{edu.institution}</h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {edu.startDate} – {edu.endDate}
+                </p>
+              </div>
+              <p className="text-lg text-gray-800 dark:text-gray-200 mb-2">
+                {edu.degree} - {edu.field}
+              </p>
+              <p className="text-blue-600 dark:text-blue-400">
+                GPA: {edu.gpa}
+              </p>
+            </div>
+          ))}
         </section>
         
         {/* Skills Section */}
@@ -67,7 +88,7 @@ export default function AboutPage() {
         <section id="experience" className="mb-16">
           <h2 className="text-2xl font-bold mb-6">Professional Experience</h2>
           {experiences.map((experience) => (
-            <div key={experience.id} className="mb-8 last:mb-0">
+            <div key={experience.id} className="mb-8 last:mb-0 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
               <div className="flex flex-col sm:flex-row justify-between mb-2">
                 <h3 className="text-xl font-semibold">{experience.position}</h3>
                 <p className="text-gray-600 dark:text-gray-400">

@@ -150,64 +150,78 @@ export const photoCollections: PhotoCollection[] = [
 export const experiences = [
   {
     id: '1',
-    position: 'Full Stack Developer',
-    company: 'Freelance Web Developer',
-    startDate: '2020-01',
+    position: 'Web Developer',
+    company: 'Fresno State Student Housing',
+    startDate: '2024-08',
     endDate: 'Present',
-    description: 'Developing custom web applications and websites for clients. Implementing responsive designs, integrating APIs, and ensuring cross-browser compatibility.',
-    skills: ['React', 'Next.js', 'Node.js', 'TypeScript', 'HTML/CSS', 'JavaScript']
+    description: 'Led project-based initiatives & business process enhancements including: automated analytics platform reducing data entry time by 95%, implemented SEO optimizations, created digital signage & proxy solutions, designed statistical analysis framework, led website consolidation efforts, and developed floorplan tracking system.',
+    skills: ['React', 'Node.js', 'Analytics', 'SEO', 'WordPress', 'Digital Signage']
   },
   {
     id: '2',
-    position: 'Web Developer',
-    company: 'Fresno State Housing',
-    startDate: '2022-06',
-    endDate: 'Present',
-    description: 'Developing and maintaining websites and web applications for Fresno State Housing. Creating digital signage solutions, dashboards, and custom WordPress plugins to enhance housing operations.',
-    skills: ['WordPress', 'PHP', 'JavaScript', 'HTML/CSS', 'Digital Signage', 'MySQL']
+    position: 'Teaching Assistant',
+    company: 'California State University, Fresno',
+    startDate: '2024-01',
+    endDate: '2024-05',
+    description: 'Assisted in teaching-related tasks including grading assignments, maintaining Canvas rubrics, providing one-on-one student assistance and mentorship, updating lecture materials, and generating course documentation.',
+    skills: ['Education', 'Mentorship', 'Documentation', 'Canvas LMS']
   },
   {
     id: '3',
-    position: 'Web Developer',
-    company: 'Tech Solutions Inc.',
-    startDate: '2018-06',
-    endDate: '2021-12',
-    description: 'Developed and maintained client websites, collaborated with design team to implement responsive designs, and optimized site performance.',
-    skills: ['JavaScript', 'CSS', 'HTML', 'React', 'PHP', 'WordPress']
+    position: 'Technical Artist',
+    company: 'Chant Newall Development Group, LLC',
+    startDate: '2017-11',
+    endDate: '2021-08',
+    description: 'Specialized in 3D, 2D, and audio content creation, developed custom shaders and animations for Unity Engine, automated tasks in Blender, Unity, and 3DS Max, and engaged in client consultation and design meetings.',
+    skills: ['Unity', 'Blender', '3DS Max', '3D Graphics', 'Animation', 'Client Consultation']
   }
 ];
 
-export const education: Education[] = [
+export const education = [
   {
     id: '1',
     institution: 'California State University, Fresno',
-    degree: 'Bachelor of Science',
-    field: 'Computer Science',
-    startDate: '2014',
-    endDate: '2018'
+    degree: "Bachelor's Degree",
+    field: 'Business Administration (Computer Information Systems)',
+    startDate: '2023',
+    endDate: '2025 (Expected)',
+    gpa: '3.81'
   },
   {
     id: '2',
-    institution: 'Online Learning Platforms',
-    degree: 'Professional Certification',
-    field: 'Web Development',
-    startDate: '2019',
-    endDate: '2020'
+    institution: 'Clovis Community College',
+    degree: "Associate's Degrees & Certificate",
+    field: 'Multiple: Information Systems (Networking & Web Programming), Cyber Security, Business Administration',
+    startDate: '2021',
+    endDate: '2023',
+    gpa: '3.958'
   }
 ];
 
 export const skills = [
   {
     category: 'Frontend Development',
-    items: ['React', 'Next.js', 'TypeScript', 'HTML/CSS', 'JavaScript']
+    items: ['React', 'HTML', 'CSS', 'JavaScript', 'TypeScript', 'Tailwind CSS', 'Markdown']
   },
   {
     category: 'Backend Development',
-    items: ['Node.js', 'PHP', 'MySQL', 'WordPress']
+    items: ['Node.js', 'Express.js', 'RESTful APIs', 'PHP', 'Lua', 'Flask', 'CORS/Proxy Servers']
   },
   {
-    category: 'Tools & Technologies',
-    items: ['Digital Signage', 'Version Control', 'API Integration', 'Responsive Design']
+    category: 'Database & Cloud',
+    items: ['Firebase', 'Firestore', 'SQL', 'MariaDB', 'MongoDB', 'PostgreSQL', 'Oracle', 'ERD Modeling']
+  },
+  {
+    category: 'Development Tools',
+    items: ['VS Code', 'Replit', 'Cursor AI', 'Git', 'GitHub', 'SourceTree', 'Jira', 'Confluence']
+  },
+  {
+    category: 'Analytics & Business',
+    items: ['Google Analytics', 'GTMetrix', 'PageSpeed Insights', 'Statistical Analysis', 'Data Visualization', 'R', 'Python']
+  },
+  {
+    category: 'Systems & Architecture',
+    items: ['SDLC Methodologies', 'UML', 'MVC', 'API Design', 'Component Design', 'WordPress Development']
   }
 ];
 
