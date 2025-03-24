@@ -7,7 +7,9 @@ import { useState, useEffect } from 'react';
 import { hasMultipleImagesSync, getProjectImages, shouldRefreshPreview } from '@/lib/utils';
 import ImageGallery from '@/components/ImageGallery';
 import { useRouter } from 'next/navigation';
-import torchImage from '../assets/images/profile/torch_high+res.fw.png';
+
+// Use constant for fallback image path instead of import
+const TORCH_IMAGE_PATH = "/images/profile/torch_high+res.fw.png";
 
 interface ProjectCardProps {
   project: Project;
@@ -17,7 +19,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
   const router = useRouter();
   // Check if project has multiple images
   const hasMultipleImages = hasMultipleImagesSync(project.folderName);
-  const [imageUrl, setImageUrl] = useState<string>(torchImage.src);
+  const [imageUrl, setImageUrl] = useState<string>(TORCH_IMAGE_PATH);
   const [isHovered, setIsHovered] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
@@ -75,7 +77,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
   // Handle image loading error - just use the fallback directly
   const handleImageError = () => {
     // Default fallback to torch image
-    setImageUrl(torchImage.src);
+    setImageUrl(TORCH_IMAGE_PATH);
   };
 
   const handleCardClick = () => {

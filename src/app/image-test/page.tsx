@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import profileImage from '../../assets/images/profile/DSC07056-2.jpg';
+
+// Use public image paths instead of imports
+const PROFILE_IMAGE_PATH = "/images/profile/DSC07056-2.jpg";
 // For SVGs, we'll still use public paths since they're not in assets
 const vercelLogo = '/vercel.svg';
 const nextLogo = '/next.svg';
@@ -15,7 +17,7 @@ export default function ImageTestPage() {
         <h2 className="text-xl font-semibold mb-3">1. Profile Image with Next Image component (imported from assets)</h2>
         <div className="w-64 h-64 relative mb-2">
           <Image 
-            src={profileImage}
+            src={PROFILE_IMAGE_PATH}
             alt="Profile Test" 
             fill 
             className="object-cover rounded"
@@ -29,7 +31,7 @@ export default function ImageTestPage() {
         <h2 className="text-xl font-semibold mb-3">2. Regular IMG tag with imported image</h2>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
-          src={profileImage.src} 
+          src={PROFILE_IMAGE_PATH} 
           alt="Profile Regular IMG" 
           className="w-64 h-64 object-cover rounded mb-2"
         />
@@ -40,7 +42,7 @@ export default function ImageTestPage() {
         <h2 className="text-xl font-semibold mb-3">3. Placeholder image with Next Image</h2>
         <div className="w-64 h-64 relative mb-2">
           <Image 
-            src={profileImage}
+            src={PROFILE_IMAGE_PATH}
             alt="Placeholder Test" 
             fill 
             className="object-cover rounded"
@@ -64,7 +66,7 @@ export default function ImageTestPage() {
         <h2 className="text-xl font-semibold mb-3">5. Fallback Placeholder</h2>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
-          src={profileImage.src} 
+          src={PROFILE_IMAGE_PATH} 
           alt="Fallback Placeholder" 
           className="w-64 h-64 object-cover rounded mb-2"
         />

@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FiArrowRight } from "react-icons/fi";
+import { IoRocketOutline } from "react-icons/io5";
+import Image from "next/image";
 import ProjectCard from "@/components/ProjectCard";
 import { projects } from "@/lib/data";
-// Import profile images using relative paths
-import profileImage from "../assets/images/profile/DSC07056-2.jpg";
-// Use torch image for photography preview
-import photographyPreview from "../assets/images/profile/torch_high+res.fw.png";
+// Use public image paths instead of imports
+const PROFILE_IMAGE_PATH = "/images/profile/DSC07056-2.jpg";
+const TORCH_IMAGE_PATH = "/images/profile/torch_high+res.fw.png";
 
 export default function Home() {
   // Get only featured projects for homepage
@@ -67,11 +68,13 @@ export default function Home() {
             >
               <div className="w-full h-[500px] relative rounded-2xl overflow-hidden shadow-2xl">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={profileImage.src}
+                <Image
+                  src={PROFILE_IMAGE_PATH}
                   alt="Brian McGauley"
                   className="w-full h-full object-cover object-center"
                   style={{ position: 'absolute', top: 0, left: 0 }}
+                  width={500}
+                  height={500}
                 />
                 {/* Gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
@@ -120,10 +123,12 @@ export default function Home() {
           
           <div className="relative h-80 rounded-lg overflow-hidden shadow-lg">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={photographyPreview.src}
+            <Image
+              src={TORCH_IMAGE_PATH}
               alt="Photography Preview"
               className="absolute w-full h-full object-cover"
+              width={320}
+              height={320}
             />
             <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
               <Link 

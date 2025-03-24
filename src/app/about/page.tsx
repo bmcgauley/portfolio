@@ -5,10 +5,11 @@ import {
   education,
   skills
 } from "@/lib/data";
-// Import profile images using relative paths
-import profileImage from "../../assets/images/profile/DSC07056-2.jpg";
-import torchImage from "../../assets/images/profile/torch_high+res.fw.png";
-import cccLogo from "../../assets/images/profile/ccc-primary-full-color.png";
+
+// Use public image paths instead of imports
+const PROFILE_IMAGE_PATH = "/images/profile/DSC07056-2.jpg";
+const TORCH_IMAGE_PATH = "/images/profile/torch_high+res.fw.png";
+const CCC_LOGO_PATH = "/images/profile/ccc-primary-full-color.png";
 
 export default function AboutPage() {
   return (
@@ -22,7 +23,7 @@ export default function AboutPage() {
             <div className="md:w-1/3">
               <div className="aspect-square relative rounded-lg overflow-hidden shadow-lg">
                 <Image
-                  src={profileImage.src}
+                  src={PROFILE_IMAGE_PATH}
                   alt="Brian McGauley"
                   fill
                   className="object-cover"
@@ -55,7 +56,7 @@ export default function AboutPage() {
                 <div className="relative w-32 h-16">
                   {edu.institution === 'Clovis Community College' ? (
                     <Image
-                      src={cccLogo.src}
+                      src={CCC_LOGO_PATH}
                       alt="Clovis Community College Logo"
                       fill
                       className="object-contain"
@@ -80,7 +81,7 @@ export default function AboutPage() {
                     <div className="flex items-center gap-2 mt-2">
                       <div className="relative w-8 h-8">
                         <Image
-                          src={torchImage.src}
+                          src={TORCH_IMAGE_PATH}
                           alt="Alpha Gamma Sigma Honor Society"
                           fill
                           className="object-contain"
@@ -167,7 +168,7 @@ export default function AboutPage() {
               <div className="flex items-center gap-3 mb-3">
                 <div className="relative w-8 h-8">
                   <Image
-                    src={torchImage.src}
+                    src={TORCH_IMAGE_PATH}
                     alt="Alpha Gamma Sigma Honor Society"
                     fill
                     className="object-contain"
