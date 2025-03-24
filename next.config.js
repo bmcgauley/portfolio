@@ -9,6 +9,14 @@ const nextConfig = {
       allowedOrigins: ['localhost:3001']
     }
   },
+  images: {
+    domains: [],
+    unoptimized: true,
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    remotePatterns: [],
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
