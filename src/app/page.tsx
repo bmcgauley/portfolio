@@ -24,7 +24,7 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                Hi, I'm <span className="text-blue-600 dark:text-blue-400">Brian McGauley</span>
+                Hi, I&apos;m <span className="text-blue-600 dark:text-blue-400">Brian McGauley</span>
               </motion.h1>
               <motion.p 
                 className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8"
@@ -32,7 +32,7 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
-                I'm a full-stack web developer specializing in creating modern, responsive websites 
+                I&apos;m a full-stack web developer specializing in creating modern, responsive websites 
                 and applications. I combine technical expertise with creative design to build digital 
                 experiences that make an impact.
               </motion.p>
@@ -62,13 +62,16 @@ export default function Home() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <div className="w-full h-96 relative">
+              <div className="w-full h-[500px] relative rounded-2xl overflow-hidden shadow-2xl">
                 <Image
-                  src="/images/profile-placeholder.jpg"
+                  src="/images/profile/DSC07056-2.jpg"
                   alt="Brian McGauley"
                   fill
-                  className="object-cover rounded-lg shadow-lg"
+                  className="object-cover object-center"
+                  priority
                 />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
             </motion.div>
           </div>
@@ -137,7 +140,7 @@ export default function Home() {
           <div className="mb-12 text-center">
             <h2 className="text-3xl font-bold mb-4">My Work</h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              I'm passionate about creating digital solutions that solve real problems and make a positive impact.
+              I&apos;m passionate about creating digital solutions that solve real problems and make a positive impact.
             </p>
           </div>
 

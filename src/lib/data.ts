@@ -1,8 +1,6 @@
 import { 
   Project, 
   PhotoCollection, 
-  Experience, 
-  Education,
   Business,
   Nonprofit 
 } from './types';

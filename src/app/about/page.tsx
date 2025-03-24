@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { 
   experiences, 
   education,
@@ -17,10 +18,11 @@ export default function AboutPage() {
             <div className="md:w-1/3">
               <div className="aspect-square relative rounded-lg overflow-hidden shadow-lg">
                 <Image
-                  src="/images/profile-placeholder.jpg"
+                  src="/images/profile/DSC07056-2.jpg"
                   alt="Brian McGauley"
                   fill
                   className="object-cover"
+                  priority
                 />
               </div>
             </div>
@@ -44,18 +46,49 @@ export default function AboutPage() {
           <h2 className="text-2xl font-bold mb-6">Education</h2>
           {education.map((edu) => (
             <div key={edu.id} className="mb-8 last:mb-0 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <div className="flex flex-col sm:flex-row justify-between mb-2">
-                <h3 className="text-xl font-semibold">{edu.institution}</h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {edu.startDate} – {edu.endDate}
-                </p>
+              <div className="flex flex-col sm:flex-row items-center gap-6 mb-4">
+                {/* Logo for each institution */}
+                <div className="relative w-32 h-16">
+                  {edu.institution === 'Clovis Community College' ? (
+                    <Image
+                      src="/images/profile/ccc-primary-full-color.png"
+                      alt="Clovis Community College Logo"
+                      fill
+                      className="object-contain"
+                    />
+                  ) : null}
+                </div>
+                <div className="flex-1">
+                  <div className="flex flex-col sm:flex-row justify-between mb-2">
+                    <h3 className="text-xl font-semibold">{edu.institution}</h3>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      {edu.startDate} – {edu.endDate}
+                    </p>
+                  </div>
+                  <p className="text-lg text-gray-800 dark:text-gray-200 mb-2">
+                    {edu.degree} - {edu.field}
+                  </p>
+                  <p className="text-blue-600 dark:text-blue-400 mb-2">
+                    GPA: {edu.gpa}
+                  </p>
+                  {/* Show AGS membership for Clovis Community College */}
+                  {edu.institution === 'Clovis Community College' && (
+                    <div className="flex items-center gap-2 mt-2">
+                      <div className="relative w-8 h-8">
+                        <Image
+                          src="/images/profile/torch_high+res.fw.png"
+                          alt="Alpha Gamma Sigma Honor Society"
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                        Alpha Gamma Sigma (ΑΓΣ) Honor Society Member
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
-              <p className="text-lg text-gray-800 dark:text-gray-200 mb-2">
-                {edu.degree} - {edu.field}
-              </p>
-              <p className="text-blue-600 dark:text-blue-400">
-                GPA: {edu.gpa}
-              </p>
             </div>
           ))}
         </section>
@@ -109,6 +142,116 @@ export default function AboutPage() {
               </div>
             </div>
           ))}
+        </section>
+
+        {/* Community Involvement */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-6">Community Involvement</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Central Valley Justice Coalition */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <h3 className="text-xl font-semibold mb-3">Central Valley Justice Coalition</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-2">August 2024</p>
+              <ul className="text-gray-700 dark:text-gray-300 list-disc list-inside space-y-2">
+                <li>Developed digital signage for volunteer opportunity awareness</li>
+                <li>Created printable flyers & tri-fold brochures for volunteer opportunities & human trafficking awareness</li>
+              </ul>
+            </div>
+
+            {/* Alpha Gamma Sigma */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="relative w-8 h-8">
+                  <Image
+                    src="/images/profile/torch_high+res.fw.png"
+                    alt="Alpha Gamma Sigma Honor Society"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <h3 className="text-xl font-semibold">Alpha Gamma Sigma (ΑΓΣ)</h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 mb-2">March 2023</p>
+              <p className="text-gray-700 dark:text-gray-300">
+                Permanent membership established in 2023 prior to graduation from Clovis Community College
+              </p>
+            </div>
+
+            {/* Beautify Fresno */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <h3 className="text-xl font-semibold mb-3">Beautify Fresno</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-2">2023</p>
+              <p className="text-gray-700 dark:text-gray-300">
+                Collaborated with Community Based Organization (CBO) on multiple occasions to assist in city-wide cleanup efforts
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Certifications & Training */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-6">Certifications & Training</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Packet Tracer */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-semibold">Introduction to Packet Tracer</h3>
+                <span className="text-gray-600 dark:text-gray-400">September 2021</span>
+              </div>
+              <p className="text-gray-700 dark:text-gray-300">
+                Completed comprehensive training in network simulation and visualization using Cisco&apos;s Packet Tracer, enhancing understanding of network protocols and configurations.
+              </p>
+            </div>
+
+            {/* Personal Projects */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <h3 className="text-xl font-semibold mb-4">Notable Projects</h3>
+              <ul className="text-gray-700 dark:text-gray-300 space-y-3">
+                <li>
+                  <span className="font-medium">Imaginarii Home Business (2023)</span>
+                  <p className="text-sm mt-1">Development and implementation of business solutions and web applications.</p>
+                </li>
+                <li>
+                  <span className="font-medium">Ocean Voyage Collaboration (2018)</span>
+                  <p className="text-sm mt-1">Collaborated with Professor at Miami Dade on interactive educational content.</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* Call to Action Section */}
+        <section className="text-center py-16 px-4 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl shadow-md">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">Let&apos;s Connect</h2>
+          <p className="text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+            I&apos;m always interested in discussing new projects, opportunities, or ways to collaborate. 
+            Whether you&apos;re looking for a web developer, need technical consultation, or want to discuss potential collaborations, I&apos;m here to help.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link 
+              href="/projects"
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors"
+            >
+              View Projects
+            </Link>
+            <Link
+              href="/contact"
+              className="px-6 py-3 border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600 rounded-md font-medium transition-colors"
+            >
+              Contact Me
+            </Link>
+            <Link
+              href="https://www.linkedin.com/in/brian-mcgauley-1602aa133/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-3 border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600 rounded-md font-medium transition-colors flex items-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+              LinkedIn Profile
+            </Link>
+          </div>
         </section>
       </div>
     </div>
