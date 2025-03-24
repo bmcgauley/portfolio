@@ -24,6 +24,8 @@ export default function ContactForm({ className = '' }: ContactFormProps) {
     setErrorMessage('');
 
     try {
+      console.log('Submitting form data:', formData);
+      
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -33,9 +35,10 @@ export default function ContactForm({ className = '' }: ContactFormProps) {
       });
 
       const data = await response.json();
+      console.log('Response:', data);
 
       if (!response.ok) {
-        throw new Error(data.message || 'Something went wrong!');
+        throw new Error(data.error || data.message || 'Failed to send message');
       }
 
       setStatus('success');
@@ -46,8 +49,13 @@ export default function ContactForm({ className = '' }: ContactFormProps) {
         setStatus('idle');
       }, 5000);
     } catch (error) {
+      console.error('Form submission error:', error);
       setStatus('error');
-      setErrorMessage(error instanceof Error ? error.message : 'Failed to send message');
+      setErrorMessage(
+        error instanceof Error 
+          ? error.message 
+          : 'Failed to send message. Please try again or contact directly via email.'
+      );
     }
   };
 
