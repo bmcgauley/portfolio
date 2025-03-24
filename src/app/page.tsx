@@ -115,11 +115,10 @@ export default function Home() {
           </div>
           
           <div className="relative h-80 rounded-lg overflow-hidden shadow-lg">
-            <Image
+            <img
               src="/images/photography/preview.jpg"
               alt="Photography Preview"
-              fill
-              className="object-cover"
+              className="absolute w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
               <Link 

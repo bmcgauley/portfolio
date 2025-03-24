@@ -8,9 +8,22 @@ interface ContactFormProps {
 }
 
 export default function ContactForm({ className = '' }: ContactFormProps) {
-  const [message, setMessage] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +36,7 @@ export default function ContactForm({ className = '' }: ContactFormProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
@@ -33,7 +46,12 @@ export default function ContactForm({ className = '' }: ContactFormProps) {
       }
 
       setStatus('success');
-      setMessage('');
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+      });
 
       // Reset form status after 5 seconds
       setTimeout(() => {
@@ -53,16 +71,63 @@ export default function ContactForm({ className = '' }: ContactFormProps) {
   return (
     <form onSubmit={handleSubmit} className={`space-y-6 ${className}`}>
       <div>
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          Name *
+        </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Your name"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          Email *
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Your email address"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          Phone (optional)
+        </label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+          placeholder="Your phone number (optional)"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600"
+        />
+      </div>
+
+      <div>
         <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-          Message
+          Message *
         </label>
         <textarea
           id="message"
           name="message"
           required
           rows={4}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          value={formData.message}
+          onChange={handleChange}
           placeholder="Your message here..."
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600"
         />

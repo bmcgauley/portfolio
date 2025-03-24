@@ -43,11 +43,11 @@ if (transporter) {
 
 export async function POST(request: Request) {
   try {
-    const { message } = await request.json();
+    const { name, email, phone, message } = await request.json();
 
-    if (!message) {
+    if (!message || !name || !email) {
       return NextResponse.json(
-        { message: 'Message is required' },
+        { message: 'Name, email, and message are required' },
         { status: 400 }
       );
     }
@@ -64,13 +64,24 @@ export async function POST(request: Request) {
       );
     }
 
+    // Create email content with formatted information
+    const emailContent = `
+      <h2>New Contact Form Message</h2>
+      <p><strong>From:</strong> ${name}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      ${phone ? `<p><strong>Phone:</strong> ${phone}</p>` : ''}
+      <h3>Message:</h3>
+      <p>${message.replace(/\n/g, '<br>')}</p>
+    `;
+
     // Email content
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
-      subject: 'New Contact Form Message',
-      text: message,
-      html: `<p>${message.replace(/\n/g, '<br>')}</p>`
+      replyTo: email,
+      subject: `Contact Form: Message from ${name}`,
+      text: `From: ${name}\nEmail: ${email}\n${phone ? `Phone: ${phone}\n` : ''}Message: ${message}`,
+      html: emailContent
     };
 
     // Send email
