@@ -6,11 +6,12 @@ import ImageGallery from '@/components/ImageGallery';
 import RefreshPreviewButton from '@/components/RefreshPreviewButton';
 import { Metadata } from "next";
 
-interface ProjectPageProps {
+type ProjectPageProps = {
   params: {
     id: string;
   };
-}
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
 export async function generateMetadata({
   params,
