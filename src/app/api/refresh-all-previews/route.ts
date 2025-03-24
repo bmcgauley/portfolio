@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { projects } from '@/lib/data';
 import { getSitePreview } from '@/lib/utils';
 
