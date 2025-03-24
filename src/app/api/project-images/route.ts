@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const images = getProjectImagesLocal(projectFolder);
+    const images = await getProjectImagesLocal(projectFolder);
     return NextResponse.json({ images });
   } catch (error) {
     console.error(`Error reading directory for project ${projectFolder}:`, error);

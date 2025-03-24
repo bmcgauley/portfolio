@@ -5,6 +5,10 @@ import { motion } from "framer-motion";
 import { FiArrowRight } from "react-icons/fi";
 import ProjectCard from "@/components/ProjectCard";
 import { projects } from "@/lib/data";
+// Import all images from assets
+import profileImage from "@/assets/images/profile/DSC07056-2.jpg";
+// Use torch image for photography preview
+import photographyPreview from "@/assets/images/profile/torch_high+res.fw.png";
 
 export default function Home() {
   // Get only featured projects for homepage
@@ -64,7 +68,7 @@ export default function Home() {
               <div className="w-full h-[500px] relative rounded-2xl overflow-hidden shadow-2xl">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://placehold.co/800x900/3b82f6/ffffff?text=Brian+McGauley"
+                  src={profileImage.src}
                   alt="Brian McGauley"
                   className="w-full h-full object-cover object-center"
                   style={{ position: 'absolute', top: 0, left: 0 }}
@@ -117,7 +121,7 @@ export default function Home() {
           <div className="relative h-80 rounded-lg overflow-hidden shadow-lg">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="https://placehold.co/1200x600/1f2937/ffffff?text=Photography+Collection"
+              src={photographyPreview.src}
               alt="Photography Preview"
               className="absolute w-full h-full object-cover"
             />

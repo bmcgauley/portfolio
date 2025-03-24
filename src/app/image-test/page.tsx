@@ -1,5 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import profileImage from '@/assets/images/profile/DSC07056-2.jpg';
+// For SVGs, we'll still use public paths since they're not in assets
+const vercelLogo = '/vercel.svg';
+const nextLogo = '/next.svg';
 
 export default function ImageTestPage() {
   return (
@@ -8,63 +12,63 @@ export default function ImageTestPage() {
       <p className="mb-4">This page tests different ways of loading images to diagnose issues:</p>
       
       <div className="mb-10">
-        <h2 className="text-xl font-semibold mb-3">1. Profile Image with Next Image component (unoptimized)</h2>
+        <h2 className="text-xl font-semibold mb-3">1. Profile Image with Next Image component (imported from assets)</h2>
         <div className="w-64 h-64 relative mb-2">
           <Image 
-            src="/images/profile/DSC07056-2.jpg"
+            src={profileImage}
             alt="Profile Test" 
             fill 
             className="object-cover rounded"
             unoptimized
           />
         </div>
-        <p className="text-sm text-gray-600">Path: /images/profile/DSC07056-2.jpg (unoptimized)</p>
+        <p className="text-sm text-gray-600">Imported path: @/assets/images/profile/DSC07056-2.jpg</p>
       </div>
 
       <div className="mb-10">
-        <h2 className="text-xl font-semibold mb-3">2. Regular IMG tag</h2>
+        <h2 className="text-xl font-semibold mb-3">2. Regular IMG tag with imported image</h2>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
-          src="/images/profile/DSC07056-2.jpg" 
+          src={profileImage.src} 
           alt="Profile Regular IMG" 
           className="w-64 h-64 object-cover rounded mb-2"
         />
-        <p className="text-sm text-gray-600">Path: /images/profile/DSC07056-2.jpg (regular IMG tag)</p>
+        <p className="text-sm text-gray-600">Using .src property of imported image</p>
       </div>
 
       <div className="mb-10">
         <h2 className="text-xl font-semibold mb-3">3. Placeholder image with Next Image</h2>
         <div className="w-64 h-64 relative mb-2">
           <Image 
-            src="/images/placeholders/site-preview-placeholder.jpg"
+            src={profileImage}
             alt="Placeholder Test" 
             fill 
             className="object-cover rounded"
           />
         </div>
-        <p className="text-sm text-gray-600">Path: /images/placeholders/site-preview-placeholder.jpg</p>
+        <p className="text-sm text-gray-600">Imported path: @/assets/images/profile/DSC07056-2.jpg</p>
       </div>
 
       <div className="mb-10">
-        <h2 className="text-xl font-semibold mb-3">4. Public path test</h2>
+        <h2 className="text-xl font-semibold mb-3">4. Public path test (now using imports)</h2>
         <div className="flex gap-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/vercel.svg" alt="Vercel Logo" className="h-10 w-auto" />
+          <img src={vercelLogo} alt="Vercel Logo" className="h-10 w-auto" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/next.svg" alt="Next.js Logo" className="h-10 w-auto" />
+          <img src={nextLogo} alt="Next.js Logo" className="h-10 w-auto" />
         </div>
-        <p className="text-sm text-gray-600">Testing if public root SVGs load correctly</p>
+        <p className="text-sm text-gray-600">Testing if imported SVGs load correctly</p>
       </div>
 
       <div className="mb-10">
-        <h2 className="text-xl font-semibold mb-3">5. Direct External Placeholder</h2>
+        <h2 className="text-xl font-semibold mb-3">5. Fallback Placeholder</h2>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
-          src="https://placehold.co/400x400/3b82f6/ffffff?text=Fallback+Image" 
+          src={profileImage.src} 
           alt="Fallback Placeholder" 
           className="w-64 h-64 object-cover rounded mb-2"
         />
-        <p className="text-sm text-gray-600">External placeholder (should always work)</p>
+        <p className="text-sm text-gray-600">Using profile image as fallback</p>
       </div>
 
       <div className="mb-10">

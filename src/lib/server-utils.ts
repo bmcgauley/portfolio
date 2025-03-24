@@ -35,7 +35,9 @@ export async function getProjectImagesLocal(projectFolder: string): Promise<stri
       .map((file: string) => `/images/projects/${projectFolder}/${file}`);
   } catch (error) {
     console.error(`Error reading directory for project ${projectFolder}:`, error);
-    return [];
+    // Return an array with a single fallback image from assets folder
+    // This will be used client-side to display something instead of nothing
+    return ['/assets/images/profile/torch_high+res.fw.png'];
   }
 }
 

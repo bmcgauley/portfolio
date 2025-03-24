@@ -5,6 +5,10 @@ import {
   education,
   skills
 } from "@/lib/data";
+// Import profile images from assets
+import profileImage from "@/assets/images/profile/DSC07056-2.jpg";
+import torchImage from "@/assets/images/profile/torch_high+res.fw.png";
+import cccLogo from "@/assets/images/profile/ccc-primary-full-color.png";
 
 export default function AboutPage() {
   return (
@@ -18,7 +22,7 @@ export default function AboutPage() {
             <div className="md:w-1/3">
               <div className="aspect-square relative rounded-lg overflow-hidden shadow-lg">
                 <Image
-                  src="/images/profile/DSC07056-2.jpg"
+                  src={profileImage.src}
                   alt="Brian McGauley"
                   fill
                   className="object-cover"
@@ -51,7 +55,7 @@ export default function AboutPage() {
                 <div className="relative w-32 h-16">
                   {edu.institution === 'Clovis Community College' ? (
                     <Image
-                      src="/images/profile/ccc-primary-full-color.png"
+                      src={cccLogo.src}
                       alt="Clovis Community College Logo"
                       fill
                       className="object-contain"
@@ -76,7 +80,7 @@ export default function AboutPage() {
                     <div className="flex items-center gap-2 mt-2">
                       <div className="relative w-8 h-8">
                         <Image
-                          src="/images/profile/torch_high+res.fw.png"
+                          src={torchImage.src}
                           alt="Alpha Gamma Sigma Honor Society"
                           fill
                           className="object-contain"
@@ -163,7 +167,7 @@ export default function AboutPage() {
               <div className="flex items-center gap-3 mb-3">
                 <div className="relative w-8 h-8">
                   <Image
-                    src="/images/profile/torch_high+res.fw.png"
+                    src={torchImage.src}
                     alt="Alpha Gamma Sigma Honor Society"
                     fill
                     className="object-contain"

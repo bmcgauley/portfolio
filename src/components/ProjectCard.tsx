@@ -4,9 +4,10 @@ import Image from 'next/image';
 import { FiExternalLink, FiGithub, FiImage, FiX } from 'react-icons/fi';
 import { Project } from '@/lib/types';
 import { useState, useEffect } from 'react';
-import { hasMultipleImagesSync, getProjectImages, getSitePreview, shouldRefreshPreview } from '@/lib/utils';
+import { hasMultipleImagesSync, getProjectImages, shouldRefreshPreview } from '@/lib/utils';
 import ImageGallery from '@/components/ImageGallery';
 import { useRouter } from 'next/navigation';
+import torchImage from '@/assets/images/profile/torch_high+res.fw.png';
 
 interface ProjectCardProps {
   project: Project;
@@ -16,52 +17,36 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
   const router = useRouter();
   // Check if project has multiple images
   const hasMultipleImages = hasMultipleImagesSync(project.folderName);
-  const [imageUrl, setImageUrl] = useState(project.imageUrl || '/images/placeholders/site-preview-placeholder.jpg');
+  const [imageUrl, setImageUrl] = useState<string>(torchImage.src);
   const [isHovered, setIsHovered] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [useSitePreview, setUseSitePreview] = useState(false);
-  const [imageError, setImageError] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
-  const MAX_RETRIES = 2;
+  const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    // Skip if we've already retried too many times
-    if (retryCount > MAX_RETRIES) {
-      console.log(`Max retries (${MAX_RETRIES}) reached for project ${project.id}, using fallback image`);
-      return;
-    }
-    
     async function loadImages() {
+      setIsLoading(true);
+      let foundValidImage = false;
+      
       // First, try to get site preview if demo URL exists
-      if (project.demoUrl) {
+      if (project.demoUrl && project.previewUrl) {
         try {
           const needsRefresh = shouldRefreshPreview(project.lastPreviewUpdate);
-          if (needsRefresh || !project.previewUrl) {
-            const preview = await getSitePreview(project.id, project.demoUrl);
-            if (preview.previewUrl) {
-              setImageUrl(preview.previewUrl);
-              setUseSitePreview(true);
-              setImageError(false);
-              return;
-            }
-          } else if (project.previewUrl) {
+          if (!needsRefresh && project.previewUrl) {
             setImageUrl(project.previewUrl);
             setUseSitePreview(true);
-            setImageError(false);
-            return;
+            foundValidImage = true;
           }
         } catch (error) {
-          console.error('Failed to load site preview, falling back to regular images', error);
-          // Increment retry count to prevent infinite loops
-          setRetryCount(count => count + 1);
+          console.error('Failed to load existing site preview', error);
         }
       }
       
-      // Fall back to the imageUrl from the project data
-      if (project.imageUrl) {
+      // If we didn't find a valid preview, try the static image
+      if (!foundValidImage && project.imageUrl) {
         setImageUrl(project.imageUrl);
-        setImageError(false);
+        setUseSitePreview(false);
       }
       
       // Also load project folder images if available
@@ -71,34 +56,26 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
           if (images && images.length > 0) {
             setGalleryImages(images);
             
-            // If we have no other image, use the first one from the gallery
-            if (imageError || !project.imageUrl) {
+            // If we don't have another image set yet, use the first one from the gallery
+            if (!foundValidImage && !project.imageUrl) {
               setImageUrl(images[0]);
-              setImageError(false);
             }
           }
         } catch (err) {
           console.error('Failed to load gallery images', err);
-          // Increment retry count to prevent infinite loops
-          setRetryCount(count => count + 1);
         }
       }
+      
+      setIsLoading(false);
     }
     
     loadImages();
-  }, [project.folderName, project.imageUrl, project.demoUrl, project.id, project.previewUrl, project.lastPreviewUpdate, imageError, retryCount, MAX_RETRIES]);
+  }, [project.folderName, project.imageUrl, project.demoUrl, project.previewUrl, project.lastPreviewUpdate]);
 
-  // Handle image loading error
+  // Handle image loading error - just use the fallback directly
   const handleImageError = () => {
-    setImageError(true);
-    
-    // Try a generic placeholder as last resort
-    if (retryCount >= MAX_RETRIES) {
-      const fallbackImage = `https://placehold.co/600x400/3b82f6/ffffff?text=${encodeURIComponent(project.title)}`;
-      setImageUrl(fallbackImage);
-    } else {
-      setRetryCount(prevCount => prevCount + 1);
-    }
+    // Default fallback to torch image
+    setImageUrl(torchImage.src);
   };
 
   const handleCardClick = () => {
@@ -130,15 +107,21 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className="relative h-48 w-full">
-          <Image
-            src={imageUrl}
-            alt={project.title}
-            fill
-            className="object-cover"
-            priority
-            sizes="(max-width: 768px) 100vw, 384px"
-            onError={handleImageError}
-          />
+          {isLoading ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-700">
+              <div className="animate-pulse w-full h-full bg-gray-200 dark:bg-gray-600"></div>
+            </div>
+          ) : (
+            <Image
+              src={imageUrl}
+              alt={project.title}
+              fill
+              className="object-cover"
+              priority
+              sizes="(max-width: 768px) 100vw, 384px"
+              onError={handleImageError}
+            />
+          )}
           {useSitePreview && (
             <div className="absolute top-2 left-2 bg-blue-600 text-white px-2 py-1 rounded text-xs">
               Live Preview
