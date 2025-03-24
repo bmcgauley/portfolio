@@ -1,0 +1,8 @@
+# Exclude node_modules and other build files
+node_modules
+.next
+.git
+
+# DO NOT exclude public directory
+!public/
+!public/images/ 

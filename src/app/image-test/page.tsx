@@ -56,6 +56,25 @@ export default function ImageTestPage() {
         <p className="text-sm text-gray-600">Testing if public root SVGs load correctly</p>
       </div>
 
+      <div className="mb-10">
+        <h2 className="text-xl font-semibold mb-3">5. Direct External Placeholder</h2>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img 
+          src="https://placehold.co/400x400/3b82f6/ffffff?text=Fallback+Image" 
+          alt="Fallback Placeholder" 
+          className="w-64 h-64 object-cover rounded mb-2"
+        />
+        <p className="text-sm text-gray-600">External placeholder (should always work)</p>
+      </div>
+
+      <div className="mb-10">
+        <h2 className="text-xl font-semibold mb-3">6. Debug API</h2>
+        <div className="flex flex-col">
+          <Link href="/api/debug-images" className="text-blue-600 underline mb-2">Check image paths</Link>
+          <p className="text-sm text-gray-600">Click to view details about image files on the server</p>
+        </div>
+      </div>
+
       <Link href="/" className="text-blue-600 hover:underline">Back to Home</Link>
     </div>
   );

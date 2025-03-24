@@ -64,7 +64,12 @@ export default function Home() {
               <div className="w-full h-[500px] relative rounded-2xl overflow-hidden shadow-2xl">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/images/profile/DSC07056-2.jpg"
+                  src="/images/profile/DSC07056-2.jpg" 
+                  onError={(e) => {
+                    // If image fails to load, replace with a fallback
+                    e.currentTarget.onerror = null; // prevent infinite loop
+                    e.currentTarget.src = "https://placehold.co/800x900/3b82f6/ffffff?text=Brian+McGauley";
+                  }}
                   alt="Brian McGauley"
                   className="w-full h-full object-cover object-center"
                   style={{ position: 'absolute', top: 0, left: 0 }}
