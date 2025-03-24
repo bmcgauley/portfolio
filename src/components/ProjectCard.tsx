@@ -90,9 +90,15 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
 
   // Handle image loading error
   const handleImageError = () => {
-    console.error(`Failed to load image: ${imageUrl}`);
     setImageError(true);
-    setImageUrl('/images/placeholders/site-preview-placeholder.jpg');
+    
+    // Try a generic placeholder as last resort
+    if (retryCount >= MAX_RETRIES) {
+      const fallbackImage = `https://placehold.co/600x400/3b82f6/ffffff?text=${encodeURIComponent(project.title)}`;
+      setImageUrl(fallbackImage);
+    } else {
+      setRetryCount(prevCount => prevCount + 1);
+    }
   };
 
   const handleCardClick = () => {
