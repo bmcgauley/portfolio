@@ -1,24 +1,32 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { SentMessageInfo } from 'nodemailer/lib/smtp-transport';
+
+if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+  throw new Error('Email credentials are not properly configured');
+}
 
 // Create reusable transporter object using Gmail SMTP
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
-  port: 587,
-  secure: false, // true for 465, false for other ports
+  port: 465,
+  secure: true,
   auth: {
-    user: 'bmcgauley44@gmail.com',
-    pass: 'uriv pybw mair nlf'
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
   },
-  tls: {
-    rejectUnauthorized: false // Helps with SSL certificate issues
-  }
+  debug: true, // Enable debug logging
+  logger: true // Enable logger
 });
 
 // Test the connection on startup
-transporter.verify((error) => {
+transporter.verify((error: Error | null) => {
   if (error) {
     console.error('Initial SMTP connection test failed:', error);
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack
+    });
   } else {
     console.log('Initial SMTP connection test successful');
   }
@@ -26,55 +34,42 @@ transporter.verify((error) => {
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { name, email, subject, message } = body;
+    const { message } = await request.json();
 
-    console.log('Received form submission:', { name, email, subject });
-
-    // Validate input
-    if (!name || !email || !subject || !message) {
-      console.log('Missing required fields');
+    if (!message) {
       return NextResponse.json(
-        { message: 'Missing required fields' },
+        { message: 'Message is required' },
         { status: 400 }
       );
     }
 
     // Email content
     const mailOptions = {
-      from: {
-        name: name,
-        address: 'bmcgauley44@gmail.com'
-      },
-      replyTo: email,
-      to: 'bmcgauley44@gmail.com',
-      subject: `Portfolio Contact: ${subject}`,
-      text: `From: ${name} <${email}>\n\nMessage:\n${message}`,
-      html: `
-        <h3>New Contact Form Submission</h3>
-        <p><strong>From:</strong> ${name} &lt;${email}&gt;</p>
-        <p><strong>Subject:</strong> ${subject}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, '<br>')}</p>
-      `
+      from: process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER,
+      subject: 'New Contact Form Message',
+      text: message,
+      html: `<p>${message.replace(/\n/g, '<br>')}</p>`
     };
 
-    console.log('Attempting to send email...');
-
     // Send email
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent successfully:', info.messageId);
+    const info: SentMessageInfo = await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully:', info);
 
     return NextResponse.json(
-      { message: 'Email sent successfully' },
+      { message: 'Message sent successfully' },
       { status: 200 }
     );
   } catch (error) {
-    console.error('Detailed error:', error);
+    console.error('Error sending email:', error);
     
-    // Provide more specific error messages
-    let errorMessage = 'Failed to send email';
+    let errorMessage = 'Failed to send message';
     if (error instanceof Error) {
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack
+      });
+      
       if (error.message.includes('Invalid login')) {
         errorMessage = 'Email server authentication failed. Please check your Gmail settings.';
       } else if (error.message.includes('SMTP verification failed')) {
