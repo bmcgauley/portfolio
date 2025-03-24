@@ -8,12 +8,13 @@ const hasEmailCredentials = !!(process.env.EMAIL_USER && process.env.EMAIL_PASS)
 // Create reusable transporter object using Gmail SMTP if credentials are available
 const transporter = hasEmailCredentials 
   ? nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
+      service: 'gmail', // Use the predefined 'gmail' service instead of manual config
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
+      },
+      tls: {
+        rejectUnauthorized: false // Helps with some connection issues
       },
       debug: true, // Enable debug logging
       logger: true // Enable logger
