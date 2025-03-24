@@ -12,7 +12,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
     dangerouslyAllowSVG: true,
-    formats: ['image/avif', 'image/webp'],
+    formats: ['image/png', 'image/jpeg', 'image/jpg'],
     remotePatterns: [
       {
         protocol: 'https',
