@@ -2,35 +2,38 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { SentMessageInfo } from 'nodemailer/lib/smtp-transport';
 
-if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-  throw new Error('Email credentials are not properly configured');
+// Check if email credentials are available
+const hasEmailCredentials = !!(process.env.EMAIL_USER && process.env.EMAIL_PASS);
+
+// Create reusable transporter object using Gmail SMTP if credentials are available
+const transporter = hasEmailCredentials 
+  ? nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      },
+      debug: true, // Enable debug logging
+      logger: true // Enable logger
+    })
+  : null;
+
+// Test the connection on startup only if transporter exists
+if (transporter) {
+  transporter.verify((error: Error | null) => {
+    if (error) {
+      console.error('Initial SMTP connection test failed:', error);
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack
+      });
+    } else {
+      console.log('Initial SMTP connection test successful');
+    }
+  });
 }
-
-// Create reusable transporter object using Gmail SMTP
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  },
-  debug: true, // Enable debug logging
-  logger: true // Enable logger
-});
-
-// Test the connection on startup
-transporter.verify((error: Error | null) => {
-  if (error) {
-    console.error('Initial SMTP connection test failed:', error);
-    console.error('Error details:', {
-      message: error.message,
-      stack: error.stack
-    });
-  } else {
-    console.log('Initial SMTP connection test successful');
-  }
-});
 
 export async function POST(request: Request) {
   try {
@@ -40,6 +43,18 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { message: 'Message is required' },
         { status: 400 }
+      );
+    }
+
+    // Check if email is configured
+    if (!hasEmailCredentials || !transporter) {
+      console.warn('Email sending skipped: Email credentials not configured');
+      return NextResponse.json(
+        { 
+          message: 'Message received but email delivery is not configured',
+          warning: 'Email credentials are not set up'
+        },
+        { status: 200 }
       );
     }
 

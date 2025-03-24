@@ -6,13 +6,15 @@ import ImageGallery from '@/components/ImageGallery';
 import RefreshPreviewButton from '@/components/RefreshPreviewButton';
 import { Metadata } from "next";
 
+type ParamsType = Promise<{ id: string }>;
+
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: ParamsType;
 }): Promise<Metadata> {
   // Get the project ID from params
-  const id = params.id;
+  const { id } = await params;
   // Find the project
   const project = projects.find((p) => p.id === id);
 
@@ -31,10 +33,10 @@ export async function generateMetadata({
 export default async function ProjectPage({
   params,
 }: {
-  params: { id: string };
+  params: ParamsType;
 }) {
   // Get the project ID from params
-  const id = params.id;
+  const { id } = await params;
   // Find the project
   const project = projects.find((p) => p.id === id);
 
