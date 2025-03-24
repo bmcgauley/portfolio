@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FiArrowRight } from "react-icons/fi";
-import { IoRocketOutline } from "react-icons/io5";
 import Image from "next/image";
 import ProjectCard from "@/components/ProjectCard";
 import { projects } from "@/lib/data";
@@ -67,7 +66,6 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.3 }}
             >
               <div className="w-full h-[500px] relative rounded-2xl overflow-hidden shadow-2xl">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <Image
                   src={PROFILE_IMAGE_PATH}
                   alt="Brian McGauley"
@@ -122,7 +120,6 @@ export default function Home() {
           </div>
           
           <div className="relative h-80 rounded-lg overflow-hidden shadow-lg">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <Image
               src={TORCH_IMAGE_PATH}
               alt="Photography Preview"
