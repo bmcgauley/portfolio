@@ -21,7 +21,7 @@ export async function GET() {
     const profileImageExists = fs.existsSync(profileImagePath);
 
     // List directories in public
-    let publicDirs = [];
+    let publicDirs: string[] = [];
     try {
       if (publicExists) {
         publicDirs = fs.readdirSync(publicDir);
@@ -31,7 +31,7 @@ export async function GET() {
     }
 
     // List directories in images
-    let imagesDirs = [];
+    let imagesDirs: string[] = [];
     try {
       if (imagesExists) {
         imagesDirs = fs.readdirSync(imagesDir);
@@ -41,7 +41,7 @@ export async function GET() {
     }
 
     // List files in profile dir
-    let profileFiles = [];
+    let profileFiles: string[] = [];
     try {
       if (profileExists) {
         profileFiles = fs.readdirSync(profileDir);
