@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 import { FiArrowRight } from "react-icons/fi";
 import ProjectCard from "@/components/ProjectCard";
 import { projects } from "@/lib/data";
-// Import all images from assets
-import profileImage from "@/assets/images/profile/DSC07056-2.jpg";
+// Import profile images using relative paths
+import profileImage from "../assets/images/profile/DSC07056-2.jpg";
 // Use torch image for photography preview
-import photographyPreview from "@/assets/images/profile/torch_high+res.fw.png";
+import photographyPreview from "../assets/images/profile/torch_high+res.fw.png";
 
 export default function Home() {
   // Get only featured projects for homepage

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import profileImage from '@/assets/images/profile/DSC07056-2.jpg';
+import profileImage from '../../assets/images/profile/DSC07056-2.jpg';
 // For SVGs, we'll still use public paths since they're not in assets
 const vercelLogo = '/vercel.svg';
 const nextLogo = '/next.svg';

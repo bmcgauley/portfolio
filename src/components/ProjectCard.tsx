@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { hasMultipleImagesSync, getProjectImages, shouldRefreshPreview } from '@/lib/utils';
 import ImageGallery from '@/components/ImageGallery';
 import { useRouter } from 'next/navigation';
-import torchImage from '@/assets/images/profile/torch_high+res.fw.png';
+import torchImage from '../assets/images/profile/torch_high+res.fw.png';
 
 interface ProjectCardProps {
   project: Project;

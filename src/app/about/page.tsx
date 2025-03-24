@@ -5,10 +5,10 @@ import {
   education,
   skills
 } from "@/lib/data";
-// Import profile images from assets
-import profileImage from "@/assets/images/profile/DSC07056-2.jpg";
-import torchImage from "@/assets/images/profile/torch_high+res.fw.png";
-import cccLogo from "@/assets/images/profile/ccc-primary-full-color.png";
+// Import profile images using relative paths
+import profileImage from "../../assets/images/profile/DSC07056-2.jpg";
+import torchImage from "../../assets/images/profile/torch_high+res.fw.png";
+import cccLogo from "../../assets/images/profile/ccc-primary-full-color.png";
 
 export default function AboutPage() {
   return (
