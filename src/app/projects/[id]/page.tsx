@@ -6,13 +6,6 @@ import ImageGallery from '@/components/ImageGallery';
 import RefreshPreviewButton from '@/components/RefreshPreviewButton';
 import { Metadata } from "next";
 
-type ProjectPageProps = {
-  params: {
-    id: string;
-  };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-
 export async function generateMetadata({
   params,
 }: {
@@ -35,7 +28,11 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProjectPage({ params }: ProjectPageProps) {
+export default async function ProjectPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   // Get the project ID from params
   const id = params.id;
   // Find the project
