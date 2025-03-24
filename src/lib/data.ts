@@ -170,8 +170,17 @@ export const experiences = [
     company: 'Chant Newall Development Group, LLC',
     startDate: '2017-11',
     endDate: '2021-08',
-    description: 'Specialized in 3D, 2D, and audio content creation, developed custom shaders and animations for Unity Engine, automated tasks in Blender, Unity, and 3DS Max, and engaged in client consultation and design meetings.',
-    skills: ['Unity', 'Blender', '3DS Max', '3D Graphics', 'Animation', 'Client Consultation']
+    description: 'Specialized in 3D, 2D, and audio content creation, developed custom shaders and animations for Unity Engine, automated tasks in Blender, Unity, and 3DS Max, and engaged in client consultation and design meetings. Created audio assets, managed 3D printing prototypes, and implemented game mechanics for interactive learning experiences.',
+    skills: ['Unity', 'Blender', '3DS Max', '3D Graphics', 'Animation', 'Client Consultation', 'Audio Engineering', 'Game Development', '3D Printing']
+  },
+  {
+    id: '4',
+    position: 'Freelance 3D Designer & Audio Engineer',
+    company: 'Self-employed',
+    startDate: '2016-01',
+    endDate: '2021-12',
+    description: 'Created custom 3D printed solutions for clients, designed functional prototypes and decorative items. Provided audio production services including sound design, mixing, and mastering for indie game developers and content creators.',
+    skills: ['3D Printing', '3D Modeling', 'Fusion 360', 'Audio Engineering', 'Sound Design', 'Pro Tools', 'Ableton Live']
   }
 ];
 
@@ -220,6 +229,18 @@ export const skills = [
   {
     category: 'Systems & Architecture',
     items: ['SDLC Methodologies', 'UML', 'MVC', 'API Design', 'Component Design', 'WordPress Development']
+  },
+  {
+    category: '3D & Game Development',
+    items: ['Unity Engine', 'Unreal Engine', 'Game Design', 'Level Design', 'C#', 'Blender', '3DS Max', 'Shader Programming']
+  },
+  {
+    category: '3D Printing & Modeling',
+    items: ['FDM Printing', 'Resin Printing', 'Cura', 'PrusaSlicer', 'Fusion 360', 'AutoCAD', 'STL Design', 'Post-Processing']
+  },
+  {
+    category: 'Audio Engineering',
+    items: ['Pro Tools', 'Ableton Live', 'FL Studio', 'Sound Design', 'Mixing', 'Mastering', 'Foley Recording', 'MIDI Production']
   }
 ];
 

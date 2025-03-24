@@ -122,6 +122,84 @@ export default function AboutPage() {
           </div>
         </section>
         
+        {/* Creative Skills Showcase */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-6">Creative & Technical Specialties</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* 3D Printing */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md">
+              <div className="h-48 relative">
+                <Image 
+                  src={TORCH_IMAGE_PATH} 
+                  alt="3D Printing Projects" 
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <h3 className="absolute bottom-4 left-4 text-white text-xl font-bold">3D Printing</h3>
+              </div>
+              <div className="p-5">
+                <p className="text-gray-700 dark:text-gray-300 mb-4">
+                  Experienced in both FDM and resin printing technologies, creating functional prototypes and custom designs using various materials and post-processing techniques.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded-md text-xs">Fusion 360</span>
+                  <span className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded-md text-xs">Cura</span>
+                  <span className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded-md text-xs">PrusaSlicer</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Audio Engineering */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md">
+              <div className="h-48 relative">
+                <Image 
+                  src={TORCH_IMAGE_PATH} 
+                  alt="Audio Engineering Setup" 
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <h3 className="absolute bottom-4 left-4 text-white text-xl font-bold">Audio Engineering</h3>
+              </div>
+              <div className="p-5">
+                <p className="text-gray-700 dark:text-gray-300 mb-4">
+                  Skilled in audio production, sound design, and music composition using industry-standard DAWs. Experience in recording, mixing, and mastering for various media projects.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded-md text-xs">Pro Tools</span>
+                  <span className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded-md text-xs">Ableton Live</span>
+                  <span className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded-md text-xs">Sound Design</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Game Development */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md">
+              <div className="h-48 relative">
+                <Image 
+                  src={TORCH_IMAGE_PATH} 
+                  alt="Game Development Project" 
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <h3 className="absolute bottom-4 left-4 text-white text-xl font-bold">Game Development</h3>
+              </div>
+              <div className="p-5">
+                <p className="text-gray-700 dark:text-gray-300 mb-4">
+                  Proficient in game development using Unity and Unreal engines. Experience in gameplay programming, shader development, and interactive experience design.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded-md text-xs">Unity</span>
+                  <span className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded-md text-xs">Unreal Engine</span>
+                  <span className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded-md text-xs">C#</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
         {/* Professional Experience */}
         <section id="experience" className="mb-16">
           <h2 className="text-2xl font-bold mb-6">Professional Experience</h2>
