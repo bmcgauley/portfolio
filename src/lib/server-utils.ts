@@ -1,7 +1,7 @@
-import fs from 'fs';
+import { promises as fs } from 'fs';
 import path from 'path';
-import { promises as fsPromises } from 'fs';
-import puppeteer from 'puppeteer';
+import 'server-only';
+// Import puppeteer dynamically to prevent client-side imports
 
 /**
  * Gets all image filenames from a specific project folder
@@ -9,23 +9,20 @@ import puppeteer from 'puppeteer';
  * @param projectFolder - The name of the project folder
  * @returns Array of image URLs for the project
  */
-export function getProjectImagesLocal(projectFolder: string): string[] {
+export async function getProjectImagesLocal(projectFolder: string): Promise<string[]> {
   const projectPath = path.join(process.cwd(), 'public', 'images', 'projects', projectFolder);
   
   try {
-    if (!fs.existsSync(projectPath)) {
-      return [];
-    }
-    
-    const files = fs.readdirSync(projectPath);
-    const imageFiles = files.filter(file => {
+    await fs.access(projectPath);
+    const files = await fs.readdir(projectPath);
+    const imageFiles = files.filter((file: string) => {
       const extension = path.extname(file).toLowerCase();
       return ['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(extension);
     });
     
     // Sort files to get consistent order (preview.jpg first if it exists)
     return imageFiles
-      .sort((a, b) => {
+      .sort((a: string, b: string) => {
         // Put preview.jpg first
         if (a === 'preview.jpg') return -1;
         if (b === 'preview.jpg') return 1;
@@ -35,7 +32,7 @@ export function getProjectImagesLocal(projectFolder: string): string[] {
         const numB = parseInt(b.match(/\((\d+)\)/)?.[1] || '999');
         return numA - numB;
       })
-      .map(file => `/images/projects/${projectFolder}/${file}`);
+      .map((file: string) => `/images/projects/${projectFolder}/${file}`);
   } catch (error) {
     console.error(`Error reading directory for project ${projectFolder}:`, error);
     return [];
@@ -52,17 +49,18 @@ async function createFallbackImage(outputPath: string): Promise<boolean> {
   try {
     const placeholderPath = path.join(process.cwd(), 'public', 'images', 'placeholders', 'site-preview-placeholder.jpg');
     
-    // Check if placeholder exists
-    if (fs.existsSync(placeholderPath)) {
-      // Copy the placeholder to the target location
-      fs.copyFileSync(placeholderPath, outputPath);
+    try {
+      await fs.access(placeholderPath);
+      await fs.copyFile(placeholderPath, outputPath);
       console.log(`Using placeholder image for ${outputPath}`);
       return true;
-    } else {
+    } catch {
       // Create a directory for the placeholder if it doesn't exist
       const placeholderDir = path.dirname(placeholderPath);
-      if (!fs.existsSync(placeholderDir)) {
-        fs.mkdirSync(placeholderDir, { recursive: true });
+      try {
+        await fs.access(placeholderDir);
+      } catch {
+        await fs.mkdir(placeholderDir, { recursive: true });
       }
       
       console.log('No placeholder image found, attempting to create minimal JPG');
@@ -115,8 +113,8 @@ async function createFallbackImage(outputPath: string): Promise<boolean> {
         0xff, 0xd9 // EOI marker
       ]);
       
-      fs.writeFileSync(placeholderPath, minimalJpg);
-      fs.copyFileSync(placeholderPath, outputPath);
+      await fs.writeFile(placeholderPath, minimalJpg);
+      await fs.copyFile(placeholderPath, outputPath);
       
       console.log(`Created minimal JPG placeholder for ${outputPath}`);
       return true;
@@ -126,8 +124,7 @@ async function createFallbackImage(outputPath: string): Promise<boolean> {
     
     // Last resort - create an empty file
     try {
-      // Create an empty file to prevent repeated errors
-      fs.writeFileSync(outputPath, Buffer.alloc(0));
+      await fs.writeFile(outputPath, Buffer.alloc(0));
       return true;
     } catch (e) {
       console.error('Failed to create even an empty fallback file:', e);
@@ -144,7 +141,10 @@ export async function createPreviewImage(url: string, outputPath: string): Promi
   let browser = null;
   
   try {
-    browser = await puppeteer.launch({
+    // Dynamic import of puppeteer
+    const puppeteer = await import('puppeteer');
+    
+    browser = await puppeteer.default.launch({
       headless: true, 
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
@@ -177,10 +177,11 @@ export async function createPreviewImage(url: string, outputPath: string): Promi
     await browser.close();
     
     // Verify the file was created
-    if (fs.existsSync(outputPath)) {
+    try {
+      await fs.access(outputPath);
       console.log(`Screenshot saved to ${outputPath}`);
       return true;
-    } else {
+    } catch {
       console.error(`Failed to save screenshot to ${outputPath}`);
       return await createFallbackImage(outputPath);
     }
@@ -194,5 +195,62 @@ export async function createPreviewImage(url: string, outputPath: string): Promi
     
     // Use fallback image
     return await createFallbackImage(outputPath);
+  }
+}
+
+/**
+ * Generates an OG image for social media sharing
+ */
+export async function generateOGImage(title: string, description: string): Promise<Buffer> {
+  try {
+    // Dynamic import of puppeteer
+    const puppeteer = await import('puppeteer');
+    
+    const browser = await puppeteer.default.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1200, height: 630 });
+    await page.setContent(`
+      <html>
+        <head>
+          <style>
+            body {
+              margin: 0;
+              padding: 40px;
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+              background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+              color: white;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              height: 100vh;
+            }
+            h1 {
+              font-size: 48px;
+              margin: 0 0 20px;
+              line-height: 1.2;
+            }
+            p {
+              font-size: 24px;
+              margin: 0;
+              opacity: 0.8;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>${title}</h1>
+          <p>${description}</p>
+        </body>
+      </html>
+    `);
+    const screenshot = await page.screenshot({ type: 'png' });
+    await browser.close();
+    return screenshot as Buffer;
+  } catch (error) {
+    console.error('Error generating OG image:', error);
+    // Return a default image if generation fails
+    return Buffer.from('');
   }
 } 

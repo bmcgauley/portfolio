@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { FiChevronLeft, FiChevronRight, FiX } from 'react-icons/fi';
 import { getProjectImages } from '@/lib/utils';
@@ -16,19 +16,32 @@ interface ServerImageGalleryProps {
 }
 
 const ClientImageGallery = ({ images, title, fullScreen = false }: ClientImageGalleryProps) => {
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   
-  // For fullscreen gallery, open the first image after a short delay
-  useEffect(() => {
-    // Removed auto-open functionality
-    return;
-  }, [fullScreen, images]);
-  
-  // Handle keyboard navigation
+  const closeModal = () => {
+    setCurrentIndex(null);
+    // Re-enable scrolling
+    document.body.style.overflow = 'auto';
+  };
+
+  const openModal = (index: number) => {
+    setCurrentIndex(index);
+    // Prevent scrolling when modal is open
+    document.body.style.overflow = 'hidden';
+  };
+
+  const navigateImage = useCallback((direction: -1 | 1) => {
+    if (currentIndex === null) return;
+    
+    const newIndex = currentIndex + direction;
+    if (newIndex >= 0 && newIndex < images.length) {
+      setCurrentIndex(newIndex);
+    }
+  }, [currentIndex, images.length]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (selectedImageIndex === null) return;
+      if (currentIndex === null) return;
       
       if (e.key === 'ArrowLeft') {
         navigateImage(-1);
@@ -38,35 +51,14 @@ const ClientImageGallery = ({ images, title, fullScreen = false }: ClientImageGa
         closeModal();
       }
     };
-    
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedImageIndex]);
+  }, [currentIndex, navigateImage]);
 
   if (!images.length) {
     return null;
   }
-
-  const openModal = (index: number) => {
-    setSelectedImageIndex(index);
-    // Prevent scrolling when modal is open
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeModal = () => {
-    setSelectedImageIndex(null);
-    // Re-enable scrolling
-    document.body.style.overflow = 'auto';
-  };
-
-  const navigateImage = (direction: -1 | 1) => {
-    if (selectedImageIndex === null) return;
-    
-    const newIndex = selectedImageIndex + direction;
-    if (newIndex >= 0 && newIndex < images.length) {
-      setSelectedImageIndex(newIndex);
-    }
-  };
 
   const galleryGridColumns = fullScreen ? 
     "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" : 
@@ -89,7 +81,6 @@ const ClientImageGallery = ({ images, title, fullScreen = false }: ClientImageGa
               fill
               className="object-cover"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              onLoad={() => setIsLoading(false)}
             />
             <div className="absolute inset-0 bg-black/20 hover:bg-black/10 transition-colors" />
           </div>
@@ -97,7 +88,7 @@ const ClientImageGallery = ({ images, title, fullScreen = false }: ClientImageGa
       </div>
 
       {/* Lightbox Modal */}
-      {selectedImageIndex !== null && (
+      {currentIndex !== null && (
         <div 
           className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center"
           onClick={closeModal}
@@ -108,8 +99,8 @@ const ClientImageGallery = ({ images, title, fullScreen = false }: ClientImageGa
               onClick={(e) => e.stopPropagation()}
             >
               <Image
-                src={images[selectedImageIndex]}
-                alt={`${title} - Image ${selectedImageIndex + 1}`}
+                src={images[currentIndex]}
+                alt={`${title} - Image ${currentIndex + 1}`}
                 fill
                 className="object-contain"
                 sizes="100vw"
@@ -118,7 +109,7 @@ const ClientImageGallery = ({ images, title, fullScreen = false }: ClientImageGa
             </div>
             
             {/* Navigation */}
-            {selectedImageIndex > 0 && (
+            {currentIndex > 0 && (
               <button 
                 className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full z-10"
                 onClick={(e) => {
@@ -131,7 +122,7 @@ const ClientImageGallery = ({ images, title, fullScreen = false }: ClientImageGa
               </button>
             )}
             
-            {selectedImageIndex < images.length - 1 && (
+            {currentIndex < images.length - 1 && (
               <button 
                 className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full z-10"
                 onClick={(e) => {
@@ -155,7 +146,7 @@ const ClientImageGallery = ({ images, title, fullScreen = false }: ClientImageGa
             
             {/* Image Counter */}
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/50 text-white px-3 py-1 rounded-full text-sm z-10">
-              {selectedImageIndex + 1} / {images.length}
+              {currentIndex + 1} / {images.length}
             </div>
           </div>
         </div>

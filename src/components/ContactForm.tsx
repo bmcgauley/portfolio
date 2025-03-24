@@ -106,6 +106,10 @@ export default function ContactForm({ className = '' }: ContactFormProps) {
           {errorMessage}
         </div>
       )}
+
+      <p className="text-gray-600 dark:text-gray-400 mb-6">
+        I&apos;m always open to new opportunities and collaborations.
+      </p>
     </form>
   );
 } 

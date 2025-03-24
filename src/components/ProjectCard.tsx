@@ -1,13 +1,12 @@
 "use client";
 
 import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { FiExternalLink, FiGithub, FiImage, FiX } from 'react-icons/fi';
 import { Project } from '@/lib/types';
 import { useState, useEffect } from 'react';
 import { hasMultipleImagesSync, getProjectImages, getSitePreview, shouldRefreshPreview } from '@/lib/utils';
 import ImageGallery from '@/components/ImageGallery';
+import { useRouter } from 'next/navigation';
 
 interface ProjectCardProps {
   project: Project;

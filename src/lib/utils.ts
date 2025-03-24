@@ -112,7 +112,7 @@ export function shouldRefreshPreview(lastUpdate?: string, maxAge = 24): boolean 
     const diffHours = (now.getTime() - lastUpdateDate.getTime()) / (1000 * 60 * 60);
     
     return diffHours > maxAge;
-  } catch (error) {
+  } catch { 
     // If there's any error parsing the date, refresh to be safe
     return true;
   }
