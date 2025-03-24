@@ -8,21 +8,26 @@ const hasEmailCredentials = !!(process.env.EMAIL_USER && process.env.EMAIL_PASS)
 // Create reusable transporter object using Gmail SMTP if credentials are available
 const transporter = hasEmailCredentials 
   ? nodemailer.createTransport({
-      service: 'gmail', // Use the predefined 'gmail' service instead of manual config
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false, // true for 465, false for other ports
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        pass: process.env.EMAIL_PASS?.replace(/\s+/g, '') // Remove any spaces from the password
       },
-      tls: {
-        rejectUnauthorized: false // Helps with some connection issues
-      },
-      debug: true, // Enable debug logging
-      logger: true // Enable logger
+      debug: true
     })
   : null;
 
-// Test the connection on startup only if transporter exists
+// Log the email configuration (with password obscured)
 if (transporter) {
+  console.log('Email configuration:', {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS ? '****' : undefined,
+    passwordLength: process.env.EMAIL_PASS?.replace(/\s+/g, '').length
+  });
+
+  // Test the connection
   transporter.verify((error: Error | null) => {
     if (error) {
       console.error('Initial SMTP connection test failed:', error);

@@ -63,12 +63,11 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.3 }}
             >
               <div className="w-full h-[500px] relative rounded-2xl overflow-hidden shadow-2xl">
-                <Image
+                <img
                   src="/images/profile/DSC07056-2.jpg"
                   alt="Brian McGauley"
-                  fill
-                  className="object-cover object-center"
-                  priority
+                  className="w-full h-full object-cover object-center"
+                  style={{ position: 'absolute', top: 0, left: 0 }}
                 />
                 {/* Gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
