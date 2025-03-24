@@ -23,6 +23,7 @@ export default function ImageTestPage() {
 
       <div className="mb-10">
         <h2 className="text-xl font-semibold mb-3">2. Regular IMG tag</h2>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
           src="/images/profile/DSC07056-2.jpg" 
           alt="Profile Regular IMG" 
@@ -47,7 +48,9 @@ export default function ImageTestPage() {
       <div className="mb-10">
         <h2 className="text-xl font-semibold mb-3">4. Public path test</h2>
         <div className="flex gap-4">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/vercel.svg" alt="Vercel Logo" className="h-10 w-auto" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/next.svg" alt="Next.js Logo" className="h-10 w-auto" />
         </div>
         <p className="text-sm text-gray-600">Testing if public root SVGs load correctly</p>

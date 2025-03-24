@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FiArrowRight } from "react-icons/fi";
@@ -63,6 +62,7 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.3 }}
             >
               <div className="w-full h-[500px] relative rounded-2xl overflow-hidden shadow-2xl">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/profile/DSC07056-2.jpg"
                   alt="Brian McGauley"
@@ -115,6 +115,7 @@ export default function Home() {
           </div>
           
           <div className="relative h-80 rounded-lg overflow-hidden shadow-lg">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/photography/preview.jpg"
               alt="Photography Preview"
