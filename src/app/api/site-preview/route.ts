@@ -45,6 +45,13 @@ try {
   console.error('Error setting up directories:', error);
 }
 
+interface PreviewMetadata {
+  [key: string]: {
+    timestamp: number;
+    previewUrl: string;
+  };
+}
+
 // Helper function to read metadata
 function readMetadata() {
   try {
@@ -84,7 +91,7 @@ function readMetadata() {
 }
 
 // Helper function to write metadata
-function writeMetadata(metadata: Record<string, any>) {
+function writeMetadata(metadata: PreviewMetadata) {
   try {
     const data = JSON.stringify(metadata, null, 2);
     fs.writeFileSync(PREVIEW_METADATA_FILE, data, 'utf8');
