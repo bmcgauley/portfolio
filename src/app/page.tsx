@@ -7,8 +7,8 @@ import Image from "next/image";
 import ProjectCard from "@/components/ProjectCard";
 import { projects } from "@/lib/data";
 // Use public image paths instead of imports
-const PROFILE_IMAGE_PATH = "/images/profile/DSC07056-2.jpg";
-const TORCH_IMAGE_PATH = "/images/profile/torch_high+res.fw.png";
+const PROFILE_IMAGE_PATH = "/images/profile/DSC07056-2.webp";
+const TORCH_IMAGE_PATH = "/images/profile/torch_high+res.fw.webp";
 
 export default function Home() {
   // Get only featured projects for homepage

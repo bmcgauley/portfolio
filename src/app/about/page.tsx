@@ -7,9 +7,9 @@ import {
 } from "@/lib/data";
 
 // Use public image paths instead of imports
-const PROFILE_IMAGE_PATH = "/images/profile/DSC07056-2.jpg";
-const TORCH_IMAGE_PATH = "/images/profile/torch_high+res.fw.png";
-const CCC_LOGO_PATH = "/images/profile/ccc-primary-full-color.png";
+const PROFILE_IMAGE_PATH = "/images/profile/DSC07056-2.webp";
+const TORCH_IMAGE_PATH = "/images/profile/torch_high+res.fw.webp";
+const CCC_LOGO_PATH = "/images/profile/ccc-primary-full-color.webp";
 
 export default function AboutPage() {
   return (
