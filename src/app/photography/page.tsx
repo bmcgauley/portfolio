@@ -37,232 +37,232 @@ const toBase64 = (str: string) =>
 const photos = [
   // Landscapes
   { 
-    src: '/images/photography/landscapes/1.jpg',
+    src: '/images/photography/landscapes/1.webp',
     alt: 'Mountain Valley Landscape',
     category: 'landscapes',
-    width: 1920,
-    height: 1080,
+    width: 1280,
+    height: 720,
     priority: true
   },
   { 
-    src: '/images/photography/landscapes/2.jpg',
+    src: '/images/photography/landscapes/2.webp',
     alt: 'Mountain Peak View',
     category: 'landscapes',
-    width: 1920,
-    height: 1080,
+    width: 1280,
+    height: 720,
     priority: true
   },
   { 
-    src: '/images/photography/landscapes/3.jpg',
+    src: '/images/photography/landscapes/3.webp',
     alt: 'Snowy Mountain Landscape',
     category: 'landscapes',
-    width: 1920,
-    height: 1080,
+    width: 1280,
+    height: 720,
     priority: true
   },
   { 
-    src: '/images/photography/landscapes/DSC8718.jpg',
+    src: '/images/photography/landscapes/DSC8718.webp',
     alt: 'Scenic Mountain View',
     category: 'landscapes',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/landscapes/DSC8671.jpg',
+    src: '/images/photography/landscapes/DSC8671.webp',
     alt: 'Natural Landscape',
     category: 'landscapes',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/landscapes/DSC8859.jpg',
+    src: '/images/photography/landscapes/DSC8859.webp',
     alt: 'Silhouette Landscape',
     category: 'landscapes',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/landscapes/Landscape1_edited.jpg',
+    src: '/images/photography/landscapes/Landscape1_edited.webp',
     alt: 'Edited Landscape View',
     category: 'landscapes',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   
   // Astrophotography
   { 
-    src: '/images/photography/astrophotography/Moon_Color.jpg',
+    src: '/images/photography/astrophotography/Moon_Color.webp',
     alt: 'Moon in Color',
     category: 'astrophotography',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/astrophotography/Path of Night.jpg',
+    src: '/images/photography/astrophotography/Path of Night.webp',
     alt: 'Path of Night',
     category: 'astrophotography',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/astrophotography/DSC8639.jpg',
+    src: '/images/photography/astrophotography/DSC8639.webp',
     alt: 'Night Sky',
     category: 'astrophotography',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   
   // Fireworks
   { 
-    src: '/images/photography/fireworks/fireworks1.jpg',
+    src: '/images/photography/fireworks/fireworks1.webp',
     alt: 'Fireworks Display 1',
     category: 'fireworks',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/fireworks/fireworks2.jpg',
+    src: '/images/photography/fireworks/fireworks2.webp',
     alt: 'Fireworks Display 2',
     category: 'fireworks',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/fireworks/fireworks3.jpg',
+    src: '/images/photography/fireworks/fireworks3.webp',
     alt: 'Fireworks Display 3',
     category: 'fireworks',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/fireworks/fireworks4.jpg',
+    src: '/images/photography/fireworks/fireworks4.webp',
     alt: 'Fireworks Display 4',
     category: 'fireworks',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/fireworks/fireworks5.jpg',
+    src: '/images/photography/fireworks/fireworks5.webp',
     alt: 'Fireworks Display 5',
     category: 'fireworks',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/fireworks/fireworks6.jpg',
+    src: '/images/photography/fireworks/fireworks6.webp',
     alt: 'Fireworks Display 6',
     category: 'fireworks',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/fireworks/fireworks7.jpg',
+    src: '/images/photography/fireworks/fireworks7.webp',
     alt: 'Fireworks Display 7',
     category: 'fireworks',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
 
   // Portraits & People
   {
-    src: '/images/photography/portraits/DSC8877.jpg',
+    src: '/images/photography/portraits/DSC8877.webp',
     alt: 'Silhouette Portrait',
     category: 'portraits',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   {
-    src: '/images/photography/portraits/DSC8906.jpg',
+    src: '/images/photography/portraits/DSC8906.webp',
     alt: 'Outdoor Portrait',
     category: 'portraits',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   {
-    src: '/images/photography/portraits/DSC9145.jpg',
+    src: '/images/photography/portraits/DSC9145.webp',
     alt: 'Park Portrait',
     category: 'portraits',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   {
-    src: '/images/photography/portraits/DSC9317.jpg',
+    src: '/images/photography/portraits/DSC9317.webp',
     alt: 'Urban Portrait',
     category: 'portraits',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   {
-    src: '/images/photography/portraits/DSC9369.jpg',
+    src: '/images/photography/portraits/DSC9369.webp',
     alt: 'Artistic Portrait',
     category: 'portraits',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   {
-    src: '/images/photography/portraits/IMG_2895.jpg',
+    src: '/images/photography/portraits/IMG_2895.webp',
     alt: 'Natural Portrait',
     category: 'portraits',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   {
-    src: '/images/photography/portraits/IMG_2937.jpg',
+    src: '/images/photography/portraits/IMG_2937.webp',
     alt: 'Candid Portrait',
     category: 'portraits',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   
   // Misc/Other
   { 
-    src: '/images/photography/misc/DSC0018-HDR.jpg',
+    src: '/images/photography/misc/DSC0018-HDR.webp',
     alt: 'HDR Photography',
     category: 'misc',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/misc/DSC0587.jpg',
+    src: '/images/photography/misc/DSC0587.webp',
     alt: 'Abstract Shot',
     category: 'misc',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/misc/IMG_1122.jpg',
+    src: '/images/photography/misc/IMG_1122.webp',
     alt: 'Creative Shot',
     category: 'misc',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/misc/IMG_2562.jpg',
+    src: '/images/photography/misc/IMG_2562.webp',
     alt: 'Nature Detail',
     category: 'misc',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/misc/IMG_2726-Edit.jpg',
+    src: '/images/photography/misc/IMG_2726-Edit.webp',
     alt: 'Edited Nature Shot',
     category: 'misc',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/misc/IMG_2888-Edit-2.jpg',
+    src: '/images/photography/misc/IMG_2888-Edit-2.webp',
     alt: 'Artistic Edit',
     category: 'misc',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   },
   { 
-    src: '/images/photography/misc/Ryuu (1).jpg',
+    src: '/images/photography/misc/Ryuu (1).webp',
     alt: 'Animal Portrait',
     category: 'misc',
-    width: 1920,
-    height: 1080
+    width: 1280,
+    height: 720
   }
 ];
 
