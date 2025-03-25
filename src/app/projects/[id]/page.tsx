@@ -55,7 +55,7 @@ export default async function ProjectPage({
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
         <Link
-          href="/#projects"
+          href="/projects"
           className="hover:text-primary transition-colors"
         >
           Projects
