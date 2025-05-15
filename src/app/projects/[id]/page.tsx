@@ -45,27 +45,31 @@ export default async function ProjectPage({
   }
 
   return (
-    <main className="container max-w-5xl py-10 px-4 mx-auto">
-      {/* Breadcrumb */}
-      <div className="flex items-center gap-1 text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-primary transition-colors">
-          Home
-        </Link>
-        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-        <Link
-          href="/projects"
-          className="hover:text-primary transition-colors"
-        >
-          Projects
-        </Link>
-        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-        <span className="text-gray-700 dark:text-gray-300 font-medium">
-          {project.title}
-        </span>
+    <main className="container max-w-5xl py-10 px-4 mx-auto">      {/* Breadcrumb */}
+      <div className="mb-6">
+        <nav className="flex items-center text-sm text-muted-foreground">
+          <ol className="flex items-center">
+            <li>
+              <Link href="/" className="hover:text-primary transition-colors">
+                Home
+              </Link>
+            </li>
+            <svg className="h-4 w-4 mx-1 text-muted-foreground/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+            <li>
+              <Link href="/projects" className="hover:text-primary transition-colors">
+                Projects
+              </Link>
+            </li>
+            <svg className="h-4 w-4 mx-1 text-muted-foreground/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+            <li className="font-medium text-foreground">
+              {project.title}
+            </li>
+          </ol>
+        </nav>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -76,13 +80,12 @@ export default async function ProjectPage({
           )}
 
           {/* Project Content */}
-          <div className="mt-8">
-            <h1 className="text-3xl font-bold">{project.title}</h1>
+          <div className="mt-8">            <h1 className="text-3xl font-bold">{project.title}</h1>
             <div className="flex flex-wrap gap-2 mt-3">
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-full text-sm"
+                  className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary/10 text-secondary-foreground"
                 >
                   {tag}
                 </span>
@@ -94,11 +97,9 @@ export default async function ProjectPage({
               <p>{project.description}</p>
             </div>
           </div>
-        </div>
-
-        {/* Sidebar */}
+        </div>        {/* Sidebar */}
         <div className="lg:col-span-1">
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 sticky top-20">
+          <div className="bg-card text-card-foreground border rounded-lg p-6 sticky top-20 shadow-sm">
             <h3 className="text-xl font-semibold mb-4">Project Info</h3>
             
             {/* Site Preview */}
@@ -125,15 +126,14 @@ export default async function ProjectPage({
             )}
             
             {/* Project Links */}
-            <div className="space-y-4">
-              {project.demoUrl && (
+            <div className="space-y-4">              {project.demoUrl && (
                 <div>
                   <h4 className="font-medium mb-2">Live Demo</h4>
                   <a
                     href={project.demoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full text-center py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                    className="block w-full text-center py-2 px-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md transition-colors"
                   >
                     View Demo
                   </a>
@@ -147,7 +147,7 @@ export default async function ProjectPage({
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full text-center py-2 px-4 bg-gray-800 dark:bg-gray-700 text-white rounded-md hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors"
+                    className="block w-full text-center py-2 px-4 border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
                   >
                     View on GitHub
                   </a>

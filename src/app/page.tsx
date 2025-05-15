@@ -1,180 +1,133 @@
 "use client";
 
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { FiArrowRight } from "react-icons/fi";
+import Hero from "@/components/Hero";
+import FeaturedProjects from "@/components/FeaturedProjects";
+import RecentAchievements from "@/components/RecentAchievements";
 import Image from "next/image";
-import ProjectCard from "@/components/ProjectCard";
-import { projects } from "@/lib/data";
-// Use public image paths instead of imports
-const PROFILE_IMAGE_PATH = "/images/profile/DSC07056-2.webp";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { FiArrowRight } from "react-icons/fi";
+import { motion } from "framer-motion";
+
+// Use public image paths for photography section
 const TORCH_IMAGE_PATH = "/images/profile/torch_high+res.fw.webp";
 
 export default function Home() {
-  // Get only featured projects for homepage
-  const featuredProjects = projects.filter(project => project.featured);
-
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white to-gray-100 dark:from-black dark:to-gray-900">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-            <div className="md:w-1/2">
-              <motion.h1 
-                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                Hi, I&apos;m <span className="text-blue-600 dark:text-blue-400">Brian McGauley</span>
-              </motion.h1>
-              <motion.p 
-                className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-              >
-                I&apos;m a full-stack web developer specializing in creating modern, responsive websites 
-                and applications. I combine technical expertise with creative design to build digital 
-                experiences that make an impact.
-              </motion.p>
-              <motion.div 
-                className="flex flex-wrap gap-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-              >
-                <Link 
-                  href="/projects"
-                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium flex items-center gap-2 transition-colors"
-                >
-                  View Projects <FiArrowRight />
-                </Link>
-                <Link
-                  href="/contact"
-                  className="px-6 py-3 border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600 rounded-md font-medium transition-colors"
-                >
-                  Contact Me
-                </Link>
-              </motion.div>
-            </div>
-            <motion.div 
-              className="md:w-1/2 relative"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <div className="w-full h-[500px] relative rounded-2xl overflow-hidden shadow-2xl">
-                <Image
-                  src={PROFILE_IMAGE_PATH}
-                  alt="Brian McGauley"
-                  className="w-full h-full object-cover object-center"
-                  style={{ position: 'absolute', top: 0, left: 0 }}
-                  width={500}
-                  height={500}
-                />
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Projects Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold mb-4">Featured Projects</h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Some of my most recent and notable web development projects.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
-          
-          <div className="mt-12 text-center">
-            <Link 
-              href="/projects"
-              className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 font-medium hover:underline"
-            >
-              View all projects <FiArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </section>
+      <Hero />
+      <FeaturedProjects />
+      <RecentAchievements />
 
       {/* Photography Preview */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900/50">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold mb-4">Photography</h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <motion.div 
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Photography</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               Capturing moments and exploring visual storytelling through photography.
             </p>
-          </div>
+          </motion.div>
           
-          <div className="relative h-80 rounded-lg overflow-hidden shadow-lg">
+          <motion.div 
+            className="relative h-80 rounded-xl overflow-hidden shadow-lg"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 z-10"></div>
             <Image
-              src={TORCH_IMAGE_PATH}
+              src="/images/photography/landscapes/1.webp"
               alt="Photography Preview"
               className="absolute w-full h-full object-cover"
-              width={320}
-              height={320}
+              width={1200}
+              height={600}
             />
-            <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-              <Link 
-                href="/photography"
-                className="px-6 py-3 bg-white text-black font-medium rounded-md hover:bg-gray-100 transition-colors"
-              >
-                Explore Collections
-              </Link>
+            <div className="absolute inset-0 bg-black/30 flex items-center justify-center z-20">
+              <Button variant="secondary" size="lg" asChild>
+                <Link href="/photography">
+                  Explore Collections
+                </Link>
+              </Button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Business & Nonprofit Teaser */}
+      {/* Skills & Experience */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold mb-4">My Work</h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              I&apos;m passionate about creating digital solutions that solve real problems and make a positive impact.
+          <motion.div 
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Skills & Experience</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              I combine technical expertise with creative problem-solving to build impactful digital solutions.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="flex flex-col md:flex-row gap-8">
-            <div className="md:w-1/2 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <motion.div 
+              className="bg-white dark:bg-gray-800/50 p-8 rounded-xl shadow-md border border-gray-100 dark:border-gray-800"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <div className="mb-4 inline-flex p-3 bg-primary/10 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary h-6 w-6">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                  <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                </svg>
+              </div>
               <h3 className="text-2xl font-bold mb-4">Professional Experience</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
-                Learn about my professional experience and technical skills in web development.
+                Web development, data analytics, and educational technology experience, including work with the California Cybersecurity Task Force.
               </p>
-              <Link 
-                href="/about#experience"
-                className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 font-medium hover:underline"
-              >
-                View Experience <FiArrowRight size={16} />
-              </Link>
-            </div>
+              <Button variant="outline" asChild className="group">
+                <Link href="/about#experience" className="flex items-center gap-2">
+                  View Experience 
+                  <FiArrowRight className="transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
+            </motion.div>
             
-            <div className="md:w-1/2 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+            <motion.div 
+              className="bg-white dark:bg-gray-800/50 p-8 rounded-xl shadow-md border border-gray-100 dark:border-gray-800"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <div className="mb-4 inline-flex p-3 bg-secondary/10 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-secondary h-6 w-6">
+                  <path d="m7 11 2-2-2-2"></path>
+                  <path d="M11 13h4"></path>
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                </svg>
+              </div>
               <h3 className="text-2xl font-bold mb-4">Skills & Technologies</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
-                Explore my technical skills and the technologies I work with to build great digital products.
+                From front-end frameworks to statistical analysis, explore my technical skillset and the technologies I work with.
               </p>
-              <Link 
-                href="/about#skills"
-                className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 font-medium hover:underline"
-              >
-                View Skills <FiArrowRight size={16} />
-              </Link>
-            </div>
+              <Button variant="outline" asChild className="group">
+                <Link href="/about#skills" className="flex items-center gap-2">
+                  View Skills
+                  <FiArrowRight className="transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
+            </motion.div>
           </div>
         </div>
       </section>

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,8 +16,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Brian McGauley | Web Developer Portfolio",
-  description: "Full-stack web developer specializing in modern, responsive websites and applications.",
+  title: "Brian McGauley | Web Developer & Computer Information Systems",
+  description: "Portfolio of Brian McGauley, Web Developer and Computer Information Systems student specializing in web development, data analytics, and educational technology.",
+  openGraph: {
+    title: "Brian McGauley | Web Developer & CIS",
+    description: "Web Development, Data Analytics, and Educational Technology Portfolio",
+    url: "https://brianmcgauley.com",
+    siteName: "Brian McGauley",
+    locale: "en-US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Brian McGauley | Web Developer & CIS",
+    description: "Web Development, Data Analytics, and Educational Technology Portfolio",
+    creator: "@yourtwitterhandle",
+  },
 };
 
 export default function RootLayout({
@@ -24,17 +40,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-background font-sans antialiased`}
       >
-        <Navbar />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <footer className="py-6 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} Brian McGauley. All rights reserved.
-        </footer>
+        <div className="relative flex min-h-screen flex-col">
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
+        <Toaster />
       </body>
     </html>
   );

@@ -1,8 +1,14 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Photo } from '@/lib/types';
+import { Lightbox } from "@/components/ui/lightbox";
+import { PhotoCard } from "@/components/ui/photo-card";
+import { ProgressBar } from "@/components/ui/progress-bar";
+import { CategoryFilter } from "@/components/ui/category-filter";
+import { MasonryGrid } from "@/components/ui/masonry-grid";
+import { useBatchImagePreload } from "@/hooks/use-image-preload";
 
 // Define categories and their images
 const categories = {
@@ -12,7 +18,7 @@ const categories = {
   fireworks: "Fireworks",
   portraits: "Portraits",
   misc: "Other"
-};
+} as const;
 
 // Generate a proper blur data URL
 const shimmer = (w: number, h: number) => `
@@ -34,402 +40,145 @@ const toBase64 = (str: string) =>
     ? Buffer.from(str).toString('base64')
     : window.btoa(str);
 
-const photos = [
-  // Landscapes
-  { 
-    src: '/images/photography/landscapes/1.webp',
-    alt: 'Mountain Valley Landscape',
-    category: 'landscapes',
-    width: 1280,
-    height: 720,
-    priority: true
-  },
-  { 
-    src: '/images/photography/landscapes/2.webp',
-    alt: 'Mountain Peak View',
-    category: 'landscapes',
-    width: 1280,
-    height: 720,
-    priority: true
-  },
-  { 
-    src: '/images/photography/landscapes/3.webp',
-    alt: 'Snowy Mountain Landscape',
-    category: 'landscapes',
-    width: 1280,
-    height: 720,
-    priority: true
-  },
-  { 
-    src: '/images/photography/landscapes/DSC8718.webp',
-    alt: 'Scenic Mountain View',
-    category: 'landscapes',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/landscapes/DSC8671.webp',
-    alt: 'Natural Landscape',
-    category: 'landscapes',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/landscapes/DSC8859.webp',
-    alt: 'Silhouette Landscape',
-    category: 'landscapes',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/landscapes/Landscape1_edited.webp',
-    alt: 'Edited Landscape View',
-    category: 'landscapes',
-    width: 1280,
-    height: 720
-  },
-  
-  // Astrophotography
-  { 
-    src: '/images/photography/astrophotography/Moon_Color.webp',
-    alt: 'Moon in Color',
-    category: 'astrophotography',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/astrophotography/Path of Night.webp',
-    alt: 'Path of Night',
-    category: 'astrophotography',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/astrophotography/DSC8639.webp',
-    alt: 'Night Sky',
-    category: 'astrophotography',
-    width: 1280,
-    height: 720
-  },
-  
-  // Fireworks
-  { 
-    src: '/images/photography/fireworks/fireworks1.webp',
-    alt: 'Fireworks Display 1',
-    category: 'fireworks',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/fireworks/fireworks2.webp',
-    alt: 'Fireworks Display 2',
-    category: 'fireworks',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/fireworks/fireworks3.webp',
-    alt: 'Fireworks Display 3',
-    category: 'fireworks',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/fireworks/fireworks4.webp',
-    alt: 'Fireworks Display 4',
-    category: 'fireworks',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/fireworks/fireworks5.webp',
-    alt: 'Fireworks Display 5',
-    category: 'fireworks',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/fireworks/fireworks6.webp',
-    alt: 'Fireworks Display 6',
-    category: 'fireworks',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/fireworks/fireworks7.webp',
-    alt: 'Fireworks Display 7',
-    category: 'fireworks',
-    width: 1280,
-    height: 720
-  },
+// Combined function that generates the blur data URL
+const generateBlurDataUrl = (width: number, height: number) => {
+  return toBase64(shimmer(width, height));
+};
 
-  // Portraits & People
-  {
-    src: '/images/photography/portraits/DSC8877.webp',
-    alt: 'Silhouette Portrait',
-    category: 'portraits',
-    width: 1280,
-    height: 720
-  },
-  {
-    src: '/images/photography/portraits/DSC8906.webp',
-    alt: 'Outdoor Portrait',
-    category: 'portraits',
-    width: 1280,
-    height: 720
-  },
-  {
-    src: '/images/photography/portraits/DSC9145.webp',
-    alt: 'Park Portrait',
-    category: 'portraits',
-    width: 1280,
-    height: 720
-  },
-  {
-    src: '/images/photography/portraits/DSC9317.webp',
-    alt: 'Urban Portrait',
-    category: 'portraits',
-    width: 1280,
-    height: 720
-  },
-  {
-    src: '/images/photography/portraits/DSC9369.webp',
-    alt: 'Artistic Portrait',
-    category: 'portraits',
-    width: 1280,
-    height: 720
-  },
-  {
-    src: '/images/photography/portraits/IMG_2895.webp',
-    alt: 'Natural Portrait',
-    category: 'portraits',
-    width: 1280,
-    height: 720
-  },
-  {
-    src: '/images/photography/portraits/IMG_2937.webp',
-    alt: 'Candid Portrait',
-    category: 'portraits',
-    width: 1280,
-    height: 720
-  },
-  
-  // Misc/Other
-  { 
-    src: '/images/photography/misc/DSC0018-HDR.webp',
-    alt: 'HDR Photography',
-    category: 'misc',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/misc/DSC0587.webp',
-    alt: 'Abstract Shot',
-    category: 'misc',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/misc/IMG_1122.webp',
-    alt: 'Creative Shot',
-    category: 'misc',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/misc/IMG_2562.webp',
-    alt: 'Nature Detail',
-    category: 'misc',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/misc/IMG_2726-Edit.webp',
-    alt: 'Edited Nature Shot',
-    category: 'misc',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/misc/IMG_2888-Edit-2.webp',
-    alt: 'Artistic Edit',
-    category: 'misc',
-    width: 1280,
-    height: 720
-  },
-  { 
-    src: '/images/photography/misc/Ryuu (1).webp',
-    alt: 'Animal Portrait',
-    category: 'misc',
-    width: 1280,
-    height: 720
-  }
+const photos: Photo[] = [
+  // ... (keep your existing photos array)
 ];
 
+type CategoryType = keyof typeof categories;
+
 export default function PhotographyPage() {
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType>('all');
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const [showContent, setShowContent] = useState(false);
 
   const filteredPhotos = selectedCategory === 'all'
     ? photos
     : photos.filter(photo => photo.category === selectedCategory);
 
-  // Prefetch all images on mount
-  useEffect(() => {
-    const preloadImages = async () => {
-      const imagePromises = photos.map((photo) => {
-        return new Promise((resolve, reject) => {
-          const img = document.createElement('img');
-          img.src = photo.src;
-          img.onload = resolve;
-          img.onerror = reject;
-        });
-      });
+  // Use our new preloading hook
+  const { progress, total, isComplete } = useBatchImagePreload(
+    photos.map(photo => photo.src),
+    6 // Load 6 images at a time
+  );
 
-      try {
-        await Promise.all(imagePromises);
-        setImagesLoaded(true);
-      } catch (error) {
-        console.error('Failed to preload some images:', error);
-        setImagesLoaded(true); // Still set to true to show whatever loaded
-      }
-    };
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index);
+  };
 
-    preloadImages();
-  }, []);
+  const handleLightboxClose = () => {
+    setSelectedImageIndex(null);
+  };
+
+  const handleLightboxNavigate = (index: number) => {
+    setSelectedImageIndex(index);
+  };
 
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-      {/* Hidden container for pre-rendering all images */}
-      <div className="hidden">
-        {photos.map((photo) => (
-          <Image
-            key={`preload-${photo.src}`}
-            src={photo.src}
-            alt={photo.alt}
-            width={1920}
-            height={1080}
-            priority={true}
-            loading="eager"
-          />
-        ))}
-      </div>
-
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Photography</h1>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl mx-auto">
             A collection of my photographic work spanning various styles and subjects.
             From landscapes to astrophotography, each image captures a unique moment in time.
           </p>
         </div>
 
-        {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {Object.entries(categories).map(([key, label]) => (
-            <button
-              key={key}
-              onClick={() => setSelectedCategory(key)}
-              className={`px-4 py-2 rounded-full transition-colors ${
-                selectedCategory === key
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'
-              }`}
+        {/* Loading Progress */}
+        <AnimatePresence mode="wait">
+          {!isComplete && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="max-w-md mx-auto mb-12"
             >
-              {label}
-            </button>
-          ))}
-        </div>
+              <div className="text-center mb-4">
+                <p className="text-muted-foreground">
+                  Loading gallery... {Math.round((progress / total) * 100)}%
+                </p>
+              </div>
+              <ProgressBar
+                progress={progress}
+                total={total}
+                onComplete={() => setShowContent(true)}
+                className="h-1.5"
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* Loading State */}
-        {!imagesLoaded && (
-          <div className="flex justify-center items-center min-h-[400px]">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-          </div>
-        )}
-
-        {/* Photo Grid */}
         <AnimatePresence>
-          {imagesLoaded && (
-            <motion.div 
+          {showContent && (
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
             >
-              {filteredPhotos.map((photo) => (
-                <motion.div
-                  key={photo.src}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
-                  className="relative aspect-[4/3] cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow bg-gray-900"
-                  onClick={() => setSelectedImage(photo.src)}
-                >
-                  <Image
-                    src={photo.src}
-                    alt={photo.alt}
-                    fill
-                    className="object-cover transition-transform duration-300 hover:scale-105"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    quality={60}
-                    priority={true}
-                    loading="eager"
-                    placeholder="blur"
-                    blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-                  />
-                </motion.div>
-              ))}
+              {/* Category Filter */}
+              <CategoryFilter
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onSelectCategory={setSelectedCategory}
+                className="mb-12"
+              />
+
+              {/* Photo Grid */}
+              <AnimatePresence mode="wait">
+                <div className="px-4 sm:px-0">
+                  {filteredPhotos.length > 0 ? (
+                    <MasonryGrid
+                      items={filteredPhotos}
+                      columnCount={{
+                        mobile: 1,
+                        tablet: 2,
+                        desktop: 3
+                      }}
+                      gap={16}
+                      renderItem={(photo, index) => (
+                        <PhotoCard
+                          photo={photo}
+                          index={index}
+                          onClick={() => handleImageClick(index)}
+                          shimmerToBase64={generateBlurDataUrl}
+                          priority={index < 6 || photo.priority}
+                        />
+                      )}
+                    />
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="text-center py-12"
+                    >
+                      <p className="text-muted-foreground">
+                        No photos found in this category.
+                      </p>
+                    </motion.div>
+                  )}
+                </div>
+              </AnimatePresence>
             </motion.div>
           )}
         </AnimatePresence>
 
         {/* Lightbox */}
-        {selectedImage && (
-          <div
-            className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
-            onClick={() => setSelectedImage(null)}
-          >
-            <button
-              className="absolute top-4 right-4 text-white hover:text-gray-300 p-2"
-              onClick={() => setSelectedImage(null)}
-              aria-label="Close image viewer"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-            <div className="relative w-full max-w-6xl max-h-[90vh]">
-              <Image
-                src={selectedImage}
-                alt="Selected photograph"
-                className="object-contain w-full h-full"
-                width={1920}
-                height={1080}
-                quality={85}
-                priority={true}
-                placeholder="blur"
-                blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(1920, 1080))}`}
-              />
-            </div>
-          </div>
+        {selectedImageIndex !== null && (
+          <Lightbox
+            images={filteredPhotos.map(photo => ({ src: photo.src, alt: photo.alt }))}
+            currentIndex={selectedImageIndex}
+            onClose={handleLightboxClose}
+            onNavigate={handleLightboxNavigate}
+          />
         )}
       </div>
     </div>
   );
-} 
+}

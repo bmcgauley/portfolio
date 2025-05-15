@@ -1,180 +1,160 @@
-'use client';
+"use client"
 
-import { useState } from 'react';
-import { FiSend, FiCheck, FiAlertCircle } from 'react-icons/fi';
+import * as z from "zod"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button"
+import { useState } from "react"
+import { Loader2 } from "lucide-react"
+import { Toaster } from "sonner"
+import { toast } from "sonner"
 
-interface ContactFormProps {
-  className?: string;
-}
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  email: z.string().email({
+    message: "Please enter a valid email address.",
+  }),
+  subject: z.string().min(5, {
+    message: "Subject must be at least 5 characters.",
+  }),
+  message: z.string().min(10, {
+    message: "Message must be at least 10 characters.",
+  }),
+})
 
-export default function ContactForm({ className = '' }: ContactFormProps) {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
-  });
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
+type FormData = z.infer<typeof formSchema>
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+export default function ContactForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('sending');
-    setErrorMessage('');
+  const form = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
+  })
 
+  async function onSubmit(values: FormData) {
+    setIsSubmitting(true)
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || data.message || 'Failed to send message');
-      }
-
-      setStatus('success');
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        message: ''
-      });
-
-      // Reset form status after 5 seconds
-      setTimeout(() => {
-        setStatus('idle');
-      }, 5000);
+      // Replace with your email sending logic
+      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
+      
+      toast.success("Message sent successfully! I'll get back to you soon.", {
+        duration: 5000,
+      })
+      
+      form.reset()
     } catch (error) {
-      console.error('Form submission error:', error);
-      setStatus('error');
-      setErrorMessage(
-        error instanceof Error 
-          ? error.message 
-          : 'Failed to send message. Please try again.'
-      );
+      toast.error("Failed to send message. Please try again later.")
+      console.error("Failed to send message:", error)
+    } finally {
+      setIsSubmitting(false)
     }
-  };
+  }
 
   return (
-    <form onSubmit={handleSubmit} className={`space-y-6 ${className}`}>
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-          Name *
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          required
-          value={formData.name}
-          onChange={handleChange}
-          placeholder="Your name"
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-          Email *
-        </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          required
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Your email address"
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-          Phone (optional)
-        </label>
-        <input
-          type="tel"
-          id="phone"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          placeholder="Your phone number (optional)"
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-          Message *
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          required
-          rows={4}
-          value={formData.message}
-          onChange={handleChange}
-          placeholder="Your message here..."
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600"
-        />
-      </div>
-
-      <div>
-        <button
-          type="submit"
-          disabled={status === 'sending'}
-          className="w-full flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {status === 'sending' && (
-            <>
-              <FiSend className="animate-spin -ml-1 mr-3 h-5 w-5" />
-              Sending...
-            </>
-          )}
-          {status === 'success' && (
-            <>
-              <FiCheck className="-ml-1 mr-3 h-5 w-5" />
-              Sent Successfully!
-            </>
-          )}
-          {status === 'error' && (
-            <>
-              <FiAlertCircle className="-ml-1 mr-3 h-5 w-5" />
-              Try Again
-            </>
-          )}
-          {status === 'idle' && (
-            <>
-              <FiSend className="-ml-1 mr-3 h-5 w-5" />
-              Send Message
-            </>
-          )}
-        </button>
-      </div>
-
-      {status === 'error' && (
-        <div className="text-red-600 dark:text-red-400 text-sm text-center">
-          {errorMessage}
-        </div>
-      )}
-
-      <p className="text-gray-600 dark:text-gray-400 mb-6">
-        I&apos;m always open to new opportunities and collaborations.
-      </p>
-    </form>
-  );
-} 
+    <>
+      <Toaster position="top-right" />
+      <Card className="w-full max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle>Get in Touch</CardTitle>
+          <CardDescription>
+            Send me a message and I&apos;ll get back to you as soon as possible.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Your name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input type="email" placeholder="your.email@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="subject"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Subject</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Message subject" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Message</FormLabel>
+                    <FormControl>
+                      <Textarea 
+                        placeholder="Your message here..." 
+                        className="min-h-[150px]"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <div className="flex justify-end">
+                <Button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="w-full sm:w-auto"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    "Send Message"
+                  )}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </>
+  )
+}

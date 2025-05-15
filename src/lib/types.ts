@@ -1,15 +1,24 @@
+export interface Photo {
+  src: string;
+  alt: string;
+  category: 'landscapes' | 'astrophotography' | 'fireworks' | 'portraits' | 'misc';
+  width: number;
+  height: number;
+  priority?: boolean;
+}
+
 export interface Project {
   id: string;
   title: string;
   description: string;
-  imageUrl: string;
-  folderName?: string;
   tags: string[];
+  category?: string;
+  technologies?: string[];
+  imageUrl?: string;
+  folderName?: string;
   demoUrl?: string;
   githubUrl?: string;
-  featured: boolean;
-  previewUrl?: string;
-  lastPreviewUpdate?: string;
+  featured?: boolean;
 }
 
 export interface PhotoCollection {
@@ -18,47 +27,5 @@ export interface PhotoCollection {
   description: string;
   coverImage: string;
   images: Photo[];
+  category?: string;
 }
-
-export interface Photo {
-  id: string;
-  title: string;
-  imageUrl: string;
-  description?: string;
-}
-
-export interface Experience {
-  id: string;
-  company: string;
-  position: string;
-  startDate: string;
-  endDate?: string;
-  description: string;
-  skills: string[];
-}
-
-export interface Education {
-  id: string;
-  institution: string;
-  degree: string;
-  field: string;
-  startDate: string;
-  endDate?: string;
-}
-
-export interface Business {
-  id: string;
-  name: string;
-  description: string;
-  imageUrl: string;
-  websiteUrl?: string;
-}
-
-export interface Nonprofit {
-  id: string;
-  name: string;
-  description: string;
-  imageUrl: string;
-  websiteUrl?: string;
-  role?: string;
-} 
