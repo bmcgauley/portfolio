@@ -54,3 +54,8 @@
 - **Never hallucinate libraries or functions** – only use known, verified Python packages.
 - **Always confirm file paths and module names** exist before referencing them in code or tests.
 - **Never delete or overwrite existing code** unless explicitly instructed to or if part of a task from `TASK.md`.
+
+### ES Lint Rules
+ALWAYS do npm run lint after any changes to the codebase to test for
+lint errors. Follow this by IMMEDIATELY documenting lint errors
+in tasks in order to ensure we stay committed to a bug-free environment.

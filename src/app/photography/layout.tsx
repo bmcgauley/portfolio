@@ -14,10 +14,7 @@ export default function PhotoLayout({
     shouldWarn: hasInteraction,
     message: "Are you sure you want to leave? Any lightbox or filtering progress will be lost."
   })
-
   useEffect(() => {
-    const handleInteraction = () => setHasInteraction(true)
-
     // Set hasInteraction to true on first meaningful interaction
     const handleMeaningfulInteraction = (e: MouseEvent | KeyboardEvent) => {
       // Only count clicks on buttons or images, and specific keyboard events

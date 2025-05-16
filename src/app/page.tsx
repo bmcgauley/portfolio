@@ -9,9 +9,6 @@ import { Button } from "@/components/ui/button";
 import { FiArrowRight } from "react-icons/fi";
 import { motion } from "framer-motion";
 
-// Use public image paths for photography section
-const TORCH_IMAGE_PATH = "/images/profile/torch_high+res.fw.webp";
-
 export default function Home() {
   return (
     <div className="min-h-screen">

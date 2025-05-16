@@ -14,14 +14,12 @@ export async function getProjectImagesLocal(projectFolder: string): Promise<stri
     console.warn('No project folder provided to getProjectImagesLocal');
     return ['/images/profile/torch_high+res.fw.webp'];
   }
-
   const projectPath = path.join(process.cwd(), 'public', 'images', 'projects', projectFolder);
   
   try {
-    // Check if directory exists
-    try {
+    // Check if directory exists    try {
       await fs.access(projectPath);
-    } catch (e) {
+    } catch (_error) {
       // Create the directory if it doesn't exist
       console.log(`Creating missing directory: ${projectPath}`);
       await fs.mkdir(projectPath, { recursive: true });

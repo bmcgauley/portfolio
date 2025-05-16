@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { FiMenu, FiX } from "react-icons/fi"
+import { FiMenu } from "react-icons/fi"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"

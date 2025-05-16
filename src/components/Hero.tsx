@@ -5,8 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { FiArrowRight } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { themeColors } from "@/lib/theme";
 
 export default function Hero() {  return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white to-gray-100 dark:from-gray-950 dark:to-gray-900">

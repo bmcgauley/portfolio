@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ImageWithLoading } from "./image-with-loading"
 import { FiX, FiChevronLeft, FiChevronRight, FiInfo, FiCommand } from "react-icons/fi"
-import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 import { useKeyboardNavigation, useFocusTrap } from "@/hooks/use-keyboard-navigation"
 

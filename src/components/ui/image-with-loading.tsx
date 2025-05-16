@@ -69,10 +69,10 @@ export function ImageWithLoading({
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: isLoading ? 0 : 1 }}
-          transition={{ duration: 0.3 }}
-        >
+          transition={{ duration: 0.3 }}        >
           <Image
             {...props}
+            alt={props.alt || "Image"}
             className={cn(
               "transition-transform duration-300",
               className

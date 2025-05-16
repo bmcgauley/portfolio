@@ -16,11 +16,9 @@ export async function GET(request: NextRequest) {
 
   try {
     // Ensure project folder exists
-    const projectPath = path.join(process.cwd(), 'public', 'images', 'projects', projectFolder);
-    
-    try {
+    const projectPath = path.join(process.cwd(), 'public', 'images', 'projects', projectFolder);    try {
       await fs.access(projectPath);
-    } catch (e) {
+    } catch {
       // Create the directory if it doesn't exist
       console.log(`Creating missing project directory: ${projectPath}`);
       await fs.mkdir(projectPath, { recursive: true });

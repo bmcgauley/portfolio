@@ -1,7 +1,6 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Skeleton } from "@/components/ui/skeleton"
 import { Photo } from "@/lib/types"
 import { cn } from "@/lib/utils"
 import { ImageWithLoading } from "./image-with-loading"

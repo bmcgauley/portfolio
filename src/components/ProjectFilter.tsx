@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Project } from '@/lib/types';
 import { cn } from '@/lib/utils';
 

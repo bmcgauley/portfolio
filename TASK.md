@@ -3,10 +3,10 @@
 ## Task List
 
 ### Theme Updates (May 15, 2025)
-- [x] Update color scheme to use royal blue (#2563EB) and amber gold (#F59E0B)
+- [x] Update color scheme to use dark blue (#0a1929) and amber gold (#F59E0B)
 - [x] Create theme configuration file for consistent color application
 - [x] Update globals.css with new color variables
-- [ ] Apply new theme to all shadcn/ui components
+- [x] Apply new theme to all shadcn/ui components (May 16, 2025)
 
 ### Component Migration to shadcn/ui
 - [x] Enhance Hero section with shadcn/ui components
@@ -18,26 +18,41 @@
 - [ ] Enhance Contact form with shadcn/ui form components
 
 ### Data Updates
-- [ ] Update professional bio/summary with latest information (May 13, 2025)
+- [x] Update professional bio/summary with latest information (May 16, 2025)
 - [ ] Update Web Developer position description with analytics platform achievements
-- [ ] Update education information with honor societies (Phi Kappa Phi and Beta Gamma Sigma)
+- [x] Update education information with honor societies (Phi Kappa Phi and Beta Gamma Sigma) (May 16, 2025)
 - [ ] Update GPA information to 3.82 for CSUF and 3.958 for CCC
-- [ ] Add new projects (StatScholar, Aevita.org, AJ for City Council)
-- [ ] Add volunteer activities (CCTF, Beta Gamma Sigma, Fresno PAL, Success from Within)
+- [x] Add new projects (StatScholar, Aevita.org, AJ for City Council) (May 16, 2025)
+- [x] Add volunteer activities (CCTF, Beta Gamma Sigma, Fresno PAL, Success from Within) (May 16, 2025)
 - [ ] Update skills/expertise areas with new skills (Statistical Analysis, Data Visualization, etc.)
 
 ### UI Updates
-- [ ] Modify Bio section in About page to include CCTF role
+- [x] Modify Bio section in About page to include CCTF role (May 16, 2025)
 - [x] Ensure Education section displays honor society memberships (Phi Kappa Phi and Beta Gamma Sigma) (May 15, 2025)
-- [ ] Update Community Involvement section with new volunteer activities
+- [x] Update Community Involvement section with new volunteer activities (May 16, 2025)
 - [x] Create Recent Achievements section on homepage (May 15, 2025)
-- [ ] Review mobile responsiveness for new content
+- [x] Add borders around profile picture in Hero component (May 16, 2025)
+- [x] Add honor society logos (PKP and BGS) alongside existing torch logo (May 16, 2025)
+- [x] Fix text alignment in navbar and footer (May 16, 2025)
+- [x] Review mobile responsiveness for new content (May 16, 2025)
 
-### Testing
+### Testing and Bug Fixes
+- [x] Fix ESLint errors across components (May 16, 2025)
+- [x] Fix TypeScript errors in PhotoCollection interface (May 16, 2025)
+- [x] Fix broken image loading in project details pages (May 16, 2025)
+- [x] Implement automatic project folder creation (May 16, 2025)
+- [x] Fix build error in RecentAchievements.tsx (added Framer Motion import) (May 16, 2025)
+- [x] Remove unused imports from various components (May 16, 2025)
+- [x] Add missing alt attribute to image in image-with-loading.tsx (May 16, 2025)
 - [ ] Test all pages with updated content
 - [ ] Verify links to new projects work correctly
-- [ ] Ensure proper display on mobile devices
 - [ ] Test color contrast for accessibility
+
+### Future Enhancements (Documented May 16, 2025)
+- [ ] Implement GitHub integration (see docs/github-integration-ideas.md)
+- [ ] Add GitHub contribution graph to About page
+- [ ] Add automated project imports from GitHub repos
+- [ ] Add analytics dashboard
 
 ## Completed Tasks
 - [x] Create a theme configuration file with blue and gold color scheme (May 15, 2025)

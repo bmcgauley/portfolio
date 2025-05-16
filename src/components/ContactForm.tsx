@@ -37,13 +37,12 @@ export default function ContactForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      email: "",
-      subject: "",
+      email: "",    subject: "",
       message: "",
     },
   })
 
-  async function onSubmit(values: FormData) {
+  async function onSubmit() {
     setIsSubmitting(true)
     try {
       // Replace with your email sending logic
