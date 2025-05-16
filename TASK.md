@@ -28,7 +28,7 @@
 
 ### UI Updates
 - [ ] Modify Bio section in About page to include CCTF role
-- [ ] Ensure Education section displays honor society memberships (Phi Kappa Phi and Beta Gamma Sigma)
+- [x] Ensure Education section displays honor society memberships (Phi Kappa Phi and Beta Gamma Sigma) (May 15, 2025)
 - [ ] Update Community Involvement section with new volunteer activities
 - [x] Create Recent Achievements section on homepage (May 15, 2025)
 - [ ] Review mobile responsiveness for new content
@@ -49,3 +49,6 @@
 - [x] Create custom ProjectFilter component for projects page (May 15, 2025)
 - [x] Update project detail page with theme colors and improved UI (May 15, 2025)
 - [x] Update PhotoCollectionCard with new theme styling (May 15, 2025)
+- [x] Add border around profile picture in Hero component (May 15, 2025)
+- [x] Add PKP and BGS honor society logos alongside torch logo (May 15, 2025)
+- [x] Fix text alignment in navbar and footer (added proper padding) (May 15, 2025)

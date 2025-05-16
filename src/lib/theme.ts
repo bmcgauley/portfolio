@@ -29,12 +29,11 @@ export const themeColors = {
     800: '#92400E',
     900: '#78350F',
   },
-  
-  // Semantic colors (mapped to tailwind/shadcn)
+    // Semantic colors (mapped to tailwind/shadcn)
   semantic: {
-    primary: '#2563EB',         // Royal Blue
-    primaryLight: '#60A5FA',    // Lighter shade for hover states
-    primaryDark: '#1E40AF',     // Darker shade for active states
+    primary: '#0a1929',         // Dark Blue
+    primaryLight: '#122b47',    // Lighter shade for hover states
+    primaryDark: '#071018',     // Darker shade for active states
     
     secondary: '#F59E0B',       // Amber Gold  
     secondaryLight: '#FBBF24',  // Lighter shade for hover states

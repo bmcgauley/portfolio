@@ -10,15 +10,37 @@ import 'server-only';
  * @returns Array of image URLs for the project
  */
 export async function getProjectImagesLocal(projectFolder: string): Promise<string[]> {
+  if (!projectFolder) {
+    console.warn('No project folder provided to getProjectImagesLocal');
+    return ['/images/profile/torch_high+res.fw.webp'];
+  }
+
   const projectPath = path.join(process.cwd(), 'public', 'images', 'projects', projectFolder);
   
   try {
-    await fs.access(projectPath);
+    // Check if directory exists
+    try {
+      await fs.access(projectPath);
+    } catch (e) {
+      // Create the directory if it doesn't exist
+      console.log(`Creating missing directory: ${projectPath}`);
+      await fs.mkdir(projectPath, { recursive: true });
+      
+      // Return fallback image since we just created an empty directory
+      return ['/images/profile/torch_high+res.fw.webp'];
+    }
+    
+    // Read files from the directory
     const files = await fs.readdir(projectPath);
     const imageFiles = files.filter((file: string) => {
       const extension = path.extname(file).toLowerCase();
       return ['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(extension);
     });
+    
+    // If no image files found, return fallback
+    if (imageFiles.length === 0) {
+      return ['/images/profile/torch_high+res.fw.webp'];
+    }
     
     // Sort files to get consistent order (preview.jpg first if it exists)
     return imageFiles
@@ -36,8 +58,7 @@ export async function getProjectImagesLocal(projectFolder: string): Promise<stri
   } catch (error) {
     console.error(`Error reading directory for project ${projectFolder}:`, error);
     // Return an array with a single fallback image from public folder
-    // This will be used client-side to display something instead of nothing
-    return ['/images/profile/torch_high+res.fw.png'];
+    return ['/images/profile/torch_high+res.fw.webp'];
   }
 }
 

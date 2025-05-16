@@ -51,9 +51,8 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  
-  /* Royal Blue (#2563EB) */
-  --primary: #2563EB;
+    /* Dark Blue (#0a1929) */
+  --primary: #0a1929;
   --primary-foreground: oklch(0.985 0 0);
   
   /* Amber Gold (#F59E0B) */
@@ -71,8 +70,8 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   
-  /* Using royal blue for focus rings */
-  --ring: #2563EB;
+  /* Using dark blue for focus rings */
+  --ring: #0a1929;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -94,8 +93,7 @@
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: #60A5FA;  /* Lighter Royal Blue (#60A5FA) */
+  --popover-foreground: oklch(0.985 0 0);  --primary: #122b47;  /* Lighter Dark Blue (#122b47) */
   --primary-foreground: oklch(0.985 0 0);
   --secondary: #FBBF24;  /* Lighter Amber Gold (#FBBF24) */
   --secondary-foreground: oklch(0.145 0 0);

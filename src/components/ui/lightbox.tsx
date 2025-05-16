@@ -18,7 +18,7 @@ interface LightboxProps {
 
 export function Lightbox({ images, currentIndex, onClose, onNavigate }: LightboxProps) {
   // Use a div element ref to match motion.div's expected type
-  const containerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null!)
   const [showInfo, setShowInfo] = useState(false)
   const [showKeyboardHelp, setShowKeyboardHelp] = useState(false)
 

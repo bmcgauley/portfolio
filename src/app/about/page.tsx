@@ -32,12 +32,14 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="md:w-2/3">
-              <h2 className="text-2xl font-bold mb-4">Bio</h2>
-              <p className="text-gray-700 dark:text-gray-300 mb-4">
+              <h2 className="text-2xl font-bold mb-4">Bio</h2>              <p className="text-gray-700 dark:text-gray-300 mb-4">
                 I&apos;m Brian McGauley, a Web Developer currently pursuing a Bachelor&apos;s Degree in Business Administration with a focus on Computer Information Systems at California State University, Fresno. With a strong academic background and practical experience, I specialize in developing innovative web solutions and business process improvements.
               </p>
               <p className="text-gray-700 dark:text-gray-300 mb-4">
                 Currently working as a Web Developer at Fresno State Student Housing, I&apos;ve successfully led various initiatives including analytics automation, SEO optimization, and digital signage solutions. I also serve as a Teaching Assistant, helping students master technical concepts and providing mentorship.
+              </p>
+              <p className="text-gray-700 dark:text-gray-300 mb-4">
+                Since April 2025, I&apos;ve been appointed to contribute to the Workforce Development & Education Subcommittee of the California Cybersecurity Task Force (CCTF), where I collaborate with industry professionals to address educational challenges in cybersecurity.
               </p>
               <p className="text-gray-700 dark:text-gray-300">
                 My diverse skill set spans across frontend and backend development, database management, analytics, and business analysis. I&apos;m passionate about leveraging technology to optimize processes and deliver impactful solutions.

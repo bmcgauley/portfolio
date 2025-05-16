@@ -26,6 +26,28 @@ export interface PhotoCollection {
   title: string;
   description: string;
   coverImage: string;
-  images: Photo[];
+  images: Array<{
+    id: string;
+    title: string;
+    imageUrl: string;
+    description: string;
+  }>;
   category?: string;
+}
+
+export interface Business {
+  id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  websiteUrl: string;
+}
+
+export interface Nonprofit {
+  id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  websiteUrl: string;
+  role: string;
 }

@@ -7,34 +7,22 @@ import { FiArrowRight, FiExternalLink, FiGithub } from "react-icons/fi";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { projects } from "@/lib/data";
 
-// Define placeholder projects - will be replaced with real data
-const featuredProjects = [
-  {
-    id: 'statscholar',
-    title: 'StatScholar',
-    description: 'Statistical education platform for educators and students with privacy-focused data analysis.',
-    image: '/images/projects/statscholar.jpg',
-    tags: ['Next.js', 'React', 'Data Visualization', 'Education'],
-    url: '/projects/statscholar',
-  },
-  {
-    id: 'aevita',
-    title: 'Aevita Nonprofit',
-    description: 'Nonprofit initiative supporting educational technology and service learning.',
-    image: '/images/projects/aevita.jpg',
-    tags: ['Nonprofit', 'Education', 'Web Development'],
-    url: '/projects/aevita',
-  },
-  {
-    id: 'aj-city-council',
-    title: 'AJ for City Council',
-    description: 'Campaign website developed as a capstone project for District 7 candidacy.',
-    image: '/images/projects/aj-city-council.jpg',
-    tags: ['React', 'Next.js', 'Political', 'UI/UX'],
-    url: '/projects/aj-city-council',
-  },
-];
+// Get featured projects from the data file
+const featuredProjects = projects
+  .filter(project => project.featured)
+  .slice(0, 3)
+  .map(project => ({
+    id: project.id,
+    title: project.title,
+    description: project.description,
+    image: project.imageUrl || '/images/profile/torch_high+res.fw.webp',
+    tags: project.tags,
+    url: `/projects/${project.id}`,
+    demoUrl: project.demoUrl,
+    githubUrl: project.githubUrl
+  }));
 
 export default function FeaturedProjects() {
   return (
@@ -91,13 +79,29 @@ export default function FeaturedProjects() {
                     ))}
                   </div>
                 </CardContent>
-                
-                <CardFooter>
+                  <CardFooter className="flex flex-col gap-2">
                   <Button asChild variant="outline" size="sm" className="w-full">
                     <Link href={project.url}>
-                      View Project <FiArrowRight className="ml-2" />
+                      View Details <FiArrowRight className="ml-2" />
                     </Link>
                   </Button>
+                  
+                  <div className="flex gap-2 w-full">
+                    {project.demoUrl && (
+                      <Button asChild variant="ghost" size="sm" className="flex-1">
+                        <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
+                          <FiExternalLink className="mr-1" /> Demo
+                        </a>
+                      </Button>
+                    )}
+                    {project.githubUrl && (
+                      <Button asChild variant="ghost" size="sm" className="flex-1">
+                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                          <FiGithub className="mr-1" /> Code
+                        </a>
+                      </Button>
+                    )}
+                  </div>
                 </CardFooter>
               </Card>
             </motion.div>

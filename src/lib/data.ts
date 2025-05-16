@@ -78,15 +78,16 @@ export const projects: Project[] = [
     tags: ['HTML', 'CSS', 'JavaScript', 'Web App'],
     demoUrl: 'https://fresnostatehousing.org/wp-content/uploads/2025/03/RAD/index.html',
     featured: true
-  },
-  {
-    id: '8',
-    title: 'Campaign Website',
-    description: 'A Webflow-based website for a confidential campaign. Designed with modern aesthetics and optimized for conversion and engagement.',
-    imageUrl: '/images/projects/campaign/image.png',
-    folderName: 'campaign',
-    tags: ['Webflow', 'Web Design', 'Campaign'],
-    featured: false
+  },  
+  {    id: '8',
+    title: 'AJ for City Council',
+    description: 'Official campaign website for AJ\'s city council candidacy. Features responsive design, donation integration, volunteer sign-up, and event management. The website serves as a hub for campaign information and community engagement.',
+    imageUrl: '/images/profile/torch_high+res.fw.webp', // Placeholder, should be replaced with actual campaign image
+    folderName: 'aj-city-council',
+    tags: ['Next.js', 'React', 'Political', 'UI/UX'],
+    demoUrl: 'https://ajforcitycouncil.com',
+    githubUrl: '',
+    featured: true
   }
 ];
 
