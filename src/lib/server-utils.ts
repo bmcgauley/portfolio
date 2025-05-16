@@ -17,16 +17,8 @@ export async function getProjectImagesLocal(projectFolder: string): Promise<stri
   const projectPath = path.join(process.cwd(), 'public', 'images', 'projects', projectFolder);
   
   try {
-    // Check if directory exists    try {
-      await fs.access(projectPath);
-    } catch (_error) {
-      // Create the directory if it doesn't exist
-      console.log(`Creating missing directory: ${projectPath}`);
-      await fs.mkdir(projectPath, { recursive: true });
-      
-      // Return fallback image since we just created an empty directory
-      return ['/images/profile/torch_high+res.fw.webp'];
-    }
+    // Check if directory exists
+    await fs.access(projectPath);
     
     // Read files from the directory
     const files = await fs.readdir(projectPath);
