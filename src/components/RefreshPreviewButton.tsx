@@ -2,16 +2,20 @@
 
 import { useState } from 'react';
 
-interface RefreshPreviewButtonProps {
+export interface RefreshPreviewButtonProps {
   projectId: string;
   demoUrl: string;
   onRefreshComplete?: (previewUrl: string) => void;
+  onError?: () => void;
+  disabled?: boolean;
 }
 
 export default function RefreshPreviewButton({
   projectId,
   demoUrl,
   onRefreshComplete,
+  onError,
+  disabled = false,
 }: RefreshPreviewButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,6 +24,7 @@ export default function RefreshPreviewButton({
     if (!demoUrl) {
       console.error('No demo URL available for this project');
       setError('No demo URL available');
+      onError?.();
       return;
     }
 
@@ -28,7 +33,6 @@ export default function RefreshPreviewButton({
     console.log(`Refreshing preview for project ${projectId}, URL: ${demoUrl}`);
 
     try {
-      // Fix the parameter order to ensure projectId and url are correctly passed
       const apiUrl = `/api/site-preview?projectId=${encodeURIComponent(projectId)}&url=${encodeURIComponent(demoUrl)}&refresh=true`;
       console.log(`API call: ${apiUrl}`);
       
@@ -61,6 +65,7 @@ export default function RefreshPreviewButton({
     } catch (error) {
       console.error('Error refreshing preview:', error);
       setError(error instanceof Error ? error.message : 'Failed to refresh preview');
+      onError?.();
     } finally {
       setIsLoading(false);
     }
@@ -70,7 +75,7 @@ export default function RefreshPreviewButton({
     <div>
       <button
         onClick={refreshPreview}
-        disabled={isLoading || !demoUrl}
+        disabled={isLoading || !demoUrl || disabled}
         className="inline-flex items-center gap-1 px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         title={!demoUrl ? 'No demo URL available' : 'Refresh site preview'}
       >
@@ -94,4 +99,4 @@ export default function RefreshPreviewButton({
       )}
     </div>
   );
-} 
+}

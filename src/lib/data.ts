@@ -5,12 +5,25 @@ import {
   Nonprofit 
 } from './types';
 
+// Validate image URL format
+const isValidImageUrl = (url: string): boolean => {
+  if (!url) return false;
+  const pattern = /^\/images\/(previews|projects|photography|business|nonprofit)\/[a-zA-Z0-9-_/]+\.(jpg|jpeg|png|webp)$/i;
+  return pattern.test(url);
+};
+
+// Helper to ensure consistent preview image path
+const getPreviewImagePath = (id: string): string => {
+  const path = `/images/previews/${id}.jpg`;
+  return isValidImageUrl(path) ? path : '/images/placeholders/site-preview-placeholder.jpg';
+};
+
 export const projects: Project[] = [
   {
     id: '1',
     title: 'Nonprofit Website',
     description: 'A website for a nonprofit organization with a focus on improving organization and management of resources. Built with modern web technologies for a seamless user experience.',
-    imageUrl: '/images/previews/1.jpg',
+    imageUrl: getPreviewImagePath('1'),
     folderName: 'nonprofit',
     tags: ['Next.js', 'React', 'Vercel', 'TypeScript'],
     demoUrl: 'https://www.aevita.org',
@@ -21,7 +34,7 @@ export const projects: Project[] = [
     id: '2',
     title: 'CentralAuth',
     description: 'Authentication system enhancing user flow and management. Implemented secure login, user registration, and account management features with modern security standards.',
-    imageUrl: '/images/previews/2.jpg',
+    imageUrl: getPreviewImagePath('2'),
     folderName: 'central-auth',
     tags: ['React', 'Authentication', 'User Management', 'Security'],
     demoUrl: 'https://central-auth-zeta.vercel.app',
@@ -32,7 +45,7 @@ export const projects: Project[] = [
     id: '3',
     title: 'PageParser',
     description: 'A content parsing application that extracts and organizes data from web pages. This recovery tool makes information retrieval and analysis more efficient.',
-    imageUrl: '/images/previews/3.jpg',
+    imageUrl: getPreviewImagePath('3'),
     folderName: 'page-parser',
     tags: ['JavaScript', 'Data Processing', 'Content Extraction'],
     demoUrl: 'https://page-parser-three.vercel.app',
@@ -43,7 +56,7 @@ export const projects: Project[] = [
     id: '4',
     title: 'Catch Master Pro',
     description: 'Refactored navigation and authentication context for improved readability. This application enhances user experience through optimized UI/UX design.',
-    imageUrl: '/images/previews/4.jpg',
+    imageUrl: getPreviewImagePath('4'),
     folderName: 'catch-master-pro',
     tags: ['React', 'Navigation', 'Auth Context', 'UI/UX'],
     demoUrl: 'https://catch-master-pro.vercel.app',
@@ -54,7 +67,7 @@ export const projects: Project[] = [
     id: '5',
     title: 'The Collegian Digital Signage',
     description: 'Digital signage application for The Collegian, displaying news and updates across campus. This solution provides real-time information to students and faculty.',
-    imageUrl: '/images/previews/5.jpg',
+    imageUrl: getPreviewImagePath('5'),
     folderName: 'collegian',
     tags: ['HTML', 'CSS', 'JavaScript', 'Digital Signage'],
     demoUrl: 'https://fresnostatehousing.org/signage/wp-content/uploads/2024/10/TheCollegian/index.html',
@@ -73,16 +86,17 @@ export const projects: Project[] = [
     id: '7',
     title: 'Resident Appreciation Dashboard (RAD)',
     description: 'An application for Fresno State Housing to manage and track resident appreciation efforts. Currently in development, this tool will streamline appreciation activities and recognition programs.',
-    imageUrl: '/images/previews/7.jpg',
+    imageUrl: getPreviewImagePath('7'),
     folderName: 'rad',
     tags: ['HTML', 'CSS', 'JavaScript', 'Web App'],
     demoUrl: 'https://fresnostatehousing.org/wp-content/uploads/2025/03/RAD/index.html',
     featured: true
   },  
-  {    id: '8',
+  {    
+    id: '8',
     title: 'AJ for City Council',
     description: 'Official campaign website for AJ\'s city council candidacy. Features responsive design, donation integration, volunteer sign-up, and event management. The website serves as a hub for campaign information and community engagement.',
-    imageUrl: '/images/profile/torch_high+res.fw.webp', // Placeholder, should be replaced with actual campaign image
+    imageUrl: getPreviewImagePath('8'),
     folderName: 'aj-city-council',
     tags: ['Next.js', 'React', 'Political', 'UI/UX'],
     demoUrl: 'https://ajforcitycouncil.com',
@@ -146,6 +160,8 @@ export const photoCollections: PhotoCollection[] = [
   }
 ];
 
+// ... rest of the file remains unchanged ...
+
 export const experiences = [
   {
     id: '1',
@@ -158,11 +174,11 @@ export const experiences = [
   },
   {
     id: '2',
-    position: 'Teaching Assistant',
+    position: 'Former Teaching Assistant',
     company: 'California State University, Fresno',
     startDate: '2024-01',
     endDate: '2024-05',
-    description: 'Assisted in teaching-related tasks including grading assignments, maintaining Canvas rubrics, providing one-on-one student assistance and mentorship, updating lecture materials, and generating course documentation.',
+    description: 'Provided teaching support including grading assignments, maintaining Canvas rubrics, one-on-one student assistance and mentorship, lecture material updates, and course documentation.',
     skills: ['Education', 'Mentorship', 'Documentation', 'Canvas LMS']
   },
   {
@@ -193,7 +209,33 @@ export const education = [
     field: 'Business Administration (Computer Information Systems)',
     startDate: '2023',
     endDate: '2025 (Expected)',
-    gpa: '3.81'
+    gpa: '3.82',
+    honors: [
+      {
+        type: "President's List",
+        date: 'Fall 2024',
+        description: '4.00 GPA for the semester'
+      },
+      {
+        type: "Dean's List",
+        date: 'Spring 2024',
+        description: '3.80 GPA for the semester'
+      }
+    ],
+    associations: [
+      {
+        name: 'Phi Kappa Phi (ΦΚΦ)',
+        induction_date: 'May 2025'
+      },
+      {
+        name: 'Beta Gamma Sigma (ΒΓΣ)',
+        induction_date: 'May 2025'
+      },
+      {
+        name: 'CISSA (Computer Information Systems Student Association)',
+        role: 'Member'
+      }
+    ]
   },
   {
     id: '2',
@@ -202,7 +244,14 @@ export const education = [
     field: 'Multiple: Information Systems (Networking & Web Programming), Cyber Security, Business Administration',
     startDate: '2021',
     endDate: '2023',
-    gpa: '3.958'
+    gpa: '3.958',
+    associations: [
+      {
+        name: 'Alpha Gamma Sigma (ΑΓΣ)',
+        induction_date: 'March 2023',
+        role: 'Permanent Member'
+      }
+    ]
   }
 ];
 
@@ -279,4 +328,4 @@ export const nonprofits: Nonprofit[] = [
     websiteUrl: 'https://example.com/code-good',
     role: 'Technology Advisor'
   }
-]; 
+];

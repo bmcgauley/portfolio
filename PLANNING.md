@@ -124,8 +124,8 @@ npx shadcn-ui@latest init
    - AJ City Council Campaign
 
 3. Recent Achievements
-   - California Cybersecurity Task Force
    - Honor Society memberships
+   - Educational Technology Initiatives
    - Robotics competition initiatives
 
 ### Projects Page

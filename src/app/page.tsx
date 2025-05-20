@@ -90,7 +90,7 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-bold mb-4">Professional Experience</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
-                Web development, data analytics, and educational technology experience, including work with the California Cybersecurity Task Force.
+                Web development, data analytics, and educational technology experience focusing on process optimization and data-driven solutions.
               </p>
               <Button variant="outline" asChild className="group">
                 <Link href="/about#experience" className="flex items-center gap-2">

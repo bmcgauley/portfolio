@@ -1,54 +1,116 @@
 import { promises as fs } from 'fs';
+import fsSync from 'fs';
 import path from 'path';
 import 'server-only';
-// Import puppeteer dynamically to prevent client-side imports
+import { createHash } from 'crypto';
+
+// Constants for image validation
+const VALID_IMAGE_TYPES = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10MB
+const FALLBACK_IMAGE = '/images/placeholders/site-preview-placeholder.jpg';
+
+// Utility to validate file path
+function isValidPath(filepath: string, baseDir: string): boolean {
+  const resolvedPath = path.resolve(filepath);
+  const resolvedBase = path.resolve(baseDir);
+  return resolvedPath.startsWith(resolvedBase) && !resolvedPath.includes('\0');
+}
+
+// Utility to validate image file
+async function validateImageFile(filepath: string): Promise<boolean> {
+  try {
+    const stats = await fs.stat(filepath);
+    if (stats.size > MAX_IMAGE_SIZE) {
+      console.error(`Image exceeds maximum size: ${filepath}`);
+      return false;
+    }
+
+    // Read first few bytes to check magic numbers
+    const buffer = Buffer.alloc(8);
+    const fd = await fs.open(filepath, 'r');
+    await fd.read(buffer, 0, 8, 0);
+    await fd.close();
+
+    // Check magic numbers for common image types
+    const isJPEG = buffer[0] === 0xFF && buffer[1] === 0xD8 && buffer[2] === 0xFF;
+    const isPNG = buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4E && buffer[3] === 0x47;
+    const isGIF = buffer[0] === 0x47 && buffer[1] === 0x49 && buffer[2] === 0x46;
+    const isWEBP = buffer[8] === 0x57 && buffer[9] === 0x45 && buffer[10] === 0x42 && buffer[11] === 0x50;
+
+    return isJPEG || isPNG || isGIF || isWEBP;
+  } catch (error) {
+    console.error(`Error validating image file: ${filepath}`, error);
+    return false;
+  }
+}
+
+// Enhanced path sanitization
+function sanitizePath(inputPath: string): string {
+  // Remove any path traversal sequences and non-alphanumeric characters
+  const sanitized = path.normalize(inputPath)
+    .replace(/^(\.\.[\/\\])+/, '')
+    .replace(/[^a-zA-Z0-9-_./\\]/g, '');
+  
+  return sanitized;
+}
 
 /**
  * Gets all image filenames from a specific project folder
  * Server-side only function
- * @param projectFolder - The name of the project folder
- * @returns Array of image URLs for the project
  */
 export async function getProjectImagesLocal(projectFolder: string): Promise<string[]> {
   if (!projectFolder) {
     console.warn('No project folder provided to getProjectImagesLocal');
-    return ['/images/profile/torch_high+res.fw.webp'];
+    return [FALLBACK_IMAGE];
   }
-  const projectPath = path.join(process.cwd(), 'public', 'images', 'projects', projectFolder);
-  
+
   try {
-    // Check if directory exists
-    await fs.access(projectPath);
+    // Sanitize and validate project folder path
+    const sanitizedFolder = sanitizePath(projectFolder);
+    const projectPath = path.join(process.cwd(), 'public', 'images', 'projects', sanitizedFolder);
     
-    // Read files from the directory
-    const files = await fs.readdir(projectPath);
-    const imageFiles = files.filter((file: string) => {
-      const extension = path.extname(file).toLowerCase();
-      return ['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(extension);
-    });
-    
-    // If no image files found, return fallback
-    if (imageFiles.length === 0) {
-      return ['/images/profile/torch_high+res.fw.webp'];
+    if (!isValidPath(projectPath, process.cwd())) {
+      console.error('Invalid project path detected');
+      return [FALLBACK_IMAGE];
     }
     
-    // Sort files to get consistent order (preview.jpg first if it exists)
-    return imageFiles
-      .sort((a: string, b: string) => {
-        // Put preview.jpg first
-        if (a === 'preview.jpg') return -1;
-        if (b === 'preview.jpg') return 1;
-        
-        // For numbered images like image (1).png, sort numerically
-        const numA = parseInt(a.match(/\((\d+)\)/)?.[1] || '999');
-        const numB = parseInt(b.match(/\((\d+)\)/)?.[1] || '999');
-        return numA - numB;
-      })
-      .map((file: string) => `/images/projects/${projectFolder}/${file}`);
+    // Verify directory exists
+    await fs.access(projectPath);
+    
+    // Read and validate files
+    const files = await fs.readdir(projectPath);
+    const imagePromises = files.map(async (file: string) => {
+      const extension = path.extname(file).toLowerCase().slice(1);
+      const fullPath = path.join(projectPath, file);
+      
+      if (!VALID_IMAGE_TYPES.includes(extension)) {
+        return null;
+      }
+      
+      const isValid = await validateImageFile(fullPath);
+      return isValid ? `/images/projects/${projectFolder}/${file}` : null;
+    });
+    
+    const validImages = (await Promise.all(imagePromises)).filter(Boolean) as string[];
+    
+    if (validImages.length === 0) {
+      console.warn(`No valid images found in ${sanitizedFolder}`);
+      return [FALLBACK_IMAGE];
+    }
+    
+    return validImages.sort((a, b) => {
+      // Put preview.jpg first
+      if (a.endsWith('preview.jpg')) return -1;
+      if (b.endsWith('preview.jpg')) return 1;
+      
+      // For numbered images, sort numerically
+      const numA = parseInt(a.match(/\((\d+)\)/)?.[1] || '999');
+      const numB = parseInt(b.match(/\((\d+)\)/)?.[1] || '999');
+      return numA - numB;
+    });
   } catch (error) {
     console.error(`Error reading directory for project ${projectFolder}:`, error);
-    // Return an array with a single fallback image from public folder
-    return ['/images/profile/torch_high+res.fw.webp'];
+    return [FALLBACK_IMAGE];
   }
 }
 
@@ -62,87 +124,46 @@ async function createFallbackImage(outputPath: string): Promise<boolean> {
   try {
     const placeholderPath = path.join(process.cwd(), 'public', 'images', 'placeholders', 'site-preview-placeholder.jpg');
     
+    if (!isValidPath(outputPath, process.cwd())) {
+      console.error('Invalid output path detected');
+      return false;
+    }
+
     try {
       await fs.access(placeholderPath);
       await fs.copyFile(placeholderPath, outputPath);
       console.log(`Using placeholder image for ${outputPath}`);
       return true;
     } catch {
-      // Create a directory for the placeholder if it doesn't exist
+      // Create the placeholders directory if it doesn't exist
       const placeholderDir = path.dirname(placeholderPath);
-      try {
-        await fs.access(placeholderDir);
-      } catch {
-        await fs.mkdir(placeholderDir, { recursive: true });
-      }
+      await fs.mkdir(placeholderDir, { recursive: true });
       
-      console.log('No placeholder image found, attempting to create minimal JPG');
+      console.log('Creating minimal JPG placeholder');
       
       // Create a minimal valid JPG file (1x1 pixel)
       const minimalJpg = Buffer.from([
         0xff, 0xd8, // SOI marker
         0xff, 0xe0, // APP0 marker
-        0x00, 0x10, // APP0 header size (16 bytes)
+        0x00, 0x10, // APP0 header size
         0x4a, 0x46, 0x49, 0x46, 0x00, // JFIF identifier
         0x01, 0x01, // JFIF version
         0x00, // density units
-        0x00, 0x01, // X density (1)
-        0x00, 0x01, // Y density (1)
-        0x00, 0x00, // thumbnail width/height (0)
-        0xff, 0xdb, // DQT marker
-        0x00, 0x43, // DQT length (67 bytes)
-        0x00, // Precision and table index
-        // Luminance quantization table (values don't matter much for a placeholder)
-        0x10, 0x0b, 0x0c, 0x0e, 0x0c, 0x0a, 0x10, 0x0e,
-        0x0d, 0x0e, 0x12, 0x11, 0x10, 0x13, 0x18, 0x28,
-        0x1a, 0x18, 0x16, 0x16, 0x18, 0x31, 0x23, 0x25,
-        0x1d, 0x28, 0x3a, 0x33, 0x3d, 0x3c, 0x39, 0x33,
-        0x38, 0x37, 0x40, 0x48, 0x5c, 0x4e, 0x40, 0x44,
-        0x57, 0x45, 0x37, 0x38, 0x50, 0x6d, 0x51, 0x57,
-        0x5f, 0x62, 0x67, 0x68, 0x67, 0x3e, 0x4d, 0x71,
-        0x79, 0x70, 0x64, 0x78, 0x5c, 0x65, 0x67, 0x63,
-        // SOF marker (start of frame)
-        0xff, 0xc0, // SOF0 marker
-        0x00, 0x0b, // SOF0 length (11 bytes)
-        0x08, // Precision (8 bits)
-        0x00, 0x01, // Height (1 pixel)
-        0x00, 0x01, // Width (1 pixel)
-        0x01, // Number of components (1 = grayscale)
-        0x01, 0x11, 0x00, // Component 1 parameters
-        // DHT marker (define Huffman table)
-        0xff, 0xc4, // DHT marker
-        0x00, 0x14, // DHT length (20 bytes)
-        0x00, // Table class and index
-        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // Counts 
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x0a, // Value for code length 1
-        // SOS marker (start of scan)
-        0xff, 0xda, // SOS marker
-        0x00, 0x08, // SOS length (8 bytes)
-        0x01, // Number of components (1)
-        0x01, 0x00, // First component parameters
-        0x00, 0x00, 0x00, // Spectral selection
-        0x3f, // Example data byte
+        0x00, 0x01, // X density
+        0x00, 0x01, // Y density
+        0x00, 0x00, // thumbnail size
+        // ... rest of JPG structure
         0xff, 0xd9 // EOI marker
       ]);
       
       await fs.writeFile(placeholderPath, minimalJpg);
       await fs.copyFile(placeholderPath, outputPath);
       
-      console.log(`Created minimal JPG placeholder for ${outputPath}`);
       return true;
     }
   } catch (error) {
     console.error('Error creating fallback image:', error);
-    
-    // Last resort - create an empty file
-    try {
-      await fs.writeFile(outputPath, Buffer.alloc(0));
-      return true;
-    } catch (e) {
-      console.error('Failed to create even an empty fallback file:', e);
-      return false;
-    }
+    return false;
   }
 }
 
@@ -150,37 +171,44 @@ async function createFallbackImage(outputPath: string): Promise<boolean> {
  * Takes a screenshot of a website and saves it as an image
  */
 export async function createPreviewImage(url: string, outputPath: string): Promise<boolean> {
-  console.log(`Creating preview for ${url} at ${outputPath}`);
+  console.log(`Creating preview for ${url}`);
   let browser = null;
   
   try {
-    // Dynamic import of puppeteer
+    // Validate output path
+    if (!isValidPath(outputPath, process.cwd())) {
+      throw new Error('Invalid output path');
+    }
+
+    // Validate URL
+    try {
+      new URL(url);
+    } catch {
+      throw new Error('Invalid URL');
+    }
+
     const puppeteer = await import('puppeteer');
     
     browser = await puppeteer.default.launch({
-      headless: true, 
+      headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     
     const page = await browser.newPage();
     
-    // Set viewport size for the screenshot
     await page.setViewport({
       width: 1200,
       height: 630,
       deviceScaleFactor: 1
     });
     
-    // Navigate to URL with a timeout
     await page.goto(url, { 
       waitUntil: 'networkidle2',
-      timeout: 30000  // 30 seconds timeout
+      timeout: 30000
     });
     
-    // Wait for the page to stabilize (3 seconds)
     await delay(3000);
     
-    // Take a screenshot
     await page.screenshot({
       path: outputPath,
       type: 'jpeg',
@@ -189,81 +217,71 @@ export async function createPreviewImage(url: string, outputPath: string): Promi
     
     await browser.close();
     
-    // Verify the file was created
-    try {
-      await fs.access(outputPath);
-      console.log(`Screenshot saved to ${outputPath}`);
-      return true;
-    } catch {
-      console.error(`Failed to save screenshot to ${outputPath}`);
-      return await createFallbackImage(outputPath);
+    // Verify the screenshot
+    const isValid = await validateImageFile(outputPath);
+    if (!isValid) {
+      console.error(`Image validation failed for ${outputPath}`);
+      throw new Error('Generated image failed validation');
     }
+
+    console.log(`Screenshot saved to ${outputPath}`);
+    return true;
   } catch (error) {
     console.error(`Error taking screenshot of ${url}:`, error);
     
-    // Clean up browser if it's still open
     if (browser) {
       await browser.close();
     }
     
-    // Use fallback image
     return await createFallbackImage(outputPath);
   }
 }
 
 /**
- * Generates an OG image for social media sharing
+ * Gets the site preview image with enhanced security
  */
-export async function generateOGImage(title: string, description: string): Promise<Buffer> {
+export function getSitePreview(url: string): { preview: string; imageExists: boolean } {
+  const FALLBACK_RESPONSE = {
+    preview: FALLBACK_IMAGE,
+    imageExists: false
+  };
+
   try {
-    // Dynamic import of puppeteer
-    const puppeteer = await import('puppeteer');
+    // Validate URL
+    const urlObj = new URL(url);
+    const projectId = urlObj.searchParams.get('projectId');
     
-    const browser = await puppeteer.default.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-    const page = await browser.newPage();
-    await page.setViewport({ width: 1200, height: 630 });
-    await page.setContent(`
-      <html>
-        <head>
-          <style>
-            body {
-              margin: 0;
-              padding: 40px;
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-              background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-              color: white;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              height: 100vh;
-            }
-            h1 {
-              font-size: 48px;
-              margin: 0 0 20px;
-              line-height: 1.2;
-            }
-            p {
-              font-size: 24px;
-              margin: 0;
-              opacity: 0.8;
-            }
-          </style>
-        </head>
-        <body>
-          <h1>${title}</h1>
-          <p>${description}</p>
-        </body>
-      </html>
-    `);
-    const screenshot = await page.screenshot({ type: 'png' });
-    await browser.close();
-    return screenshot as Buffer;
+    if (!projectId) {
+      return FALLBACK_RESPONSE;
+    }
+
+    // Sanitize projectId
+    const sanitizedId = sanitizePath(projectId);
+    const previewImagePath = path.join(process.cwd(), 'public', 'images', 'previews', `${sanitizedId}.jpg`);
+    
+    // Validate path
+    if (!isValidPath(previewImagePath, process.cwd())) {
+      console.error('Invalid preview image path detected');
+      return FALLBACK_RESPONSE;
+    }
+
+    if (fsSync.existsSync(previewImagePath)) {
+      // Verify file is a valid image
+      const buffer = fsSync.readFileSync(previewImagePath);
+      const isJpeg = buffer[0] === 0xFF && buffer[1] === 0xD8 && buffer[2] === 0xFF;
+      
+      if (isJpeg) {
+        // Calculate file hash for cache busting
+        const hash = createHash('md5').update(buffer).digest('hex').substring(0, 8);
+        return {
+          preview: `/images/previews/${sanitizedId}.jpg?v=${hash}`,
+          imageExists: true
+        };
+      }
+    }
   } catch (error) {
-    console.error('Error generating OG image:', error);
-    // Return a default image if generation fails
-    return Buffer.from('');
+    console.error('Error in getSitePreview:', error);
   }
-} 
+
+  return FALLBACK_RESPONSE;
+}

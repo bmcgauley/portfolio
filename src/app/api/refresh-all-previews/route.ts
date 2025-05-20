@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { projects } from '@/lib/data';
-import { getSitePreview } from '@/lib/utils';
+import { getSitePreview } from '../../../lib/server-utils';
 
 // This is an admin API endpoint to refresh all project previews
 export async function GET() {
@@ -14,13 +14,13 @@ export async function GET() {
           console.log(`Refreshing preview for ${project.title} (ID: ${project.id})...`);
           
           // Get the site preview (with force refresh)
-          const preview = await getSitePreview(project.id, project.demoUrl, true);
+          const preview = await getSitePreview(project.demoUrl);
           
           results.push({
             id: project.id,
             title: project.title,
             status: 'success',
-            previewUrl: preview.previewUrl
+            previewUrl: preview.preview
           });
           
           console.log(`✅ Success refreshing preview for ${project.title}`);

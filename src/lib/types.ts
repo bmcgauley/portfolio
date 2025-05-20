@@ -1,3 +1,23 @@
+export interface Education {
+  id: string;
+  institution: string;
+  degree: string;
+  field: string;
+  startDate: string;
+  endDate: string;
+  gpa: string;
+  honors?: {
+    type: string;
+    date: string;
+    description?: string;
+  }[];
+  associations?: {
+    name: string;
+    induction_date?: string;
+    role?: string;
+  }[];
+}
+
 export interface Photo {
   src: string;
   alt: string;

@@ -8,11 +8,6 @@ import { motion } from "framer-motion";
 
 const achievements = [
   {
-    title: 'Joined California Cybersecurity Task Force',
-    date: 'April 2025',
-    description: 'Appointed to the Workforce Development & Education Subcommittee of the California Cybersecurity Task Force (CCTF).',
-  },
-  {
     title: 'Phi Kappa Phi & Beta Gamma Sigma Induction',
     date: 'May 2025',
     description: 'Inducted into two prestigious honor societies recognizing academic excellence.',
@@ -22,6 +17,11 @@ const achievements = [
     date: 'Spring 2025',
     description: 'Helped distribute robotics competition starter sets to elementary schools in Fresno and Clovis through Fresno PAL and Success from Within.',
   },
+  {
+    title: 'Educational Technology Leadership',
+    date: 'Spring 2025',
+    description: 'Led initiatives to enhance digital learning tools and analytics platforms for student success.',
+  }
 ];
 
 export default function RecentAchievements() {

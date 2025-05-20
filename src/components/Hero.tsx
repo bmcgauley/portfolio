@@ -25,9 +25,8 @@ export default function Hero() {  return (
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-            >              Web Developer and Computer Information Systems professional with a passion for 
-              educational technology and data analytics. Contributing to the Workforce Development & Education 
-              Subcommittee of the California Cybersecurity Task Force and member of Phi Kappa Phi and Beta Gamma Sigma honor societies.
+            >              Web Developer and Computer Information Systems professional with a passion for
+              educational technology and data analytics. Member of Phi Kappa Phi and Beta Gamma Sigma honor societies.
             </motion.p>
             
             <motion.div 

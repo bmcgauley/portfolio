@@ -23,11 +23,10 @@
 - [x] Update education information with honor societies (Phi Kappa Phi and Beta Gamma Sigma) (May 16, 2025)
 - [ ] Update GPA information to 3.82 for CSUF and 3.958 for CCC
 - [x] Add new projects (StatScholar, Aevita.org, AJ for City Council) (May 16, 2025)
-- [x] Add volunteer activities (CCTF, Beta Gamma Sigma, Fresno PAL, Success from Within) (May 16, 2025)
+- [x] Add volunteer activities (Beta Gamma Sigma, Fresno PAL, Success from Within) (May 16, 2025)
 - [ ] Update skills/expertise areas with new skills (Statistical Analysis, Data Visualization, etc.)
 
 ### UI Updates
-- [x] Modify Bio section in About page to include CCTF role (May 16, 2025)
 - [x] Ensure Education section displays honor society memberships (Phi Kappa Phi and Beta Gamma Sigma) (May 15, 2025)
 - [x] Update Community Involvement section with new volunteer activities (May 16, 2025)
 - [x] Create Recent Achievements section on homepage (May 15, 2025)

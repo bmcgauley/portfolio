@@ -10,6 +10,18 @@ import {
 const PROFILE_IMAGE_PATH = "/images/profile/DSC07056-2.webp";
 const TORCH_IMAGE_PATH = "/images/profile/torch_high+res.fw.webp";
 const CCC_LOGO_PATH = "/images/profile/ccc-primary-full-color.webp";
+const BGS_LOGO_PATH = "/images/profile/logos/bgs-logo.png";
+const PKP_LOGO_PATH = "/images/profile/logos/pkp-logo.png";
+const CSU_LOGO_PATH = "/images/profile/logos/csu-logo.png";
+const CISSA_LOGO_PATH = "/images/profile/logos/cissa.jpg";
+
+// Map association names to their logo paths
+const ASSOCIATION_LOGOS: { [key: string]: string } = {
+  'Beta Gamma Sigma (ΒΓΣ)': BGS_LOGO_PATH,
+  'Phi Kappa Phi (ΦΚΦ)': PKP_LOGO_PATH,
+  'CISSA (Computer Information Systems Student Association)': CISSA_LOGO_PATH,
+  'Alpha Gamma Sigma (ΑΓΣ)': TORCH_IMAGE_PATH
+};
 
 export default function AboutPage() {
   return (
@@ -33,13 +45,13 @@ export default function AboutPage() {
             </div>
             <div className="md:w-2/3">
               <h2 className="text-2xl font-bold mb-4">Bio</h2>              <p className="text-gray-700 dark:text-gray-300 mb-4">
-                I&apos;m Brian McGauley, a Web Developer currently pursuing a Bachelor&apos;s Degree in Business Administration with a focus on Computer Information Systems at California State University, Fresno. With a strong academic background and practical experience, I specialize in developing innovative web solutions and business process improvements.
+                I&apos;m Brian McGauley, a Web Developer pursuing a Bachelor&apos;s Degree in Business Administration with a focus on Computer Information Systems at California State University, Fresno. With a strong academic background and practical experience, I specialize in developing innovative web solutions and business process improvements.
               </p>
               <p className="text-gray-700 dark:text-gray-300 mb-4">
-                Currently working as a Web Developer at Fresno State Student Housing, I&apos;ve successfully led various initiatives including analytics automation, SEO optimization, and digital signage solutions. I also serve as a Teaching Assistant, helping students master technical concepts and providing mentorship.
-              </p>
-              <p className="text-gray-700 dark:text-gray-300 mb-4">
-                Since April 2025, I&apos;ve been appointed to contribute to the Workforce Development & Education Subcommittee of the California Cybersecurity Task Force (CCTF), where I collaborate with industry professionals to address educational challenges in cybersecurity.
+                Currently working as a Web Developer at Fresno State Student Housing, I&apos;ve successfully led various initiatives including analytics automation, SEO optimization, and digital signage solutions. I have also served as a Teaching Assistant, helping students master technical concepts and providing mentorship.
+               </p>
+               <p className="text-gray-700 dark:text-gray-300 mb-4">
+                I&apos;m passionate about leveraging technology and collaborating with industry professionals to drive innovation in cybersecurity, small business development, technical literacy, and educational development.
               </p>
               <p className="text-gray-700 dark:text-gray-300">
                 My diverse skill set spans across frontend and backend development, database management, analytics, and business analysis. I&apos;m passionate about leveraging technology to optimize processes and deliver impactful solutions.
@@ -63,6 +75,13 @@ export default function AboutPage() {
                       fill
                       className="object-contain"
                     />
+                  ) : edu.institution === 'California State University, Fresno' ? (
+                    <Image
+                      src={CSU_LOGO_PATH}
+                      alt="California State University, Fresno Logo"
+                      fill
+                      className="object-contain"
+                    />
                   ) : null}
                 </div>
                 <div className="flex-1">
@@ -78,20 +97,49 @@ export default function AboutPage() {
                   <p className="text-blue-600 dark:text-blue-400 mb-2">
                     GPA: {edu.gpa}
                   </p>
-                  {/* Show AGS membership for Clovis Community College */}
-                  {edu.institution === 'Clovis Community College' && (
-                    <div className="flex items-center gap-2 mt-2">
-                      <div className="relative w-8 h-8">
-                        <Image
-                          src={TORCH_IMAGE_PATH}
-                          alt="Alpha Gamma Sigma Honor Society"
-                          fill
-                          className="object-contain"
-                        />
+                  {/* Show Honors */}
+                  {edu.honors && edu.honors.length > 0 && (
+                    <div className="mb-3">
+                      <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Honors & Awards</h4>
+                      <div className="space-y-1">
+                        {edu.honors.map((honor, index) => (
+                          <div key={index} className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-blue-600 dark:text-blue-400">{honor.type}</span>
+                            <span className="text-sm text-gray-600 dark:text-gray-400">({honor.date})</span>
+                          </div>
+                        ))}
                       </div>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
-                        Alpha Gamma Sigma (ΑΓΣ) Honor Society Member
-                      </span>
+                    </div>
+                  )}
+                  {/* Show Associations */}
+                  {edu.associations && edu.associations.length > 0 && (
+                    <div className="mt-2">
+                      <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Associations & Honor Societies</h4>
+                      <div className="space-y-2">
+                        {edu.associations.map((association, index) => (
+                          <div key={index} className="flex items-center gap-2">
+                            <div className="relative w-8 h-8">
+                              <Image
+                                src={ASSOCIATION_LOGOS[association.name]}
+                                alt={association.name}
+                                fill
+                                className="object-contain"
+                                sizes="32px"
+                              />
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                {association.name}
+                              </span>
+                              {association.induction_date && (
+                                <span className="text-xs text-gray-600 dark:text-gray-400">
+                                  Inducted: {association.induction_date}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -248,10 +296,11 @@ export default function AboutPage() {
               <div className="flex items-center gap-3 mb-3">
                 <div className="relative w-8 h-8">
                   <Image
-                    src={TORCH_IMAGE_PATH}
+                    src={ASSOCIATION_LOGOS['Alpha Gamma Sigma (ΑΓΣ)']}
                     alt="Alpha Gamma Sigma Honor Society"
                     fill
                     className="object-contain"
+                    sizes="32px"
                   />
                 </div>
                 <h3 className="text-xl font-semibold">Alpha Gamma Sigma (ΑΓΣ)</h3>
