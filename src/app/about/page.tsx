@@ -14,6 +14,14 @@ const BGS_LOGO_PATH = "/images/profile/logos/bgs-logo.png";
 const PKP_LOGO_PATH = "/images/profile/logos/pkp-logo.png";
 const CSU_LOGO_PATH = "/images/profile/logos/csu-logo.png";
 const CISSA_LOGO_PATH = "/images/profile/logos/cissa.jpg";
+const PMI_CCVC_LOGO_PATH = "/images/profile/logos/pmiccvc.png";
+
+// New logo paths
+const AJ_LOGO_PATH = "/images/profile/logos/aj.webp";
+const BF_LOGO_PATH = "/images/profile/logos/bf.png";
+const CVJC_LOGO_PATH = "/images/profile/logos/cvjc.webp";
+const PAL_LOGO_PATH = "/images/profile/logos/pal.png";
+const SFW_LOGO_PATH = "/images/profile/logos/sfw.png";
 
 // Map association names to their logo paths
 const ASSOCIATION_LOGOS: { [key: string]: string } = {
@@ -275,48 +283,139 @@ export default function AboutPage() {
               </div>
             </div>
           ))}
-        </section>
-
-        {/* Community Involvement */}
+        </section>        {/* Community Involvement */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold mb-6">Community Involvement</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Central Valley Justice Coalition */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">            {/* PMI CCVC */}
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <h3 className="text-xl font-semibold mb-3">Central Valley Justice Coalition</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-2">August 2024</p>
-              <ul className="text-gray-700 dark:text-gray-300 list-disc list-inside space-y-2">
-                <li>Developed digital signage for volunteer opportunity awareness</li>
-                <li>Created printable flyers & tri-fold brochures for volunteer opportunities & human trafficking awareness</li>
-              </ul>
+              <div className="flex flex-col items-center mb-4">
+                <div className="relative w-40 h-24 mb-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
+                  <Image
+                    src={PMI_CCVC_LOGO_PATH}
+                    alt="PMI CCVC Logo"
+                    fill
+                    className="object-contain p-2"
+                    sizes="160px"
+                  />
+                </div>
+                <h3 className="text-xl font-semibold text-center">PMI CCVC Chapter</h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 mb-2 text-center">May 2025 - Present</p>
+              <p className="text-gray-700 dark:text-gray-300 mb-3">
+                Serving as an IT Intern and assisting with website overhaul & redesign using systems analysis and 
+                design principles.
+              </p>
+            </div>            {/* Fresno PAL */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <div className="flex flex-col items-center mb-4">
+                <div className="relative w-40 h-24 mb-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
+                  <Image
+                    src={PAL_LOGO_PATH}  
+                    alt="Fresno PAL Logo" 
+                    fill
+                    className="object-contain p-2"
+                    sizes="160px"
+                  />
+                </div>
+                <h3 className="text-xl font-semibold text-center">Fresno PAL</h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 mb-2 text-center">January 2024 - Present</p>
+              <p className="text-gray-700 dark:text-gray-300">
+                Website upkeep & routine maintenance to support youth programs.
+              </p>
+            </div>
+            
+            {/* Success from Within */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
+                  <Image
+                    src={SFW_LOGO_PATH}  
+                    alt="Success from Within Logo" 
+                    fill
+                    className="object-contain p-2"
+                    sizes="160px"
+                  />
+                </div>
+                <h3 className="text-xl font-semibold text-center">Success from Within</h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 mb-2 text-center">January 2025 - Present</p>
+              <p className="text-gray-700 dark:text-gray-300 mb-2">
+                Website upkeep & routine maintenance, plus occasional event support.
+              </p>            </div>
+
+            {/* AJ for City Council */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
+                  <Image
+                    src={AJ_LOGO_PATH}  
+                    alt="AJ for City Council Logo" 
+                    fill
+                    className="object-contain p-2"
+                    sizes="160px"
+                  />
+                </div>
+                <h3 className="text-xl font-semibold text-center">AJ for City Council</h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 mb-2 text-center">January 2025 - Present</p>
+              <p className="text-gray-700 dark:text-gray-300">
+                Website development for Fresno District 7 Campaign.
+              </p>
             </div>
 
+            {/* Central Valley Justice Coalition */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
+                  <Image
+                    src={CVJC_LOGO_PATH}  
+                    alt="Central Valley Justice Coalition Logo" 
+                    fill
+                    className="object-contain p-2"
+                    sizes="160px"
+                  />
+                </div>
+                <h3 className="text-xl font-semibold text-center">Central Valley Justice Coalition</h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 mb-2 text-center">August 2024 - December 2024</p>
+              <p className="text-gray-700 dark:text-gray-300">
+                Marketing & Education for Community Outreach, including digital signage and printable materials for volunteer awareness.
+              </p>
+            </div>
+            
             {/* Alpha Gamma Sigma */}
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="relative w-8 h-8">
+              <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
                   <Image
                     src={ASSOCIATION_LOGOS['Alpha Gamma Sigma (ΑΓΣ)']}
                     alt="Alpha Gamma Sigma Honor Society"
                     fill
-                    className="object-contain"
-                    sizes="32px"
+                    className="object-contain p-2"
+                    sizes="160px"
                   />
                 </div>
-                <h3 className="text-xl font-semibold">Alpha Gamma Sigma (ΑΓΣ)</h3>
+                <h3 className="text-xl font-semibold text-center">Alpha Gamma Sigma (ΑΓΣ)</h3>
               </div>
-              <p className="text-gray-600 dark:text-gray-400 mb-2">March 2023</p>
+              <p className="text-gray-600 dark:text-gray-400 mb-2 text-center">March 2023</p>
               <p className="text-gray-700 dark:text-gray-300">
-                Permanent membership established in 2023 prior to graduation from Clovis Community College
+                Permanent membership established in 2023 prior to graduation from Clovis Community College.
               </p>
             </div>
 
             {/* Beautify Fresno */}
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <h3 className="text-xl font-semibold mb-3">Beautify Fresno</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-2">2023</p>
+              <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
+                  <Image
+                    src={BF_LOGO_PATH}  
+                    alt="Beautify Fresno Logo" 
+                    fill
+                    className="object-contain p-2"
+                    sizes="160px"
+                  />
+                </div>
+                <h3 className="text-xl font-semibold text-center">Beautify Fresno</h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 mb-2 text-center">March 2023 - Present</p>
               <p className="text-gray-700 dark:text-gray-300">
-                Collaborated with Community Based Organization (CBO) on multiple occasions to assist in city-wide cleanup efforts
+                Donated time with regular clean-up efforts around the city.
               </p>
             </div>
           </div>

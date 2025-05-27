@@ -208,12 +208,16 @@ export const education = [
     degree: "Bachelor's Degree",
     field: 'Business Administration (Computer Information Systems)',
     startDate: '2023',
-    endDate: '2025 (Expected)',
-    gpa: '3.82',
+    endDate: '2025 (Expected)',    gpa: '3.82',
     honors: [
       {
         type: "President's List",
-        date: 'Fall 2024',
+        date: 'Spring 2025',
+        description: '4.00 GPA for the semester'
+      },
+      {
+        type: "President's List",
+        date: 'Fall 2023',
         description: '4.00 GPA for the semester'
       },
       {
@@ -271,14 +275,13 @@ export const skills = [
   {
     category: 'Development Tools',
     items: ['VS Code', 'Replit', 'Cursor AI', 'Git', 'GitHub', 'SourceTree', 'Jira', 'Confluence']
-  },
-  {
+  },  {
     category: 'Analytics & Business',
-    items: ['Google Analytics', 'GTMetrix', 'PageSpeed Insights', 'Statistical Analysis', 'Data Visualization', 'R', 'Python']
+    items: ['Google Analytics', 'GTMetrix', 'PageSpeed Insights', 'Statistical Analysis', 'Data Visualization', 'R', 'Python', 'SEO Optimization', 'Project Management', 'Systems Analysis & Design']
   },
   {
     category: 'Systems & Architecture',
-    items: ['SDLC Methodologies', 'UML', 'MVC', 'API Design', 'Component Design', 'WordPress Development']
+    items: ['SDLC Methodologies', 'UML', 'MVC', 'API Design', 'Component Design', 'WordPress Development', 'Website Optimization', 'Performance Tuning']
   },
   {
     category: '3D & Game Development',

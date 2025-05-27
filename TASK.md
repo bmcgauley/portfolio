@@ -24,11 +24,15 @@
 - [ ] Update GPA information to 3.82 for CSUF and 3.958 for CCC
 - [x] Add new projects (StatScholar, Aevita.org, AJ for City Council) (May 16, 2025)
 - [x] Add volunteer activities (Beta Gamma Sigma, Fresno PAL, Success from Within) (May 16, 2025)
+- [x] Add PMI CCVC IT intern volunteer experience (May 27, 2025)
+- [x] Update President's List awards (Fall 2023 and Spring 2025) (May 27, 2025)
+- [x] Add all volunteer experiences from resume (Fresno PAL, Success from Within, AJ Campaign, Beautify Fresno) (May 27, 2025)
 - [ ] Update skills/expertise areas with new skills (Statistical Analysis, Data Visualization, etc.)
 
 ### UI Updates
 - [x] Ensure Education section displays honor society memberships (Phi Kappa Phi and Beta Gamma Sigma) (May 15, 2025)
 - [x] Update Community Involvement section with new volunteer activities (May 16, 2025)
+- [x] Add PMI CCVC volunteer experience to Community Involvement section (May 27, 2025)
 - [x] Create Recent Achievements section on homepage (May 15, 2025)
 - [x] Add borders around profile picture in Hero component (May 16, 2025)
 - [x] Add honor society logos (PKP and BGS) alongside existing torch logo (May 16, 2025)
@@ -66,3 +70,10 @@
 - [x] Add border around profile picture in Hero component (May 15, 2025)
 - [x] Add PKP and BGS honor society logos alongside torch logo (May 15, 2025)
 - [x] Fix text alignment in navbar and footer (added proper padding) (May 15, 2025)
+- [x] Add PMI CCVC volunteer experience to Community Involvement section (May 27, 2025)
+- [x] Update skills section with project management and SEO skills (May 27, 2025)
+- [x] Improve Community Involvement section with larger logos and centered layout (May 27, 2025)
+- [x] Add all volunteer experiences from resume (May 27, 2025)
+- [x] Update President's List awards to include Fall 2023 and Spring 2025 (May 27, 2025)
+- [x] Update all Community Involvement logos to use their own specific logo files (May 27, 2025)
+- [x] Improve logo visibility with consistent sizing and background containers (May 27, 2025)
