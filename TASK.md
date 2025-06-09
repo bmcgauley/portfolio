@@ -47,8 +47,18 @@
 - [x] Fix build error in RecentAchievements.tsx (added Framer Motion import) (May 16, 2025)
 - [x] Remove unused imports from various components (May 16, 2025)
 - [x] Add missing alt attribute to image in image-with-loading.tsx (May 16, 2025)
+- [x] Fix production build errors for Vercel deployment (June 9, 2025)
+- [x] Move canvas dependency to devDependencies to resolve Vercel build issues (June 9, 2025)
+- [x] Fix ESLint errors and TypeScript type safety issues (June 9, 2025)
 - [ ] Test all pages with updated content
 - [ ] Verify links to new projects work correctly
+- [ ] Test color contrast for accessibility
+
+## Discovered During Work (June 9, 2025)
+- [x] Fixed canvas package causing Vercel serverless build failures
+- [x] Resolved all ESLint errors (unused variables, no-explicit-any, children props)
+- [x] Fixed TypeScript puppeteer screenshot path type issue
+- [x] Updated anonymous default export to named variable in server-only mock
 - [ ] Test color contrast for accessibility
 
 ### Future Enhancements (Documented May 16, 2025)
