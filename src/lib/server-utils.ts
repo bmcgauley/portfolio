@@ -208,9 +208,8 @@ export async function createPreviewImage(url: string, outputPath: string): Promi
     });
     
     await delay(3000);
-    
-    await page.screenshot({
-      path: outputPath,
+      await page.screenshot({
+      path: outputPath as `${string}.jpeg`,
       type: 'jpeg',
       quality: 80
     });
