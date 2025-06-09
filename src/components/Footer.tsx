@@ -6,17 +6,17 @@ import { Button } from "@/components/ui/button"
 
 const socialLinks = [
   {
-    href: "https://github.com/yourusername",
+    href: "https://github.com/bmcgauley",
     label: "GitHub",
     icon: FiGithub,
   },
   {
-    href: "https://linkedin.com/in/yourusername",
+    href: "https://www.linkedin.com/in/bmcgauley/",
     label: "LinkedIn",
     icon: FiLinkedin,
   },
   {
-    href: "mailto:your.email@example.com",
+    href: "mailto:brian@mcgauley.com",
     label: "Email",
     icon: FiMail,
   },
@@ -41,12 +41,11 @@ const footerLinks = [
       { href: "/projects/aj-city-council", label: "AJ City Council" },
     ],
   },
-  {
-    title: "Connect",
+  {    title: "Connect",
     links: [
-      { href: "https://github.com/yourusername", label: "GitHub" },
-      { href: "https://linkedin.com/in/yourusername", label: "LinkedIn" },
-      { href: "mailto:your.email@example.com", label: "Email" },
+      { href: "https://github.com/bmcgauley", label: "GitHub" },
+      { href: "https://www.linkedin.com/in/bmcgauley/", label: "LinkedIn" },
+      { href: "mailto:brian@mcgauley.com", label: "Email" },
     ],
   },
 ]

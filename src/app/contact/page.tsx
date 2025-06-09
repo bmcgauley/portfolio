@@ -21,11 +21,10 @@ export default function ContactPage() {
           <HoverCard>
             <HoverCardTrigger asChild>
               <Card className="cursor-pointer">
-                <CardContent className="flex items-center justify-center p-6">
-                  <Button variant="ghost" asChild className="w-full">
-                    <a href="mailto:bmcgauley44@gmail.com" className="flex items-center">
+                <CardContent className="flex items-center justify-center p-6">                  <Button variant="ghost" asChild className="w-full">
+                    <a href="mailto:brian@mcgauley.com" className="flex items-center">
                       <FiMail className="w-6 h-6 text-primary mr-3" />
-                      <span>bmcgauley44@gmail.com</span>
+                      <span>brian@mcgauley.com</span>
                     </a>
                   </Button>
                 </CardContent>
@@ -39,10 +38,9 @@ export default function ContactPage() {
           <HoverCard>
             <HoverCardTrigger asChild>
               <Card className="cursor-pointer">
-                <CardContent className="flex items-center justify-center p-6">
-                  <Button variant="ghost" asChild className="w-full">
+                <CardContent className="flex items-center justify-center p-6">                  <Button variant="ghost" asChild className="w-full">
                     <a
-                      href="https://www.linkedin.com/in/brian-mcgauley-1602aa133/"
+                      href="https://www.linkedin.com/in/bmcgauley/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center"

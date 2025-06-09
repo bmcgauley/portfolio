@@ -287,15 +287,18 @@ export default function AboutPage() {
         <section className="mb-16">
           <h2 className="text-2xl font-bold mb-6">Community Involvement</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">            {/* PMI CCVC */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary group">
               <div className="flex flex-col items-center mb-4">
-                <div className="relative w-40 h-24 mb-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
+                <div className="relative w-40 h-24 mb-3 p-3 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 flex items-center justify-center group-hover:from-blue-200 group-hover:to-blue-300 dark:group-hover:from-blue-800/50 dark:group-hover:to-blue-700/50 transition-all duration-300 shadow-md">
                   <Image
                     src={PMI_CCVC_LOGO_PATH}
                     alt="PMI CCVC Logo"
                     fill
-                    className="object-contain p-2"
+                    className="object-contain p-2 transition-all duration-300 group-hover:scale-105"
                     sizes="160px"
+                    style={{
+                      filter: 'drop-shadow(0 3px 6px rgba(10, 25, 41, 0.4)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2)) drop-shadow(0 0 0 1px rgba(255, 255, 255, 0.1))'
+                    }}
                   />
                 </div>
                 <h3 className="text-xl font-semibold text-center">PMI CCVC Chapter</h3>
@@ -306,15 +309,18 @@ export default function AboutPage() {
                 design principles.
               </p>
             </div>            {/* Fresno PAL */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary group">
               <div className="flex flex-col items-center mb-4">
-                <div className="relative w-40 h-24 mb-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
+                <div className="relative w-40 h-24 mb-3 p-3 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 flex items-center justify-center group-hover:from-blue-200 group-hover:to-blue-300 dark:group-hover:from-blue-800/50 dark:group-hover:to-blue-700/50 transition-all duration-300 shadow-md">
                   <Image
                     src={PAL_LOGO_PATH}  
                     alt="Fresno PAL Logo" 
                     fill
-                    className="object-contain p-2"
+                    className="object-contain p-2 transition-all duration-300 group-hover:scale-105"
                     sizes="160px"
+                    style={{
+                      filter: 'drop-shadow(0 3px 6px rgba(10, 25, 41, 0.4)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2)) drop-shadow(0 0 0 1px rgba(255, 255, 255, 0.1))'
+                    }}
                   />
                 </div>
                 <h3 className="text-xl font-semibold text-center">Fresno PAL</h3>
@@ -326,14 +332,17 @@ export default function AboutPage() {
             </div>
             
             {/* Success from Within */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary group">
+              <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-3 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 flex items-center justify-center group-hover:from-blue-200 group-hover:to-blue-300 dark:group-hover:from-blue-800/50 dark:group-hover:to-blue-700/50 transition-all duration-300 shadow-md">
                   <Image
                     src={SFW_LOGO_PATH}  
                     alt="Success from Within Logo" 
                     fill
-                    className="object-contain p-2"
+                    className="object-contain p-2 transition-all duration-300 group-hover:scale-105"
                     sizes="160px"
+                    style={{
+                      filter: 'drop-shadow(0 3px 6px rgba(10, 25, 41, 0.4)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2)) drop-shadow(0 0 0 1px rgba(255, 255, 255, 0.1))'
+                    }}
                   />
                 </div>
                 <h3 className="text-xl font-semibold text-center">Success from Within</h3>
@@ -344,14 +353,17 @@ export default function AboutPage() {
               </p>            </div>
 
             {/* AJ for City Council */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary group">
+              <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-3 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 flex items-center justify-center group-hover:from-blue-200 group-hover:to-blue-300 dark:group-hover:from-blue-800/50 dark:group-hover:to-blue-700/50 transition-all duration-300 shadow-md">
                   <Image
                     src={AJ_LOGO_PATH}  
                     alt="AJ for City Council Logo" 
                     fill
-                    className="object-contain p-2"
+                    className="object-contain p-2 transition-all duration-300 group-hover:scale-105"
                     sizes="160px"
+                    style={{
+                      filter: 'drop-shadow(0 3px 6px rgba(10, 25, 41, 0.4)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2)) drop-shadow(0 0 0 1px rgba(255, 255, 255, 0.1))'
+                    }}
                   />
                 </div>
                 <h3 className="text-xl font-semibold text-center">AJ for City Council</h3>
@@ -363,14 +375,17 @@ export default function AboutPage() {
             </div>
 
             {/* Central Valley Justice Coalition */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary group">
+              <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-3 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 flex items-center justify-center group-hover:from-blue-200 group-hover:to-blue-300 dark:group-hover:from-blue-800/50 dark:group-hover:to-blue-700/50 transition-all duration-300 shadow-md">
                   <Image
                     src={CVJC_LOGO_PATH}  
                     alt="Central Valley Justice Coalition Logo" 
                     fill
-                    className="object-contain p-2"
+                    className="object-contain p-2 transition-all duration-300 group-hover:scale-105"
                     sizes="160px"
+                    style={{
+                      filter: 'drop-shadow(0 3px 6px rgba(10, 25, 41, 0.4)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2)) drop-shadow(0 0 0 1px rgba(255, 255, 255, 0.1))'
+                    }}
                   />
                 </div>
                 <h3 className="text-xl font-semibold text-center">Central Valley Justice Coalition</h3>
@@ -382,14 +397,17 @@ export default function AboutPage() {
             </div>
             
             {/* Alpha Gamma Sigma */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary group">
+              <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-3 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 flex items-center justify-center group-hover:from-blue-200 group-hover:to-blue-300 dark:group-hover:from-blue-800/50 dark:group-hover:to-blue-700/50 transition-all duration-300 shadow-md">
                   <Image
                     src={ASSOCIATION_LOGOS['Alpha Gamma Sigma (ΑΓΣ)']}
                     alt="Alpha Gamma Sigma Honor Society"
                     fill
-                    className="object-contain p-2"
+                    className="object-contain p-2 transition-all duration-300 group-hover:scale-105"
                     sizes="160px"
+                    style={{
+                      filter: 'drop-shadow(0 3px 6px rgba(10, 25, 41, 0.4)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2)) drop-shadow(0 0 0 1px rgba(255, 255, 255, 0.1))'
+                    }}
                   />
                 </div>
                 <h3 className="text-xl font-semibold text-center">Alpha Gamma Sigma (ΑΓΣ)</h3>
@@ -401,14 +419,17 @@ export default function AboutPage() {
             </div>
 
             {/* Beautify Fresno */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary group">
+              <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-3 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 flex items-center justify-center group-hover:from-blue-200 group-hover:to-blue-300 dark:group-hover:from-blue-800/50 dark:group-hover:to-blue-700/50 transition-all duration-300 shadow-md">
                   <Image
                     src={BF_LOGO_PATH}  
                     alt="Beautify Fresno Logo" 
                     fill
-                    className="object-contain p-2"
+                    className="object-contain p-2 transition-all duration-300 group-hover:scale-105"
                     sizes="160px"
+                    style={{
+                      filter: 'drop-shadow(0 3px 6px rgba(10, 25, 41, 0.4)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2)) drop-shadow(0 0 0 1px rgba(255, 255, 255, 0.1))'
+                    }}
                   />
                 </div>
                 <h3 className="text-xl font-semibold text-center">Beautify Fresno</h3>
@@ -472,9 +493,8 @@ export default function AboutPage() {
               className="px-6 py-3 border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600 rounded-md font-medium transition-colors"
             >
               Contact Me
-            </Link>
-            <Link
-              href="https://www.linkedin.com/in/brian-mcgauley-1602aa133/"
+            </Link>            <Link
+              href="https://www.linkedin.com/in/bmcgauley/"
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-3 border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600 rounded-md font-medium transition-colors flex items-center gap-2"
