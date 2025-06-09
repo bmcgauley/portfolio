@@ -5,19 +5,18 @@ import PreviewSection from '../PreviewSection';
 // Mock components
 jest.mock('../RefreshPreviewButton', () => ({
   __esModule: true,
-  default: function MockRefreshButton(props: any) {
+  default: function MockRefreshButton(props: { onRefreshComplete: (url: string) => void; disabled: boolean }) {
     return React.createElement('button', {
       onClick: () => props.onRefreshComplete('/new-preview-url.jpg'),
       'aria-disabled': props.disabled,
       disabled: props.disabled,
-      'data-testid': 'refresh-button',
-      children: props.disabled ? 'Refreshing...' : 'Refresh Preview'
-    });
+      'data-testid': 'refresh-button'
+    }, props.disabled ? 'Refreshing...' : 'Refresh Preview');
   }
 }));
 
 jest.mock('@/components/ui/image-with-loading', () => ({
-  ImageWithLoading: function MockImageWithLoading(props: any) {
+  ImageWithLoading: function MockImageWithLoading(props: { src: string; alt: string; onError?: () => void; isLoading?: boolean }) {
     return React.createElement('div', {
       className: 'image-with-loading'
     }, [
@@ -26,21 +25,19 @@ jest.mock('@/components/ui/image-with-loading', () => ({
         src: props.src,
         alt: props.alt,
         onError: props.onError,
-        'data-testid': 'preview-image',
-        ...props
+        'data-testid': 'preview-image'
       }),
       props.isLoading && React.createElement('div', {
         key: 'loading',
-        className: 'loading-state',
-        children: 'Loading...'
-      })
+        className: 'loading-state'
+      }, 'Loading...')
     ].filter(Boolean));
   }
 }));
 
 // Mock error boundary
 jest.mock('react-error-boundary', () => ({
-  ErrorBoundary: ({ children, FallbackComponent, onReset }: any) => {
+  ErrorBoundary: ({ children, FallbackComponent, onReset }: { children: React.ReactNode; FallbackComponent: React.ComponentType<{ error: Error; resetErrorBoundary: () => void }>; onReset: () => void }) => {
     if (process.env.THROW_ERROR) {
       return React.createElement(FallbackComponent, {
         error: new Error('Test error'),
@@ -95,9 +92,8 @@ describe('PreviewSection', () => {
     expect(button).toBeDisabled();
     expect(await screen.findByText(/refreshing/i)).toBeInTheDocument();
   });
-
   it('implements retry with exponential backoff on error', async () => {
-    const { container } = render(<PreviewSection {...defaultProps} />);
+    render(<PreviewSection {...defaultProps} />);
     
     const button = screen.getByTestId('refresh-button');
     

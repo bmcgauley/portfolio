@@ -1,2 +1,3 @@
 // Mock for server-only module
-export default {};
+const serverOnlyMock = {};
+export default serverOnlyMock;

@@ -3,7 +3,6 @@ import path from 'path';
 import {
   createPreviewImage,
   getProjectImagesLocal,
-  getSitePreview,
 } from '../server-utils';
 
 const mockCwd = '/mock/cwd';

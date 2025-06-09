@@ -10,7 +10,7 @@ interface PreviewSectionProps {
   title: string;
 }
 
-function ErrorFallback({ error, resetErrorBoundary }: { error: Error, resetErrorBoundary: () => void }) {
+function ErrorFallback({ resetErrorBoundary }: { error: Error, resetErrorBoundary: () => void }) {
   return (
     <div className="text-center p-4 border border-red-200 rounded-md bg-red-50">
       <p className="text-red-600 mb-2">Error loading preview</p>

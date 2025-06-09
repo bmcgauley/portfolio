@@ -4,7 +4,7 @@ import { ImageWithLoading } from '../image-with-loading';
 
 // Mock dependencies
 jest.mock('@/lib/utils', () => ({
-  cn: (...args: any[]) => args.filter(Boolean).join(' ')
+  cn: (...args: (string | undefined | null | false)[]) => args.filter(Boolean).join(' ')
 }));
 
 jest.mock('@/components/ui/skeleton', () => ({
@@ -18,9 +18,9 @@ jest.mock('@/components/ui/skeleton', () => ({
 // Mock framer-motion
 jest.mock('framer-motion', () => ({
   motion: {
-    div: (props: any) => React.createElement('div', { ...props }, props.children)
+    div: (props: React.ComponentProps<'div'>) => React.createElement('div', { ...props }, props.children)
   },
-  AnimatePresence: (props: any) => props.children,
+  AnimatePresence: (props: { children: React.ReactNode }) => props.children,
 }));
 
 const FALLBACK_IMAGE = '/images/placeholders/site-preview-placeholder.jpg';

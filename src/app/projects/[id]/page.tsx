@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { projects } from '@/lib/data';
 import ImageGallery from '@/components/ImageGallery';
 import RefreshPreviewButton from '@/components/RefreshPreviewButton';
-import PreviewSection from '@/components/PreviewSection';
 import { Metadata } from "next";
 
 type ParamsType = Promise<{ id: string }>;
