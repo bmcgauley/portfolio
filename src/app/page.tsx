@@ -14,10 +14,8 @@ export default function Home() {
     <div className="min-h-screen">
       <Hero />
       <FeaturedProjects />
-      <RecentAchievements />
-
-      {/* Photography Preview */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900/50">
+      <RecentAchievements />      {/* Photography Preview */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             className="text-center mb-12"
@@ -27,7 +25,7 @@ export default function Home() {
             transition={{ duration: 0.5 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Photography</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
               Capturing moments and exploring visual storytelling through photography.
             </p>
           </motion.div>
@@ -56,10 +54,8 @@ export default function Home() {
             </div>
           </motion.div>
         </div>
-      </section>
-
-      {/* Skills & Experience */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      </section>      {/* Skills & Experience */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             className="text-center mb-12"
@@ -69,14 +65,12 @@ export default function Home() {
             transition={{ duration: 0.5 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Skills & Experience</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
               I combine technical expertise with creative problem-solving to build impactful digital solutions.
             </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          </motion.div>          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <motion.div 
-              className="bg-white dark:bg-gray-800/50 p-8 rounded-xl shadow-md border border-gray-100 dark:border-gray-800"
+              className="bg-card text-card-foreground p-8 rounded-xl shadow-md border border-border"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -89,7 +83,7 @@ export default function Home() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold mb-4">Professional Experience</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
+              <p className="text-foreground/70 mb-6">
                 Web development, data analytics, and educational technology experience focusing on process optimization and data-driven solutions.
               </p>
               <Button variant="outline" asChild className="group">
@@ -99,9 +93,8 @@ export default function Home() {
                 </Link>
               </Button>
             </motion.div>
-            
-            <motion.div 
-              className="bg-white dark:bg-gray-800/50 p-8 rounded-xl shadow-md border border-gray-100 dark:border-gray-800"
+              <motion.div 
+              className="bg-card text-card-foreground p-8 rounded-xl shadow-md border border-border"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -115,7 +108,7 @@ export default function Home() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold mb-4">Skills & Technologies</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
+              <p className="text-foreground/70 mb-6">
                 From front-end frameworks to statistical analysis, explore my technical skillset and the technologies I work with.
               </p>
               <Button variant="outline" asChild className="group">

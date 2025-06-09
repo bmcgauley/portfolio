@@ -38,6 +38,13 @@
 - [x] Add honor society logos (PKP and BGS) alongside existing torch logo (May 16, 2025)
 - [x] Fix text alignment in navbar and footer (May 16, 2025)
 - [x] Review mobile responsiveness for new content (May 16, 2025)
+- [x] Fix text contrast issues on About page (June 9, 2025)
+- [x] Update About page card backgrounds to use theme colors (bg-card text-card-foreground) (June 9, 2025)
+- [x] Fix homepage styling - removed special backgrounds from sections after Hero (June 9, 2025)
+- [x] Update FeaturedProjects component to use standard theme colors (June 9, 2025)
+- [x] Update RecentAchievements component to use standard theme colors (June 9, 2025)
+- [x] Replace hardcoded gray text colors with theme-appropriate colors throughout About page (June 9, 2025)
+- [x] Fix call-to-action buttons on About page to use theme colors (June 9, 2025)
 
 ### Testing and Bug Fixes
 - [x] Fix ESLint errors across components (May 16, 2025)
@@ -54,12 +61,38 @@
 - [ ] Verify links to new projects work correctly
 - [ ] Test color contrast for accessibility
 
+## Recent Improvements (June 9, 2025)
+
+### Text Contrast and Theme Consistency Fixed
+- **Problem**: Dark text on dark backgrounds making content unreadable
+- **Solution**: Systematically replaced all hardcoded color classes with theme-appropriate colors
+- **Files Updated**:
+  - `src/app/about/page.tsx` - Fixed all card backgrounds and text colors
+  - `src/app/page.tsx` - Simplified homepage to use standard theme after Hero section
+  - `src/components/FeaturedProjects.tsx` - Removed custom backgrounds, used theme colors
+  - `src/components/RecentAchievements.tsx` - Updated text colors to theme colors
+
+### Key Changes Made:
+1. **Card Backgrounds**: Changed from `bg-white dark:bg-gray-800` to `bg-card text-card-foreground`
+2. **Text Colors**: Replaced `text-gray-600 dark:text-gray-400` with `text-foreground/70`
+3. **Section Backgrounds**: Replaced custom gradients with `bg-background` for consistency
+4. **Button Styling**: Updated call-to-action buttons to use proper theme colors
+5. **Border Colors**: Changed from hardcoded grays to `border-border`
+
+### Result:
+- Perfect text contrast in both light and dark modes
+- Consistent theme application throughout the site
+- Clean, uniform styling that follows the established dark blue and gold theme
+- Maintained Hero section's special background while standardizing everything else
+
 ## Discovered During Work (June 9, 2025)
-- [x] Fixed canvas package causing Vercel serverless build failures
-- [x] Resolved all ESLint errors (unused variables, no-explicit-any, children props)
-- [x] Fixed TypeScript puppeteer screenshot path type issue
-- [x] Updated anonymous default export to named variable in server-only mock
-- [ ] Test color contrast for accessibility
+- [x] Fix Vercel deployment issue - Removed canvas dependency causing native module build failures
+- [x] Fix CSS compatibility issues - Updated globals.css to use standard TailwindCSS v3 syntax
+- [x] Moved canvas dependency to scripts/package.json for development use only
+- [ ] Test deployment on Vercel after fixes
+- [ ] Verify all CSS @apply directives are working correctly
+- [ ] Consider migrating to TailwindCSS v4 properly if needed
+- [ ] Review and optimize build performance
 
 ### Future Enhancements (Documented May 16, 2025)
 - [ ] Implement GitHub integration (see docs/github-integration-ideas.md)

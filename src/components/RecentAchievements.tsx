@@ -26,11 +26,11 @@ const achievements = [
 
 export default function RecentAchievements() {
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900/50">
+    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Recent Achievements</h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
             Latest milestones and recognitions
           </p>
         </div>
@@ -46,9 +46,8 @@ export default function RecentAchievements() {
                   <div className="text-sm font-medium text-secondary mb-1">{achievement.date}</div>
                   <CardTitle>{achievement.title}</CardTitle>
                 </CardHeader>
-                
-                <CardContent className="flex-grow">
-                  <p className="text-gray-600 dark:text-gray-400">{achievement.description}</p>
+                  <CardContent className="flex-grow">
+                  <p className="text-foreground/70">{achievement.description}</p>
                 </CardContent>
               </Card>
             </motion.div>

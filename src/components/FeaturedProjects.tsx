@@ -26,14 +26,8 @@ const featuredProjects = projects
 
 export default function FeaturedProjects() {
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 relative">
-      {/* Subtle dot pattern background */}
-      <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)] [background-size:16px_16px] opacity-50"></div>
-      
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-tl from-white via-royalBlue-50/30 to-amberGold-50/30 dark:from-gray-950 dark:via-royalBlue-900/30 dark:to-amberGold-900/30"></div>
-      
-      <div className="max-w-7xl mx-auto relative">
+    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
+      <div className="max-w-7xl mx-auto">
         <motion.div 
           className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
@@ -42,7 +36,7 @@ export default function FeaturedProjects() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Projects</h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
             Recent work and initiatives I&apos;ve been involved with
           </p>
         </motion.div>
@@ -56,7 +50,7 @@ export default function FeaturedProjects() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="h-full flex flex-col hover:shadow-xl transition-all duration-300 bg-white/80 dark:bg-gray-950/80 backdrop-blur-sm border-secondary/20 hover:border-secondary/40">
+              <Card className="h-full flex flex-col hover:shadow-xl transition-all duration-300 bg-card text-card-foreground border-border hover:border-secondary/40">
                 <div className="aspect-video relative overflow-hidden rounded-t-lg">
                   <div className="absolute inset-0 bg-gradient-to-br from-royalBlue-400 to-secondary opacity-30"></div>
                   {project.image ? (
