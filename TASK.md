@@ -120,3 +120,8 @@
 - [x] Update President's List awards to include Fall 2023 and Spring 2025 (May 27, 2025)
 - [x] Update all Community Involvement logos to use their own specific logo files (May 27, 2025)
 - [x] Improve logo visibility with consistent sizing and background containers (May 27, 2025)
+
+### Analytics Integrations (June 10, 2025)
+- [x] Implement Ahrefs analytics integration with script tag in head
+- [x] Install and implement Vercel Analytics integration
+- [x] Verify no lint errors after analytics integration
