@@ -151,7 +151,7 @@ async function fetchAllUserContent() {
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const tracks = await fetchAllUserContent();
     
@@ -175,7 +175,7 @@ export async function GET(request: NextRequest) {
 }
 
 // Optional: Add a POST endpoint to manually refresh the cache
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     // You could implement caching here with Redis or similar
     const tracks = await fetchAllUserContent();
@@ -186,7 +186,7 @@ export async function POST(request: NextRequest) {
       data: tracks,
       refreshedAt: new Date().toISOString()
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, error: 'Failed to refresh SoundCloud data' },
       { status: 500 }

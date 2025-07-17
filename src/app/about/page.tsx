@@ -59,7 +59,7 @@ export default function AboutPage() {
                 Currently working as a Web Developer at Fresno State Student Housing, I&apos;ve successfully led various initiatives including analytics automation, SEO optimization, and digital signage solutions. I have also served as a Teaching Assistant, helping students master technical concepts and providing mentorship.
                </p>
                <p className="text-foreground/90 mb-4 leading-relaxed">
-                Beyond my technical work, I&apos;m a published music artist specializing in dubstep and electronic dance music. My tracks are available on Spotify, Apple Music, and other streaming platforms, with early releases and exclusive content shared on SoundCloud. My debut album "Silence" showcases my evolving style and production techniques.
+                Beyond my technical work, I&apos;m a published music artist specializing in dubstep and electronic dance music. My tracks are available on Spotify, Apple Music, and other streaming platforms, with early releases and exclusive content shared on SoundCloud. My debut album &ldquo;Silence&rdquo; showcases my evolving style and production techniques.
                </p>
                <p className="text-foreground/90 mb-4 leading-relaxed">
                 I&apos;m passionate about leveraging technology and collaborating with industry professionals to drive innovation in cybersecurity, small business development, technical literacy, and educational development.

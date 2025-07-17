@@ -80,7 +80,14 @@ if (transporters.length > 0) {
 }
 
 // Function to try sending email with fallback transporters
-async function sendEmailWithFallback(mailOptions: any): Promise<SentMessageInfo> {
+async function sendEmailWithFallback(mailOptions: {
+  from: string;
+  to: string;
+  replyTo?: string;
+  subject: string;
+  text?: string;
+  html: string;
+}): Promise<SentMessageInfo> {
   let lastError: Error | null = null;
   const attempts: string[] = [];
   
@@ -157,9 +164,14 @@ export async function POST(request: Request) {
     `;
 
     // Email content
+    const emailUser = process.env.EMAIL_USER;
+    if (!emailUser) {
+      throw new Error('EMAIL_USER environment variable is not configured');
+    }
+
     const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER,
+      from: emailUser,
+      to: emailUser,
       replyTo: email,
       subject: `Contact Form: ${subject || `Message from ${name}`}`,
       text: `From: ${name}\nEmail: ${email}\n${subject ? `Subject: ${subject}\n` : ''}Message: ${message}`,

@@ -338,7 +338,6 @@ export default function PhotographyPage() {
   }, [isComplete]);
 
   const handleImageClick = (index: number) => {
-    console.log('Image clicked:', index, 'Photo:', filteredPhotos[index]?.alt);
     setSelectedImageIndex(index);
   };
 
@@ -351,8 +350,8 @@ export default function PhotographyPage() {
   };
 
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 pb-32">
-      <div className="max-w-7xl mx-auto">
+    <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto pb-16">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Photography</h1>
@@ -443,10 +442,7 @@ export default function PhotographyPage() {
         {/* Lightbox */}
         {selectedImageIndex !== null && (
           <Lightbox
-            images={filteredPhotos.map((photo, idx) => {
-              console.log('Lightbox image', idx, ':', photo.alt);
-              return { src: photo.src, alt: photo.alt };
-            })}
+            images={filteredPhotos.map(photo => ({ src: photo.src, alt: photo.alt }))}
             currentIndex={selectedImageIndex}
             onClose={handleLightboxClose}
             onNavigate={handleLightboxNavigate}
