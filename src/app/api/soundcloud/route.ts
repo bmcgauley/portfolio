@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 const SOUNDCLOUD_USER_ID = 'brian-mcgauley-290029297';
 
