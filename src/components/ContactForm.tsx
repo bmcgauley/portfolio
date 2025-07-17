@@ -10,7 +10,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { Loader2 } from "lucide-react"
-import { Toaster } from "sonner"
 import { toast } from "sonner"
 
 const formSchema = z.object({
@@ -42,29 +41,66 @@ export default function ContactForm() {
     },
   })
 
-  async function onSubmit() {
+  async function onSubmit(data: FormData) {
     setIsSubmitting(true)
+    console.log('📝 Submitting contact form...', { name: data.name, email: data.email, subject: data.subject });
+    
     try {
-      // Replace with your email sending logic
-      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
-      
-      toast.success("Message sent successfully! I'll get back to you soon.", {
-        duration: 5000,
-      })
-      
-      form.reset()
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+      console.log('📨 API Response:', { status: response.status, result });
+
+      if (response.ok) {
+        if (result.warning) {
+          toast.error(`⚠️ ${result.message}`, {
+            duration: 8000,
+            description: "Email system is not configured properly"
+          });
+        } else {
+          toast.success("✅ Message sent successfully! I'll get back to you soon.", {
+            duration: 5000,
+            description: result.messageId ? `Message ID: ${result.messageId}` : undefined
+          });
+        }
+        form.reset();
+      } else {
+        // Handle different types of errors with helpful messages
+        if (response.status === 503) {
+          toast.error(`❌ ${result.message}`, {
+            duration: 10000,
+            description: "If you received an email confirmation, your message was actually sent successfully despite this error."
+          });
+        } else {
+          throw new Error(result.message || 'Failed to send message');
+        }
+      }
     } catch (error) {
-      toast.error("Failed to send message. Please try again later.")
-      console.error("Failed to send message:", error)
+      console.error("❌ Failed to send message:", error);
+      let errorMessage = error instanceof Error ? error.message : 'Failed to send message. Please try again later.';
+      
+      // Show specific error messages for connection issues
+      if (errorMessage.includes('connection timed out') || errorMessage.includes('Greeting never received')) {
+        errorMessage = 'Connection timed out. This might be a temporary network issue.';
+      }
+      
+      toast.error(`❌ ${errorMessage}`, {
+        duration: 10000,
+        description: "You can also reach me directly at brian@mcgauley.com"
+      });
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <>
-      <Toaster position="top-right" />
-      <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle>Get in Touch</CardTitle>
           <CardDescription>
@@ -153,6 +189,5 @@ export default function ContactForm() {
           </Form>
         </CardContent>
       </Card>
-    </>
   )
 }

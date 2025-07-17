@@ -53,16 +53,19 @@ export default function AboutPage() {
             </div>            <div className="md:w-2/3">
               <h2 className="text-2xl font-bold mb-4 text-foreground">Bio</h2>
               <p className="text-foreground/90 mb-4 leading-relaxed">
-                I&apos;m Brian McGauley, a Web Developer pursuing a Bachelor&apos;s Degree in Business Administration with a focus on Computer Information Systems at California State University, Fresno. With a strong academic background and practical experience, I specialize in developing innovative web solutions and business process improvements.
+                I&apos;m Brian McGauley, a Web Developer and Music Producer pursuing a Bachelor&apos;s Degree in Business Administration with a focus on Computer Information Systems at California State University, Fresno. With a strong academic background and practical experience, I specialize in developing innovative web solutions, business process improvements, and creating electronic music.
               </p>
               <p className="text-foreground/90 mb-4 leading-relaxed">
                 Currently working as a Web Developer at Fresno State Student Housing, I&apos;ve successfully led various initiatives including analytics automation, SEO optimization, and digital signage solutions. I have also served as a Teaching Assistant, helping students master technical concepts and providing mentorship.
                </p>
                <p className="text-foreground/90 mb-4 leading-relaxed">
+                Beyond my technical work, I&apos;m a published music artist specializing in dubstep and electronic dance music. My tracks are available on Spotify, Apple Music, and other streaming platforms, with early releases and exclusive content shared on SoundCloud. My debut album "Silence" showcases my evolving style and production techniques.
+               </p>
+               <p className="text-foreground/90 mb-4 leading-relaxed">
                 I&apos;m passionate about leveraging technology and collaborating with industry professionals to drive innovation in cybersecurity, small business development, technical literacy, and educational development.
               </p>
               <p className="text-foreground/90 leading-relaxed">
-                My diverse skill set spans across frontend and backend development, database management, analytics, and business analysis. I&apos;m passionate about leveraging technology to optimize processes and deliver impactful solutions.
+                My diverse skill set spans across frontend and backend development, database management, analytics, business analysis, and music production. I&apos;m passionate about leveraging technology and creativity to optimize processes and deliver impactful solutions across both technical and artistic domains.
               </p>
             </div>
           </div>
@@ -213,9 +216,10 @@ export default function AboutPage() {
               </div>
               <div className="p-5">
                 <p className="text-foreground/90 mb-4 leading-relaxed">
-                  Skilled in audio production, sound design, and music composition using industry-standard DAWs. Experience in recording, mixing, and mastering for various media projects.                </p>
+                  Published music artist specializing in dubstep and electronic dance music production. Experience in creating high-energy tracks available on Spotify, SoundCloud, and other streaming platforms, with expertise in sound design, mixing, and mastering.
+                </p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="bg-muted text-foreground px-3 py-1 rounded-md text-sm font-medium">Pro Tools</span>
+                  <span className="bg-muted text-foreground px-3 py-1 rounded-md text-sm font-medium">Dubstep Production</span>
                   <span className="bg-muted text-foreground px-3 py-1 rounded-md text-sm font-medium">Ableton Live</span>
                   <span className="bg-muted text-foreground px-3 py-1 rounded-md text-sm font-medium">Sound Design</span>
                 </div>

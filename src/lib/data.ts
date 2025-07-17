@@ -292,6 +292,10 @@ export const skills = [
     items: ['FDM Printing', 'Resin Printing', 'Cura', 'PrusaSlicer', 'Fusion 360', 'AutoCAD', 'STL Design', 'Post-Processing']
   },
   {
+    category: 'Music Production',
+    items: ['Dubstep Production', 'Electronic Music', 'Sound Design', 'Mixing & Mastering', 'Spotify Publishing', 'SoundCloud', 'Beat Making', 'Bass Synthesis', 'Audio Engineering']
+  },
+  {
     category: 'Audio Engineering',
     items: ['Pro Tools', 'Ableton Live', 'FL Studio', 'Sound Design', 'Mixing', 'Mastering', 'Foley Recording', 'MIDI Production']
   }

@@ -26,6 +26,10 @@ const routes = [
     label: "Photography",
   },
   {
+    href: "/music",
+    label: "Music",
+  },
+  {
     href: "/contact",
     label: "Contact",
   },

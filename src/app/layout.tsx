@@ -17,11 +17,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Brian McGauley | Web Developer & Computer Information Systems",
-  description: "Portfolio of Brian McGauley, Web Developer and Computer Information Systems student specializing in web development, data analytics, and educational technology.",
+  title: "Brian McGauley | Web Developer, CIS Student & Music Producer",
+  description: "Portfolio of Brian McGauley, Web Developer, Computer Information Systems student, and dubstep music producer. Published artist on Spotify specializing in web development, data analytics, educational technology, and electronic music production.",
   openGraph: {
-    title: "Brian McGauley | Web Developer & CIS",
-    description: "Web Development, Data Analytics, and Educational Technology Portfolio",
+    title: "Brian McGauley | Web Developer, CIS & Music Producer",
+    description: "Web Development, Data Analytics, Educational Technology, and Music Production Portfolio. Published dubstep artist on Spotify.",
     url: "https://brianmcgauley.com",
     siteName: "Brian McGauley",
     locale: "en-US",
@@ -29,8 +29,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Brian McGauley | Web Developer & CIS",
-    description: "Web Development, Data Analytics, and Educational Technology Portfolio",
+    title: "Brian McGauley | Web Developer, CIS & Music Producer",
+    description: "Web Development, Data Analytics, Educational Technology, and Music Production Portfolio. Published dubstep artist on Spotify.",
     creator: "@yourtwitterhandle",
   },
 };
