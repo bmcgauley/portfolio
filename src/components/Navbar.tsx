@@ -26,8 +26,9 @@ const routes = [
     label: "Photography",
   },
   {
-    href: "/music",
+    href: "https://music.brianmcgauley.com",
     label: "Music",
+    external: true,
   },
   {
     href: "/contact",
@@ -50,6 +51,7 @@ export default function Navbar() {
             <Link
               key={route.href}
               href={route.href}
+              {...(route.external && { target: "_blank", rel: "noopener noreferrer" })}
               className={cn(
                 "px-3 py-2 rounded-md text-sm font-medium transition-colors hover:text-secondary",
                 pathname === route.href
@@ -83,6 +85,7 @@ export default function Navbar() {
                   <Link
                     key={route.href}
                     href={route.href}
+                    {...(route.external && { target: "_blank", rel: "noopener noreferrer" })}
                     onClick={() => setOpen(false)}
                     className={cn(
                       "px-3 py-2 rounded-md text-sm font-medium transition-colors",
