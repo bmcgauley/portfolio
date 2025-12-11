@@ -405,6 +405,7 @@ export default function PhotographyPage() {
                   {filteredPhotos.length > 0 ? (
                     <MasonryGrid
                       items={filteredPhotos}
+                      keyExtractor={(photo) => photo.src}
                       columnCount={{
                         mobile: 1,
                         tablet: 2,
