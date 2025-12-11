@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 interface MasonryGridProps<T> {
   items: T[]
   renderItem: (item: T, index: number) => React.ReactNode
+  keyExtractor?: (item: T, index: number) => string | number
   columnCount?: {
     mobile?: number
     tablet?: number
@@ -25,10 +26,12 @@ const defaultColumnCount = {
 export function MasonryGrid<T>({
   items,
   renderItem,
+  keyExtractor,
   columnCount = defaultColumnCount,
   gap = 16,
   className
-}: MasonryGridProps<T>) {  const gridRef = useRef<HTMLDivElement>(null)
+}: MasonryGridProps<T>) {
+  const gridRef = useRef<HTMLDivElement>(null)
   const [columns, setColumns] = useState(columnCount.desktop || defaultColumnCount.desktop)
 
   useEffect(() => {
@@ -50,9 +53,9 @@ export function MasonryGrid<T>({
   const getColumnItems = () => {
     // Ensure columns is never undefined by providing a fallback
     const columnCount = columns || defaultColumnCount.desktop;
-    const columnItems: T[][] = Array.from({ length: columnCount }, () => [])
+    const columnItems: { item: T; originalIndex: number }[][] = Array.from({ length: columnCount }, () => [])
     items.forEach((item, i) => {
-      columnItems[i % columnCount].push(item)
+      columnItems[i % columnCount].push({ item, originalIndex: i })
     })
     return columnItems
   }
@@ -61,7 +64,7 @@ export function MasonryGrid<T>({
     <div
       ref={gridRef}
       className={cn(
-        "grid auto-rows-[1px]",
+        "grid",
         {
           'grid-cols-1': columns === 1,
           'grid-cols-2': columns === 2,
@@ -70,24 +73,24 @@ export function MasonryGrid<T>({
         },
         className
       )}
-      style={{ gap: `${gap}px` }}
+      style={{ gap: `${gap}px`, alignItems: 'start' }}
     >
       <AnimatePresence mode="popLayout">
         {getColumnItems().map((column, columnIndex) => (
-          <div key={columnIndex} className="grid auto-rows-max gap-4">
-            {column.map((item, itemIndex) => (
+          <div key={columnIndex} className="flex flex-col" style={{ gap: `${gap}px` }}>
+            {column.map(({ item, originalIndex }, itemIndex) => (
               <motion.div
-                key={itemIndex}
+                key={keyExtractor ? keyExtractor(item, originalIndex) : originalIndex}
                 layout
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{
                   duration: 0.3,
-                  delay: (columnIndex * column.length + itemIndex) * 0.05
+                  delay: itemIndex * 0.05
                 }}
               >
-                {renderItem(item, columnIndex * column.length + itemIndex)}
+                {renderItem(item, originalIndex)}
               </motion.div>
             ))}
           </div>
