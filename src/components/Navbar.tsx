@@ -26,8 +26,17 @@ const routes = [
     label: "Photography",
   },
   {
+    href: "/publications",
+    label: "Publications",
+  },
+  {
     href: "https://music.brianmcgauley.com",
     label: "Music",
+    external: true,
+  },
+  {
+    href: "https://ai-investor-digest.vercel.app",
+    label: "AI News",
     external: true,
   },
   {
