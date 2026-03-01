@@ -6,6 +6,9 @@ export interface Education {
   startDate: string;
   endDate: string;
   gpa: string;
+  graduated?: boolean;
+  note?: string;
+  degreeImagePath?: string;
   honors?: {
     type: string;
     date: string;

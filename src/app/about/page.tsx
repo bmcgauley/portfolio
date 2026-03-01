@@ -99,23 +99,23 @@ export default function AboutPage() {
                   <p className="text-lg text-foreground mb-2">
                     {edu.degree}{edu.field ? ` – ${edu.field}` : ''}
                   </p>
-                  {(edu as any).graduated && (
+                  {edu.graduated && (
                     <p className="text-green-600 dark:text-green-400 font-semibold text-sm mb-1">✓ Graduated</p>
                   )}
-                  {(edu as any).note && (
-                    <p className="text-muted-foreground text-sm italic mb-2">{(edu as any).note}</p>
+                  {edu.note && (
+                    <p className="text-muted-foreground text-sm italic mb-2">{edu.note}</p>
                   )}
                   {edu.gpa && (
                     <p className="text-primary font-medium mb-2">GPA: {edu.gpa}</p>
                   )}
                   {/* Degree image */}
-                  {(edu as any).degreeImagePath && (
+                  {edu.degreeImagePath && (
                     <div className="mb-4">
                       <h4 className="text-sm font-semibold text-foreground mb-2">Diploma</h4>
-                      <a href={(edu as any).degreeImagePath} target="_blank" rel="noopener noreferrer">
+                      <a href={edu.degreeImagePath} target="_blank" rel="noopener noreferrer">
                         <div className="relative w-full max-w-xs h-48 rounded-lg overflow-hidden border border-border shadow-md hover:shadow-lg transition-shadow">
                           <Image
-                            src={(edu as any).degreeImagePath}
+                            src={edu.degreeImagePath}
                             alt="Bachelor of Science Diploma – California State University, Fresno"
                             fill
                             className="object-cover object-top"
