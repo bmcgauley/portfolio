@@ -164,11 +164,29 @@ export const photoCollections: PhotoCollection[] = [
 
 export const experiences = [
   {
+    id: '0a',
+    position: 'Independent Technology Consultant',
+    company: 'Imaginarii',
+    startDate: 'January 2025',
+    endDate: null,
+    description: 'Operating an independent consulting practice (imagi-narii.com / imaginarii.net) providing web development, branding, analytics, SEO, and technology strategy services. Clients include AJ City Council Campaign (paid web development, ajforcitycouncil.com), Success from Within (paid web development & maintenance), and Fresno PAL (paid web development & maintenance). Current pro-bono engagement with Kerman Chamber of Commerce covering full branding kit, website rebuild, domain/host migration, economic impact analysis study, logo, business cards, accessibility audit, SEO audit, performance audit, and light automation.',
+    skills: ['Next.js', 'React', 'Web Development', 'Branding', 'SEO', 'Analytics', 'Business Strategy', 'Technical Consulting', 'WordPress']
+  },
+  {
+    id: '0b',
+    position: 'Pro-Bono Technology Consultant',
+    company: 'Kerman Chamber of Commerce',
+    startDate: 'February 2026',
+    endDate: null,
+    description: 'Comprehensive pro-bono technology engagement for the Kerman Chamber of Commerce including: full branding kit development, website rebuild from ground up, domain & hosting resolution, economic impact analysis study, logo design, business card design, accessibility audit (WCAG compliance), SEO audit, performance audit, full site audit, and light automation implementation.',
+    skills: ['Web Development', 'Branding', 'Economic Analysis', 'SEO', 'Accessibility (WCAG)', 'Performance Optimization', 'Logo Design', 'Business Cards', 'Domain Management']
+  },
+  {
     id: '1',
     position: 'Web Developer',
     company: 'Fresno State Student Housing',
     startDate: '2024-08',
-    endDate: 'Present',
+    endDate: null,
     description: 'Led project-based initiatives & business process enhancements including: automated analytics platform reducing data entry time by 95%, implemented SEO optimizations, created digital signage & proxy solutions, designed statistical analysis framework, led website consolidation efforts, and developed floorplan tracking system.',
     skills: ['React', 'Node.js', 'Analytics', 'SEO', 'WordPress', 'Digital Signage']
   },
@@ -203,13 +221,33 @@ export const experiences = [
 
 export const education = [
   {
+    id: '0',
+    institution: 'California State University, Fresno',
+    degree: 'Master of Business Administration (MBA)',
+    field: 'Business Administration',
+    startDate: 'January 2026',
+    endDate: null,
+    gpa: null,
+    note: 'Currently enrolled. MBA Candidate status expected next semester.',
+    honors: [],
+    associations: []
+  },
+  {
     id: '1',
     institution: 'California State University, Fresno',
-    degree: "Bachelor's Degree",
+    degree: "Bachelor of Science",
     field: 'Business Administration (Computer Information Systems)',
     startDate: '2023',
-    endDate: '2025 (Expected)',    gpa: '3.82',
+    endDate: 'December 2025',
+    graduated: true,
+    degreeImagePath: '/images/profile/degree-bs-fresnostate.webp',
+    gpa: '3.82',
     honors: [
+      {
+        type: 'Summa Cum Laude',
+        date: 'December 2025',
+        description: 'Graduated with highest distinction'
+      },
       {
         type: "President's List",
         date: 'Spring 2025',
@@ -248,7 +286,9 @@ export const education = [
     field: 'Multiple: Information Systems (Networking & Web Programming), Cyber Security, Business Administration',
     startDate: '2021',
     endDate: '2023',
+    graduated: true,
     gpa: '3.958',
+    honors: [],
     associations: [
       {
         name: 'Alpha Gamma Sigma (ΑΓΣ)',

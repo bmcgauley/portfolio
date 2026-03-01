@@ -53,19 +53,16 @@ export default function AboutPage() {
             </div>            <div className="md:w-2/3">
               <h2 className="text-2xl font-bold mb-4 text-foreground">Bio</h2>
               <p className="text-foreground/90 mb-4 leading-relaxed">
-                I&apos;m Brian McGauley, a Web Developer and Music Producer pursuing a Bachelor&apos;s Degree in Business Administration with a focus on Computer Information Systems at California State University, Fresno. With a strong academic background and practical experience, I specialize in developing innovative web solutions, business process improvements, and creating electronic music.
+                I&apos;m Brian McGauley — a Web Developer, IT Consultant, and MBA student at California State University, Fresno. I recently graduated Summa Cum Laude with a Bachelor of Science in Business Administration (Computer Information Systems) in December 2025, and am now pursuing my MBA while running an independent consulting practice through Imaginarii (imagi-narii.com).
               </p>
               <p className="text-foreground/90 mb-4 leading-relaxed">
-                Currently working as a Web Developer at Fresno State Student Housing, I&apos;ve successfully led various initiatives including analytics automation, SEO optimization, and digital signage solutions. I have also served as a Teaching Assistant, helping students master technical concepts and providing mentorship.
-               </p>
-               <p className="text-foreground/90 mb-4 leading-relaxed">
-                Beyond my technical work, I&apos;m a published music artist specializing in dubstep and electronic dance music. My tracks are available on Spotify, Apple Music, and other streaming platforms, with early releases and exclusive content shared on SoundCloud. My debut album &ldquo;Silence&rdquo; showcases my evolving style and production techniques.
-               </p>
-               <p className="text-foreground/90 mb-4 leading-relaxed">
-                I&apos;m passionate about leveraging technology and collaborating with industry professionals to drive innovation in cybersecurity, small business development, technical literacy, and educational development.
+                Through Imaginarii, I provide web development, branding, SEO, analytics, and technology strategy services to clients ranging from political campaigns to nonprofits and chambers of commerce. Current engagements include Fresno State Student Housing (full-time Web Developer), pro-bono consulting for the Kerman Chamber of Commerce, and paid web development for Success from Within and Fresno PAL.
+              </p>
+              <p className="text-foreground/90 mb-4 leading-relaxed">
+                Beyond my technical work, I&apos;m a published music artist specializing in dubstep and electronic dance music. My tracks are available on Spotify, Apple Music, and other streaming platforms, with early releases and exclusive content shared on SoundCloud.
               </p>
               <p className="text-foreground/90 leading-relaxed">
-                My diverse skill set spans across frontend and backend development, database management, analytics, business analysis, and music production. I&apos;m passionate about leveraging technology and creativity to optimize processes and deliver impactful solutions across both technical and artistic domains.
+                My skill set spans frontend and backend development, database management, data analytics, business analysis, branding, and music production — and I&apos;m passionate about leveraging technology to drive impact across both technical and artistic domains.
               </p>
             </div>
           </div>
@@ -96,15 +93,42 @@ export default function AboutPage() {
                   <div className="flex flex-col sm:flex-row justify-between mb-2">
                     <h3 className="text-xl font-semibold text-foreground">{edu.institution}</h3>
                     <p className="text-muted-foreground">
-                      {edu.startDate} – {edu.endDate}
+                      {edu.startDate} – {edu.endDate ?? 'Present'}
                     </p>
                   </div>
                   <p className="text-lg text-foreground mb-2">
-                    {edu.degree} - {edu.field}
+                    {edu.degree}{edu.field ? ` – ${edu.field}` : ''}
                   </p>
-                  <p className="text-primary font-medium mb-2">
-                    GPA: {edu.gpa}
-                  </p>                  {/* Show Honors */}
+                  {(edu as any).graduated && (
+                    <p className="text-green-600 dark:text-green-400 font-semibold text-sm mb-1">✓ Graduated</p>
+                  )}
+                  {(edu as any).note && (
+                    <p className="text-muted-foreground text-sm italic mb-2">{(edu as any).note}</p>
+                  )}
+                  {edu.gpa && (
+                    <p className="text-primary font-medium mb-2">GPA: {edu.gpa}</p>
+                  )}
+                  {/* Degree image */}
+                  {(edu as any).degreeImagePath && (
+                    <div className="mb-4">
+                      <h4 className="text-sm font-semibold text-foreground mb-2">Diploma</h4>
+                      <a href={(edu as any).degreeImagePath} target="_blank" rel="noopener noreferrer">
+                        <div className="relative w-full max-w-xs h-48 rounded-lg overflow-hidden border border-border shadow-md hover:shadow-lg transition-shadow">
+                          <Image
+                            src={(edu as any).degreeImagePath}
+                            alt="Bachelor of Science Diploma – California State University, Fresno"
+                            fill
+                            className="object-cover object-top"
+                            sizes="320px"
+                          />
+                          <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors flex items-end justify-center pb-2">
+                            <span className="text-xs text-white bg-black/50 px-2 py-1 rounded opacity-0 hover:opacity-100 transition-opacity">View full diploma</span>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  )}
+                  {/* Show Honors */}
                   {edu.honors && edu.honors.length > 0 && (
                     <div className="mb-3">
                       <h4 className="text-sm font-semibold text-foreground mb-1">Honors & Awards</h4>
@@ -133,7 +157,8 @@ export default function AboutPage() {
                                 className="object-contain"
                                 sizes="32px"
                               />
-                            </div>                            <div className="flex flex-col">
+                            </div>
+                            <div className="flex flex-col">
                               <span className="text-sm font-medium text-foreground">
                                 {association.name}
                               </span>
@@ -338,7 +363,7 @@ export default function AboutPage() {
               <p className="text-muted-foreground mb-2 text-center">January 2025 - Present</p>
               <p className="text-foreground/90 leading-relaxed mb-2">
                 Website upkeep & routine maintenance, plus occasional event support.
-              </p>            </div>            {/* AJ for City Council */}
+              </p>            </div>            {/* AJ for City Council - volunteer only Fall 2024 */}
             <div className="bg-card text-card-foreground rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary group">
               <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-3 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 flex items-center justify-center group-hover:from-blue-200 group-hover:to-blue-300 dark:group-hover:from-blue-800/50 dark:group-hover:to-blue-700/50 transition-all duration-300 shadow-md">
                   <Image
@@ -354,9 +379,22 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-xl font-semibold text-center text-secondary">AJ for City Council</h3>
               </div>
-              <p className="text-muted-foreground mb-2 text-center">January 2025 - Present</p>
+              <p className="text-muted-foreground mb-2 text-center">August 2024 – December 2024 (Volunteer)</p>
               <p className="text-foreground/90 leading-relaxed">
-                Website development for Fresno District 7 Campaign.
+                Volunteer website development for Fresno District 7 Campaign during Fall 2024. Continued as paid consultant via Imaginarii from January 2025 onwards.
+              </p>
+            </div>
+            {/* Kerman Chamber of Commerce - pro-bono */}
+            <div className="bg-card text-card-foreground rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary group">
+              <div className="flex flex-col items-center mb-4">
+                <div className="relative w-40 h-24 mb-3 p-3 rounded-lg bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900/40 dark:to-amber-800/40 flex items-center justify-center group-hover:from-amber-200 group-hover:to-amber-300 dark:group-hover:from-amber-800/50 dark:group-hover:to-amber-700/50 transition-all duration-300 shadow-md">
+                  <span className="text-2xl font-bold text-amber-700 dark:text-amber-300">KCC</span>
+                </div>
+                <h3 className="text-xl font-semibold text-center text-secondary">Kerman Chamber of Commerce</h3>
+              </div>
+              <p className="text-muted-foreground mb-2 text-center">February 2026 – Present (Pro-Bono)</p>
+              <p className="text-foreground/90 leading-relaxed">
+                Comprehensive pro-bono technology engagement: full branding kit, website rebuild, domain & hosting migration, economic impact analysis study, logo & business cards, accessibility audit (WCAG), SEO & performance audits, and light automation.
               </p>
             </div>            {/* Central Valley Justice Coalition */}
             <div className="bg-card text-card-foreground rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary group">
@@ -440,8 +478,12 @@ export default function AboutPage() {
               <h3 className="text-xl font-semibold mb-4 text-secondary">Notable Projects</h3>
               <ul className="text-foreground/90 leading-relaxed space-y-3">
                 <li>
-                  <span className="font-medium">Imaginarii Home Business (2023)</span>
-                  <p className="text-sm mt-1">Development and implementation of business solutions and web applications.</p>
+                  <span className="font-medium">Imaginarii – Independent Consulting (2023–Present)</span>
+                  <p className="text-sm mt-1">Active consulting practice operating via <a href="https://imagi-narii.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">imagi-narii.com</a> / <a href="https://imaginarii.net" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">imaginarii.net</a>. Services span web development, branding, SEO, analytics, and technology strategy for businesses and nonprofits.</p>
+                </li>
+                <li>
+                  <span className="font-medium">Kerman Chamber of Commerce (2026–Present)</span>
+                  <p className="text-sm mt-1">Pro-bono full technology engagement: branding, website, economic impact analysis, accessibility & SEO audits, and automation.</p>
                 </li>
                 <li>
                   <span className="font-medium">Ocean Voyage Collaboration (2018)</span>
