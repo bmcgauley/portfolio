@@ -56,13 +56,10 @@ export default function AboutPage() {
                 I&apos;m Brian McGauley — a Web Developer, IT Consultant, and MBA student at California State University, Fresno. I recently graduated Summa Cum Laude with a Bachelor of Science in Business Administration (Computer Information Systems) in December 2025, and am now pursuing my MBA while running an independent consulting practice through Imaginarii (imagi-narii.com).
               </p>
               <p className="text-foreground/90 mb-4 leading-relaxed">
-                Through Imaginarii, I provide web development, branding, SEO, analytics, and technology strategy services to clients ranging from political campaigns to nonprofits and chambers of commerce. Current engagements include Fresno State Student Housing (full-time Web Developer), pro-bono consulting for the Kerman Chamber of Commerce, and paid web development for Success from Within and Fresno PAL.
+                Through <a href="https://imagi-narii.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Imaginarii</a>, I provide web development, branding, SEO, analytics, and technology strategy services to clients ranging from political campaigns to nonprofits and chambers of commerce. Active engagements include a pro-bono full-technology overhaul for the Kerman Chamber of Commerce and ongoing volunteer support for Fresno PAL and Success from Within.
               </p>
               <p className="text-foreground/90 mb-4 leading-relaxed">
-                Beyond my technical work, I&apos;m a published music artist specializing in dubstep and electronic dance music. My tracks are available on Spotify, Apple Music, and other streaming platforms, with early releases and exclusive content shared on SoundCloud.
-              </p>
-              <p className="text-foreground/90 leading-relaxed">
-                My skill set spans frontend and backend development, database management, data analytics, business analysis, branding, and music production — and I&apos;m passionate about leveraging technology to drive impact across both technical and artistic domains.
+                Beyond my technical work, I&apos;m a published music artist specializing in dubstep and electronic dance music. Tracks are available on <a href="https://open.spotify.com/artist/66AbkMEAAIUz2PqEixKWkK" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Spotify</a>, <a href="#" className="text-primary hover:underline">Apple Music</a>, and other streaming platforms. For releases and updates, visit <a href="https://music.brianmcgauley.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">music.brianmcgauley.com</a>.
               </p>
             </div>
           </div>
@@ -100,13 +97,36 @@ export default function AboutPage() {
                     {edu.degree}{edu.field ? ` – ${edu.field}` : ''}
                   </p>
                   {edu.graduated && (
-                    <p className="text-green-600 dark:text-green-400 font-semibold text-sm mb-1">✓ Graduated</p>
+                    <p className="text-yellow-500 dark:text-yellow-400 font-semibold text-sm mb-1" style={{color: 'rgb(180, 144, 0)', textShadow: '0 0 8px rgba(212, 175, 55, 0.5)'}}>✓ <span className="text-blue-900 dark:text-blue-200">Graduated</span></p>
                   )}
                   {edu.note && (
                     <p className="text-muted-foreground text-sm italic mb-2">{edu.note}</p>
                   )}
                   {edu.gpa && (
                     <p className="text-primary font-medium mb-2">GPA: {edu.gpa}</p>
+                  )}
+                  {/* Credentials table for multi-credential entries */}
+                  {(edu as any).credentials && (edu as any).credentials.length > 0 && (
+                    <div className="mb-4 overflow-x-auto">
+                      <table className="w-full text-sm border-collapse">
+                        <thead>
+                          <tr className="border-b border-border">
+                            <th className="text-left py-1 pr-4 text-muted-foreground font-medium">Credential</th>
+                            <th className="text-left py-1 pr-4 text-muted-foreground font-medium">Program</th>
+                            <th className="text-left py-1 text-muted-foreground font-medium">Conferred</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {(edu as any).credentials.map((cred: any, i: number) => (
+                            <tr key={i} className="border-b border-border/50 last:border-0">
+                              <td className="py-1 pr-4 text-foreground/90">{cred.type}</td>
+                              <td className="py-1 pr-4 text-foreground/90">{cred.program}</td>
+                              <td className="py-1 text-foreground/90 whitespace-nowrap">{cred.conferred}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   )}
                   {/* Degree image */}
                   {edu.degreeImagePath && (
@@ -221,9 +241,8 @@ export default function AboutPage() {
                   Experienced in both FDM and resin printing technologies, creating functional prototypes and custom designs using various materials and post-processing techniques.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="bg-muted text-foreground px-3 py-1 rounded-md text-sm font-medium">Fusion 360</span>
                   <span className="bg-muted text-foreground px-3 py-1 rounded-md text-sm font-medium">Cura</span>
-                  <span className="bg-muted text-foreground px-3 py-1 rounded-md text-sm font-medium">PrusaSlicer</span>
+                  <span className="bg-muted text-foreground px-3 py-1 rounded-md text-sm font-medium">AutoCAD</span>
                 </div>
               </div>
             </div>
@@ -244,9 +263,12 @@ export default function AboutPage() {
                   Published music artist specializing in dubstep and electronic dance music production. Experience in creating high-energy tracks available on Spotify, SoundCloud, and other streaming platforms, with expertise in sound design, mixing, and mastering.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="bg-muted text-foreground px-3 py-1 rounded-md text-sm font-medium">Dubstep Production</span>
                   <span className="bg-muted text-foreground px-3 py-1 rounded-md text-sm font-medium">Ableton Live</span>
+                  <span className="bg-muted text-foreground px-3 py-1 rounded-md text-sm font-medium">FL Studio</span>
                   <span className="bg-muted text-foreground px-3 py-1 rounded-md text-sm font-medium">Sound Design</span>
+                  <span className="bg-muted text-foreground px-3 py-1 rounded-md text-sm font-medium">Mixing</span>
+                  <span className="bg-muted text-foreground px-3 py-1 rounded-md text-sm font-medium">Mastering</span>
+                  <span className="bg-muted text-foreground px-3 py-1 rounded-md text-sm font-medium">Audio Engineering</span>
                 </div>
               </div>
             </div>
@@ -384,19 +406,7 @@ export default function AboutPage() {
                 Volunteer website development for Fresno District 7 Campaign during Fall 2024. Continued as paid consultant via Imaginarii from January 2025 onwards.
               </p>
             </div>
-            {/* Kerman Chamber of Commerce - pro-bono */}
-            <div className="bg-card text-card-foreground rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary group">
-              <div className="flex flex-col items-center mb-4">
-                <div className="relative w-40 h-24 mb-3 p-3 rounded-lg bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900/40 dark:to-amber-800/40 flex items-center justify-center group-hover:from-amber-200 group-hover:to-amber-300 dark:group-hover:from-amber-800/50 dark:group-hover:to-amber-700/50 transition-all duration-300 shadow-md">
-                  <span className="text-2xl font-bold text-amber-700 dark:text-amber-300">KCC</span>
-                </div>
-                <h3 className="text-xl font-semibold text-center text-secondary">Kerman Chamber of Commerce</h3>
-              </div>
-              <p className="text-muted-foreground mb-2 text-center">February 2026 – Present (Pro-Bono)</p>
-              <p className="text-foreground/90 leading-relaxed">
-                Comprehensive pro-bono technology engagement: full branding kit, website rebuild, domain & hosting migration, economic impact analysis study, logo & business cards, accessibility audit (WCAG), SEO & performance audits, and light automation.
-              </p>
-            </div>            {/* Central Valley Justice Coalition */}
+            {/* Central Valley Justice Coalition */}
             <div className="bg-card text-card-foreground rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary group">
               <div className="flex flex-col items-center mb-4">                <div className="relative w-40 h-24 mb-3 p-3 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 flex items-center justify-center group-hover:from-blue-200 group-hover:to-blue-300 dark:group-hover:from-blue-800/50 dark:group-hover:to-blue-700/50 transition-all duration-300 shadow-md">
                   <Image

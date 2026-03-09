@@ -169,7 +169,7 @@ export const experiences = [
     company: 'Imaginarii',
     startDate: 'January 2025',
     endDate: null,
-    description: 'Operating an independent consulting practice (imagi-narii.com / imaginarii.net) providing web development, branding, analytics, SEO, and technology strategy services. Clients include AJ City Council Campaign (paid web development, ajforcitycouncil.com), Success from Within (paid web development & maintenance), and Fresno PAL (paid web development & maintenance). Current pro-bono engagement with Kerman Chamber of Commerce covering full branding kit, website rebuild, domain/host migration, economic impact analysis study, logo, business cards, accessibility audit, SEO audit, performance audit, and light automation.',
+    description: 'Operating an independent consulting practice (imagi-narii.com) providing web development, branding, analytics, SEO, and technology strategy to businesses and nonprofits. Services include full-stack site builds, performance and accessibility audits, domain and hosting management, economic analysis, and light automation.',
     skills: ['Next.js', 'React', 'Web Development', 'Branding', 'SEO', 'Analytics', 'Business Strategy', 'Technical Consulting', 'WordPress']
   },
   {
@@ -241,7 +241,7 @@ export const education = [
     endDate: 'December 2025',
     graduated: true,
     degreeImagePath: '/images/profile/degree-bs-fresnostate.webp',
-    gpa: '3.82',
+    gpa: '3.85',
     honors: [
       {
         type: 'Summa Cum Laude',
@@ -283,7 +283,13 @@ export const education = [
     id: '2',
     institution: 'Clovis Community College',
     degree: "Associate's Degrees & Certificate",
-    field: 'Multiple: Information Systems (Networking & Web Programming), Cyber Security, Business Administration',
+    field: 'Multiple Credentials',
+    credentials: [
+      { type: "Associate's Degree", program: 'Information Systems: Networking', conferred: 'May 2023' },
+      { type: "Associate's Degree", program: 'Information Systems: Programming for Web', conferred: 'May 2023' },
+      { type: "Associate's Certificate", program: 'Cyber Security', conferred: 'May 2023' },
+      { type: "Associate's for Transfer", program: 'Business Administration', conferred: 'Jul 2023' },
+    ],
     startDate: '2021',
     endDate: '2023',
     graduated: true,
@@ -329,7 +335,7 @@ export const skills = [
   },
   {
     category: '3D Printing & Modeling',
-    items: ['FDM Printing', 'Resin Printing', 'Cura', 'PrusaSlicer', 'Fusion 360', 'AutoCAD', 'STL Design', 'Post-Processing']
+    items: ['FDM Printing', 'Resin Printing', 'Cura', 'AutoCAD', 'STL Design', 'Post-Processing']
   },
   {
     category: 'Music Production',
@@ -337,7 +343,7 @@ export const skills = [
   },
   {
     category: 'Audio Engineering',
-    items: ['Pro Tools', 'Ableton Live', 'FL Studio', 'Sound Design', 'Mixing', 'Mastering', 'Foley Recording', 'MIDI Production']
+    items: ['Ableton Live', 'Sound Design', 'FL Studio', 'Mixing', 'Mastering', 'Audio Engineering']
   }
 ];
 
