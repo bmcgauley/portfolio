@@ -25,6 +25,9 @@ const PKP_LOGO_PATH = "/images/profile/logos/pkp-logo.png";
 const CSU_LOGO_PATH = "/images/profile/logos/csu-logo.png";
 const CISSA_LOGO_PATH = "/images/profile/logos/cissa.jpg";
 const PMI_CCVC_LOGO_PATH = "/images/profile/logos/pmiccvc.png";
+const THREE_D_PRINT_IMG_PATH = "/images/profile/3d-printing.png";
+const AUDIO_ENGINEERING_IMG_PATH = "/images/profile/audio-engineering.webp";
+const GAME_DEV_IMG_PATH = "/images/profile/game-development.webp";
 
 // New logo paths
 const AJ_LOGO_PATH = "/images/profile/logos/aj.webp";
@@ -324,7 +327,7 @@ export default function AboutPage() {
             <div className="bg-card text-card-foreground rounded-lg overflow-hidden shadow-md">
               <div className="h-48 relative">
                 <Image 
-                  src={TORCH_IMAGE_PATH} 
+                  src={THREE_D_PRINT_IMG_PATH} 
                   alt="3D Printing Projects" 
                   fill
                   className="object-cover"
@@ -345,7 +348,7 @@ export default function AboutPage() {
             <div className="bg-card text-card-foreground rounded-lg overflow-hidden shadow-md">
               <div className="h-48 relative">
                 <Image 
-                  src={TORCH_IMAGE_PATH} 
+                  src={AUDIO_ENGINEERING_IMG_PATH} 
                   alt="Audio Engineering Setup" 
                   fill
                   className="object-cover"
@@ -371,7 +374,7 @@ export default function AboutPage() {
             <div className="bg-card text-card-foreground rounded-lg overflow-hidden shadow-md">
               <div className="h-48 relative">
                 <Image 
-                  src={TORCH_IMAGE_PATH} 
+                  src={GAME_DEV_IMG_PATH} 
                   alt="Game Development Project" 
                   fill
                   className="object-cover"
