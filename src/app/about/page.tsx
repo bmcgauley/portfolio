@@ -6,6 +6,16 @@ import {
   skills
 } from "@/lib/data";
 
+interface Credential {
+  type: string;
+  program: string;
+  conferred: string;
+}
+
+interface EducationWithCredentials {
+  credentials?: Credential[];
+}
+
 // Use public image paths instead of imports
 const PROFILE_IMAGE_PATH = "/images/profile/DSC07056-2.webp";
 const TORCH_IMAGE_PATH = "/images/profile/torch_high+res.fw.webp";
@@ -106,7 +116,7 @@ export default function AboutPage() {
                     <p className="text-primary font-medium mb-2">GPA: {edu.gpa}</p>
                   )}
                   {/* Credentials table for multi-credential entries */}
-                  {(edu as any).credentials && (edu as any).credentials.length > 0 && (
+                  {(edu as EducationWithCredentials).credentials && (edu as EducationWithCredentials).credentials!.length > 0 && (
                     <div className="mb-4 overflow-x-auto">
                       <table className="w-full text-sm border-collapse">
                         <thead>
@@ -117,7 +127,7 @@ export default function AboutPage() {
                           </tr>
                         </thead>
                         <tbody>
-                          {(edu as any).credentials.map((cred: any, i: number) => (
+                          {(edu as EducationWithCredentials).credentials!.map((cred: Credential, i: number) => (
                             <tr key={i} className="border-b border-border/50 last:border-0">
                               <td className="py-1 pr-4 text-foreground/90">{cred.type}</td>
                               <td className="py-1 pr-4 text-foreground/90">{cred.program}</td>
