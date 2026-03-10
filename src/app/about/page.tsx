@@ -26,8 +26,8 @@ const CSU_LOGO_PATH = "/images/profile/logos/csu-logo.png";
 const CISSA_LOGO_PATH = "/images/profile/logos/cissa.jpg";
 const PMI_CCVC_LOGO_PATH = "/images/profile/logos/pmiccvc.png";
 const THREE_D_PRINT_IMG_PATH = "/images/profile/3d-printing.png";
-const AUDIO_ENGINEERING_IMG_PATH = "/images/profile/audio-engineering.webp";
-const GAME_DEV_IMG_PATH = "/images/profile/game-development.webp";
+const AUDIO_ENGINEERING_IMG_PATH = "/images/profile/audio-engineering.png";
+const GAME_DEV_IMG_PATH = "/images/profile/game-development.png";
 
 // New logo paths
 const AJ_LOGO_PATH = "/images/profile/logos/aj.webp";
