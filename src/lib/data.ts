@@ -165,21 +165,12 @@ export const photoCollections: PhotoCollection[] = [
 export const experiences = [
   {
     id: '0a',
-    position: 'Independent Technology Consultant',
+    position: 'Technology Consultant',
     company: 'Imaginarii',
     startDate: 'January 2025',
     endDate: null,
-    description: 'Operating an independent consulting practice (imagi-narii.com) providing web development, branding, analytics, SEO, and technology strategy to businesses and nonprofits. Services include full-stack site builds, performance and accessibility audits, domain and hosting management, economic analysis, and light automation.',
-    skills: ['Next.js', 'React', 'Web Development', 'Branding', 'SEO', 'Analytics', 'Business Strategy', 'Technical Consulting', 'WordPress']
-  },
-  {
-    id: '0b',
-    position: 'Pro-Bono Technology Consultant',
-    company: 'Kerman Chamber of Commerce',
-    startDate: 'February 2026',
-    endDate: null,
-    description: 'Comprehensive pro-bono technology engagement for the Kerman Chamber of Commerce including: full branding kit development, website rebuild from ground up, domain & hosting resolution, economic impact analysis study, logo design, business card design, accessibility audit (WCAG compliance), SEO audit, performance audit, full site audit, and light automation implementation.',
-    skills: ['Web Development', 'Branding', 'Economic Analysis', 'SEO', 'Accessibility (WCAG)', 'Performance Optimization', 'Logo Design', 'Business Cards', 'Domain Management']
+    description: 'Independent consulting practice (imagi-narii.com) providing technology services to businesses and nonprofits. Services include web development, branding, SEO, analytics, technology strategy, economic analysis, accessibility & performance audits, and light automation. Client engagements include: Kerman Chamber of Commerce (pro-bono) — full technology overhaul including website rebuild, branding kit, economic impact analysis, and WCAG/SEO audits; AJ for City Council, District 7 — campaign website volunteer Fall 2024, transitioned to paid consulting January 2025.',
+    skills: ['Next.js', 'React', 'Web Development', 'Branding', 'SEO', 'Analytics', 'Business Strategy', 'Technical Consulting', 'WordPress', 'Accessibility (WCAG)']
   },
   {
     id: '1',

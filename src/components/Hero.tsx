@@ -18,12 +18,12 @@ export default function Hero() {  return (
         <div className="flex flex-col md:flex-row items-center justify-between gap-12">
           <div className="md:w-1/2 bg-white/50 dark:bg-gray-950/50 p-8 rounded-2xl border border-secondary/20 shadow-lg backdrop-blur-sm">
             <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-[#0a1929] dark:text-white"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              Hi, I&apos;m <span className="text-[#0a1929] dark:text-white">Brian <span className="text-secondary">McGauley</span></span>
+              Hi, I&apos;m <span className="text-[#D4AF37] dark:text-[#D4AF37]">Brian</span> <span className="text-[#0a1929] dark:text-white">McGauley</span>
             </motion.h1>
             
             <motion.p 
@@ -66,7 +66,7 @@ export default function Hero() {  return (
               <div className="relative rounded-full overflow-hidden border-4 border-secondary/40 shadow-xl">
                 <div className="border-4 border-white/80 dark:border-gray-800/80 rounded-full overflow-hidden shadow-xl">
                   <Image 
-                    src="/images/profile/DSC07056-2.webp"
+                    src="/images/profile/me-studio-portrait.png"
                     alt="Brian McGauley"
                     width={400}
                     height={400}
