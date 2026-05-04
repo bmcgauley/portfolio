@@ -15,19 +15,6 @@ const labelClass =
 const captionClass =
   "mt-2 font-serif italic text-caption text-ink-muted";
 
-const currentCaptionClass =
-  "block font-mono text-mono-label text-gold-shadow mt-2";
-
-function fileNameFromUrl(url: string): string {
-  try {
-    const u = new URL(url);
-    const parts = u.pathname.split("/");
-    return parts[parts.length - 1] || url;
-  } catch {
-    return url;
-  }
-}
-
 interface PageProps {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ error?: string }>;
