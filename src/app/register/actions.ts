@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { hash } from "bcryptjs";
+import { AuthError } from "next-auth";
 import { signIn } from "@/auth";
 import { createUserWithPassword } from "@/lib/users";
 import { isAdminEmail } from "@/lib/admin-allowlist";
@@ -25,9 +26,16 @@ export async function registerAction(formData: FormData) {
     redirect("/register?error=UNKNOWN");
   }
 
-  await signIn("credentials", {
-    email,
-    password,
-    redirectTo: "/admin",
-  });
+  try {
+    await signIn("credentials", {
+      email,
+      password,
+      redirectTo: "/admin",
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      redirect(`/login?error=${encodeURIComponent(error.type)}`);
+    }
+    throw error;
+  }
 }

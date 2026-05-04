@@ -1,8 +1,9 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { auth, signIn } from "@/auth";
+import { auth } from "@/auth";
 import { SectionDivider } from "@/components/ui/section-divider";
 import { Button } from "@/components/ui/button";
+import { credentialsSignInAction, googleSignInAction } from "./actions";
 
 export const metadata = {
   title: "Sign in",
@@ -23,6 +24,9 @@ export default async function LoginPage({
     redirect(callbackUrl || "/admin");
   }
 
+  const googleAction = googleSignInAction.bind(null, callbackUrl);
+  const credentialsAction = credentialsSignInAction.bind(null, callbackUrl);
+
   return (
     <main className="bg-bone min-h-screen">
       <section className="max-w-md mx-auto px-6 py-20">
@@ -42,20 +46,15 @@ export default async function LoginPage({
           <div className="bg-vellum border-l-4 border-crimson px-5 py-4 mb-8 rounded-[2px]">
             <p className="font-serif text-body text-ink">
               {error === "CredentialsSignin"
-                ? "Email or password is incorrect."
+                ? "Email or password is incorrect, or no account exists for that email yet — try registering."
                 : error === "AccessDenied"
-                  ? "This email is not authorized."
+                  ? "This email is not on the admin allowlist."
                   : "Could not sign in. Try again."}
             </p>
           </div>
         ) : null}
 
-        <form
-          action={async () => {
-            "use server";
-            await signIn("google", { redirectTo: callbackUrl || "/admin" });
-          }}
-        >
+        <form action={googleAction}>
           <Button
             type="submit"
             variant="secondary"
@@ -73,17 +72,7 @@ export default async function LoginPage({
           </p>
         </div>
 
-        <form
-          action={async (formData: FormData) => {
-            "use server";
-            await signIn("credentials", {
-              email: formData.get("email"),
-              password: formData.get("password"),
-              redirectTo: callbackUrl || "/admin",
-            });
-          }}
-          className="space-y-5"
-        >
+        <form action={credentialsAction} className="space-y-5">
           <div>
             <label
               htmlFor="email"
