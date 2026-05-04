@@ -1,36 +1,83 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import RefreshAllPreviewsButton from '@/components/RefreshAllPreviewsButton';
+import Link from "next/link";
+import { auth } from "@/auth";
+import { getDb } from "@/lib/mongodb";
+import { Ornament } from "@/components/ui/ornament";
 
-export const metadata: Metadata = {
-  title: 'Admin Dashboard | Portfolio',
-  description: 'Admin dashboard for portfolio management',
-};
+async function getCounts() {
+  try {
+    const db = await getDb();
+    const [publications, essays, achievements, projects] = await Promise.all([
+      db.collection("publications").countDocuments(),
+      db.collection("essays").countDocuments(),
+      db.collection("achievements").countDocuments(),
+      db.collection("projects").countDocuments(),
+    ]);
+    return { publications, essays, achievements, projects };
+  } catch {
+    return { publications: 0, essays: 0, achievements: 0, projects: 0 };
+  }
+}
 
-export default function AdminPage() {
+const STATS: {
+  label: string;
+  key: "publications" | "essays" | "achievements" | "projects";
+  href: string;
+}[] = [
+  { label: "Publications", key: "publications", href: "/admin/publications" },
+  { label: "Essays", key: "essays", href: "/admin/writing" },
+  { label: "Achievements", key: "achievements", href: "/admin/achievements" },
+  { label: "Projects", key: "projects", href: "/admin/projects" },
+];
+
+export default async function AdminDashboardPage() {
+  const session = await auth();
+  const counts = await getCounts();
+  const greetingName = (session?.user?.name ?? "").split(" ")[0] || "Brian";
+
   return (
-    <main className="container max-w-5xl py-10 px-4 mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <Link
-          href="/"
-          className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-        >
-          Back to Home
-        </Link>
-      </div>
-      
-      <div className="grid grid-cols-1 gap-6">
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Site Preview Management</h2>
-          <p className="mb-6 text-gray-600 dark:text-gray-300">
-            Use this panel to manage site preview images for your projects. You can refresh all previews at once,
-            which will capture fresh screenshots of your project demo sites.
+    <div>
+      <header className="mb-12">
+        <p className="font-mono uppercase tracking-[0.22em] text-[10px] text-gold-shadow mb-3">
+          Office · Overview
+        </p>
+        <h1 className="font-display font-bold uppercase tracking-[0.04em] text-display-2 text-ink">
+          Dashboard
+        </h1>
+        <p className="font-serif italic text-body text-ink-soft mt-3">
+          A snapshot of the site — content counts and quick actions.
+        </p>
+      </header>
+
+      <section className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+        {STATS.map((stat) => (
+          <Link
+            key={stat.key}
+            href={stat.href}
+            className="block bg-vellum border-t-4 border-gold rounded-[2px] p-6 hover:shadow-[0_4px_16px_rgba(122,79,20,0.12)] transition-shadow"
+          >
+            <p className="font-mono uppercase tracking-[0.22em] text-[10px] text-crimson-deep mb-3">
+              {stat.label}
+            </p>
+            <p className="font-display font-bold text-h1 text-ink">
+              {counts[stat.key]}
+            </p>
+          </Link>
+        ))}
+      </section>
+
+      <section className="bg-vellum border-l-8 border-parchment rounded-[2px] p-8">
+        <div className="flex items-center gap-2 mb-3">
+          <Ornament />
+          <p className="font-mono uppercase tracking-[0.22em] text-[10px] text-gold-shadow">
+            Welcome, {greetingName}
           </p>
-          
-          <RefreshAllPreviewsButton />
         </div>
-      </div>
-    </main>
+        <p className="font-serif text-body text-ink leading-relaxed">
+          The CMS is wired. Pick a section from the sidebar to manage content.
+          Publications and Writing are next on the build list — Achievements
+          and Projects after that.
+        </p>
+      </section>
+    </div>
   );
-} 
+}
