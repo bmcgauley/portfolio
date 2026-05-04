@@ -17,18 +17,18 @@ type Achievement = {
 
 const achievements: Achievement[] = [
   {
-    title: "Lewis & Virginia Eaton Business Scholarship",
-    date: "Fall 2025",
-    description:
-      "Awarded $2,000 for the 2025–2026 academic year by the Craig School of Business at CSU Fresno.",
-  },
-  {
     title: "Re-Entry Student Award",
     date: "May 2026",
     description:
       "Recognized by CSU Fresno for academic achievement among returning students.",
     // COPY: placeholder, refine — newspaper article reference to be added
-    citation: "Newspaper article reference to come.",
+    citation: "",
+  },
+  {
+    title: "Lewis & Virginia Eaton Business Scholarship",
+    date: "Fall 2025",
+    description:
+      "Awarded $2,000 for the 2025–2026 academic year by the Craig School of Business at CSU Fresno.",
   },
   {
     title: "Phi Kappa Phi & Beta Gamma Sigma Induction",

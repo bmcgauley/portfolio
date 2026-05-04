@@ -100,6 +100,11 @@ const honors: Honor[] = [
     date: "2025–2026",
   },
   { award: "Re-Entry Student Award", body: "CSU Fresno", date: "May 2026" },
+  {
+    award: "Certificate of Recognition",
+    body: "PMI Central California Valley Chapter",
+    date: "2025",
+  },
   { award: "President's List", body: "CSU Fresno", date: "Spring 2025" },
   { award: "President's List", body: "CSU Fresno", date: "Fall 2023" },
   { award: "Dean's List", body: "CSU Fresno", date: "Spring 2024" },
@@ -231,13 +236,41 @@ export default function AboutPage() {
             credential="Incoming MBA Student · Craig School of Business"
             date="Beginning Spring 2026"
           />
-          <CredentialCard
-            institution="California State University, Fresno"
-            credential="B.S. Business Administration, Computer Information Systems"
-            date="December 2025"
-            honors="Summa Cum Laude · GPA 3.85"
-            societies={["Phi Kappa Phi", "Beta Gamma Sigma"]}
-          />
+          <div className="space-y-0">
+            <CredentialCard
+              institution="California State University, Fresno"
+              credential="B.S. Business Administration, Computer Information Systems"
+              date="December 2025"
+              honors="Summa Cum Laude · GPA 3.85"
+              societies={["Phi Kappa Phi", "Beta Gamma Sigma"]}
+              className="rounded-b-none border-b border-gold/30"
+            />
+            <figure className="bg-vellum border-l-8 border-parchment rounded-[2px] rounded-t-none px-8 py-6 shadow-[0_2px_8px_rgba(122,79,20,0.08)]">
+              <figcaption className="font-mono uppercase tracking-[0.18em] text-mono-label text-gold-shadow mb-3">
+                Diploma
+              </figcaption>
+              <a
+                href="/images/profile/degree-bs-fresnostate.webp"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block group"
+                aria-label="View full B.S. diploma from California State University, Fresno"
+              >
+                <div className="relative w-full max-w-md aspect-[11/8.5] bg-bone p-2 border border-gold rounded-[2px] overflow-hidden transition-shadow group-hover:shadow-[0_4px_16px_rgba(122,79,20,0.16)]">
+                  <Image
+                    src="/images/profile/degree-bs-fresnostate.webp"
+                    alt="Bachelor of Science diploma — California State University, Fresno"
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, 28rem"
+                  />
+                </div>
+                <span className="font-serif italic text-caption text-ink-muted mt-3 inline-block group-hover:text-crimson-deep transition-colors">
+                  Click to view full diploma →
+                </span>
+              </a>
+            </figure>
+          </div>
           <CredentialCard
             institution="Clovis Community College"
             credential="Associate's Degrees & Certificate · IS Networking, IS Programming for Web, Cyber Security, Business Administration"
