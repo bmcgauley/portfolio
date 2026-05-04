@@ -1,9 +1,39 @@
-import { 
-  Project, 
-  PhotoCollection, 
+import {
+  Project,
+  PhotoCollection,
   Business,
-  Nonprofit 
+  Nonprofit
 } from './types';
+
+/**
+ * DB-first project loader. Queries MongoDB; falls back to the hardcoded
+ * `projects` array below if DB is empty or unreachable. After Phase F
+ * migration, the static fallback becomes dead code.
+ */
+export async function loadProjects(): Promise<Project[]> {
+  try {
+    const { listProjects } = await import('./projects-db');
+    const docs = await listProjects();
+    if (docs.length > 0) {
+      return docs.map((d) => ({
+        id: d.slug,
+        title: d.title,
+        description: d.description,
+        tags: d.tags,
+        category: d.category,
+        technologies: d.technologies,
+        imageUrl: d.imageUrl,
+        folderName: d.folderName,
+        demoUrl: d.demoUrl,
+        githubUrl: d.githubUrl,
+        featured: d.featured,
+      }));
+    }
+  } catch {
+    // DB unreachable — fall through
+  }
+  return projects;
+}
 
 // Validate image URL format
 const isValidImageUrl = (url: string): boolean => {

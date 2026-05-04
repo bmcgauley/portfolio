@@ -9,13 +9,22 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-const featuredProjects = [
+type FeaturedItem = {
+  id: string;
+  title: string;
+  meta: string;
+  description: string;
+  url: string;
+};
+
+// Hardcoded fallback. Used only if DB is empty or unreachable.
+// Becomes dead code after Phase F migration.
+const fallbackFeatured: FeaturedItem[] = [
   {
     id: "aj-for-city-council",
     title: "AJ for City Council",
     meta: "2025",
-    description:
-      "Campaign website with policy positions and donation flow.",
+    description: "Campaign website with policy positions and donation flow.",
     url: "/projects/aj-for-city-council",
   },
   {
@@ -29,13 +38,37 @@ const featuredProjects = [
     id: "fsh-dash",
     title: "FSH Dash",
     meta: "2024",
-    description:
-      "Internal analytics dashboard for fashion retail operations.",
+    description: "Internal analytics dashboard for fashion retail operations.",
     url: "/projects/fsh-dash",
   },
 ];
 
-export default function FeaturedProjects() {
+async function loadFeatured(): Promise<FeaturedItem[]> {
+  try {
+    const { listProjects } = await import("@/lib/projects-db");
+    const docs = await listProjects();
+    const featured = docs.filter((d) => d.featured);
+    const pool = featured.length > 0 ? featured : docs;
+    if (pool.length > 0) {
+      return pool.slice(0, 3).map((p) => ({
+        id: p.slug,
+        title: p.title,
+        meta: p.category ?? "",
+        description: p.description,
+        url: `/projects/${p.slug}`,
+      }));
+    }
+  } catch {
+    // DB unreachable — fall through
+  }
+  return fallbackFeatured;
+}
+
+export default async function FeaturedProjects() {
+  const items = await loadFeatured();
+
+  if (items.length === 0) return null;
+
   return (
     <section className="bg-bone py-20 px-6">
       <div className="max-w-6xl mx-auto">
@@ -49,11 +82,13 @@ export default function FeaturedProjects() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredProjects.map((project) => (
+          {items.map((project) => (
             <Card key={project.id} className="h-full">
               <CardHeader>
                 <CardTitle>{project.title}</CardTitle>
-                <CardDescription>{project.meta}</CardDescription>
+                {project.meta ? (
+                  <CardDescription>{project.meta}</CardDescription>
+                ) : null}
               </CardHeader>
               <CardContent className="flex-grow text-body">
                 {project.description}

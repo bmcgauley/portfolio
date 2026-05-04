@@ -1,14 +1,14 @@
-"use client";
+import { loadProjects } from "@/lib/data";
+import ProjectsView from "@/components/ProjectsView";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { projects } from "@/lib/data";
-import { Project } from "@/lib/types";
-import ProjectCard from "@/components/ProjectCard";
-import ProjectFilter from "@/components/ProjectFilter";
+export const metadata = {
+  title: "Projects",
+  description:
+    "Consulting work, academic projects, and volunteer engagements.",
+};
 
-export default function ProjectsPage() {
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>(projects);
+export default async function ProjectsPage() {
+  const projects = await loadProjects();
 
   return (
     <div className="min-h-screen bg-bone">
@@ -21,38 +21,7 @@ export default function ProjectsPage() {
         </p>
       </header>
 
-      <ProjectFilter projects={projects} onFilter={setFilteredProjects} />
-
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={filteredProjects.length}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-6 py-12 max-w-7xl mx-auto"
-        >
-          {filteredProjects.length > 0 ? (
-            filteredProjects.map((project) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <ProjectCard project={project} />
-              </motion.div>
-            ))
-          ) : (
-            <div className="col-span-full py-12 text-center">
-              <p className="font-serif italic text-body text-ink-muted">
-                No projects match the selected filter.
-              </p>
-            </div>
-          )}
-        </motion.div>
-      </AnimatePresence>
+      <ProjectsView projects={projects} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { essays } from "@/data/writing";
+import { loadEssays } from "@/data/writing";
 import { EssayCard } from "@/components/writing/EssayCard";
 
 export const metadata = {
@@ -6,7 +6,8 @@ export const metadata = {
   description: "Essays and notes by Brian McGauley.",
 };
 
-export default function WritingIndexPage() {
+export default async function WritingIndexPage() {
+  const essays = await loadEssays();
   const sorted = [...essays].sort((a, b) => (a.date < b.date ? 1 : -1));
 
   return (

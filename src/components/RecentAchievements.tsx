@@ -13,16 +13,18 @@ type Achievement = {
   date: string;
   description: string;
   citation?: string;
+  citationUrl?: string;
 };
 
-const achievements: Achievement[] = [
+// Hardcoded fallback. Used only if DB is empty or unreachable.
+// Becomes dead code after Phase F migration.
+const fallbackAchievements: Achievement[] = [
   {
     title: "Re-Entry Student Award",
     date: "May 2026",
     description:
       "Recognized by CSU Fresno for academic achievement among returning students.",
-    // COPY: placeholder, refine — newspaper article reference to be added
-    citation: "",
+    citation: "Newspaper article reference to come.",
   },
   {
     title: "Lewis & Virginia Eaton Business Scholarship",
@@ -44,7 +46,30 @@ const achievements: Achievement[] = [
   },
 ];
 
-export default function RecentAchievements() {
+async function loadAchievements(): Promise<Achievement[]> {
+  try {
+    const { listAchievements } = await import("@/lib/achievements-db");
+    const docs = await listAchievements();
+    if (docs.length > 0) {
+      return docs.map((d) => ({
+        title: d.title,
+        date: d.date,
+        description: d.description,
+        citation: d.citation,
+        citationUrl: d.citationUrl,
+      }));
+    }
+  } catch {
+    // DB unreachable — fall through
+  }
+  return fallbackAchievements;
+}
+
+export default async function RecentAchievements() {
+  const achievements = await loadAchievements();
+
+  if (achievements.length === 0) return null;
+
   return (
     <section className="bg-bone py-20 px-6">
       <div className="max-w-6xl mx-auto">
@@ -68,7 +93,18 @@ export default function RecentAchievements() {
                 <p>{a.description}</p>
                 {a.citation ? (
                   <p className="font-mono uppercase tracking-[0.18em] text-mono-label text-gold-shadow mt-3">
-                    {a.citation}
+                    {a.citationUrl ? (
+                      <a
+                        href={a.citationUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-crimson-deep underline-offset-4 hover:underline"
+                      >
+                        {a.citation}
+                      </a>
+                    ) : (
+                      a.citation
+                    )}
                   </p>
                 ) : null}
               </CardContent>

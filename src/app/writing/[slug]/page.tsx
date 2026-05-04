@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { essays, type Essay } from "@/data/writing";
+import { getEssayBySlug, loadEssays } from "@/data/writing";
 import { SectionDivider } from "@/components/ui/section-divider";
 import { PullQuote } from "@/components/writing/PullQuote";
 
@@ -47,7 +47,8 @@ function formatDate(iso: string): string {
   return `${day} ${month} ${year}`;
 }
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const essays = await loadEssays();
   return essays.map((e) => ({ slug: e.slug }));
 }
 
@@ -57,7 +58,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const essay = essays.find((e) => e.slug === slug);
+  const essay = await getEssayBySlug(slug);
   if (!essay) return { title: "Writing" };
   return {
     title: essay.title,
@@ -71,7 +72,7 @@ export default async function EssayPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const essay: Essay | undefined = essays.find((e) => e.slug === slug);
+  const essay = await getEssayBySlug(slug);
   if (!essay) notFound();
 
   const segments = parseBody(essay.body);
