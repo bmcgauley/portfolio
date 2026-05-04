@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { put, del } from "@vercel/blob";
+import { del } from "@vercel/blob";
 import { requireAdmin, slugify } from "@/lib/admin-helpers";
 import {
   createPublication,
@@ -33,28 +33,8 @@ function asCsv(v: FormDataEntryValue | null): string[] {
     .filter((s) => s.length > 0);
 }
 
-function asFile(v: FormDataEntryValue | null): File | null {
-  if (v && typeof v !== "string" && v.size > 0) return v;
-  return null;
-}
-
-function fileExt(name: string, fallback: string): string {
-  const dot = name.lastIndexOf(".");
-  if (dot < 0) return fallback;
-  return name.slice(dot + 1).toLowerCase() || fallback;
-}
-
-async function uploadCover(slug: string, file: File): Promise<string> {
-  const ext = fileExt(file.name, "jpg");
-  const key = `publications/covers/${slug}-${Date.now()}.${ext}`;
-  const blob = await put(key, file, { access: "public" });
-  return blob.url;
-}
-
-async function uploadPdf(slug: string, file: File): Promise<string> {
-  const key = `publications/academic/${slug}-${Date.now()}.pdf`;
-  const blob = await put(key, file, { access: "public" });
-  return blob.url;
+function isVercelBlobUrl(url: string | undefined): url is string {
+  return Boolean(url && /\.public\.blob\.vercel-storage\.com\//.test(url));
 }
 
 function failNew(reason: string): never {
@@ -86,13 +66,11 @@ export async function createPublicationAction(
     const releaseDate = asString(formData.get("releaseDate"));
     const externalUrl = asOptionalString(formData.get("externalUrl"));
     const tags = asCsv(formData.get("tags"));
-    const file = asFile(formData.get("coverImage"));
+    const coverImage = asString(formData.get("coverImageUrl"));
 
-    if (!subtitle || !description || !status || !releaseDate || !file) {
+    if (!subtitle || !description || !status || !releaseDate || !coverImage) {
       failNew("MISSING_FIELDS");
     }
-
-    const coverImage = await uploadCover(slug, file as File);
 
     const data: Omit<DrawnFromDoc, "_id" | "createdAt" | "updatedAt"> = {
       kind: "drawn-from",
@@ -118,7 +96,7 @@ export async function createPublicationAction(
       formData.get("category"),
     ) as AcademicDoc["category"];
     const tags = asCsv(formData.get("tags"));
-    const file = asFile(formData.get("pdf"));
+    const pdfPath = asString(formData.get("pdfUrl"));
 
     if (
       !course ||
@@ -126,12 +104,10 @@ export async function createPublicationAction(
       !category ||
       authors.length === 0 ||
       Number.isNaN(year) ||
-      !file
+      !pdfPath
     ) {
       failNew("MISSING_FIELDS");
     }
-
-    const pdfPath = await uploadPdf(slug, file as File);
 
     const data: Omit<AcademicDoc, "_id" | "createdAt" | "updatedAt"> = {
       kind: "academic",
@@ -195,20 +171,18 @@ export async function updatePublicationAction(
     const releaseDate = asString(formData.get("releaseDate"));
     const externalUrl = asOptionalString(formData.get("externalUrl"));
     const tags = asCsv(formData.get("tags"));
-    const file = asFile(formData.get("coverImage"));
+    const newCoverImage = asString(formData.get("coverImageUrl"));
 
     if (!subtitle || !description || !status || !releaseDate) {
       failEdit(id, "MISSING_FIELDS");
     }
 
     let coverImage = existing.coverImage;
-    if (file) {
-      const newUrl = await uploadCover(slug, file);
-      const oldUrl = existing.coverImage;
-      coverImage = newUrl;
-      if (oldUrl && oldUrl !== newUrl) {
+    if (newCoverImage && newCoverImage !== existing.coverImage) {
+      coverImage = newCoverImage;
+      if (isVercelBlobUrl(existing.coverImage)) {
         try {
-          await del(oldUrl);
+          await del(existing.coverImage);
         } catch {
           // best-effort blob cleanup
         }
@@ -237,7 +211,7 @@ export async function updatePublicationAction(
       formData.get("category"),
     ) as AcademicDoc["category"];
     const tags = asCsv(formData.get("tags"));
-    const file = asFile(formData.get("pdf"));
+    const newPdfPath = asString(formData.get("pdfUrl"));
 
     if (
       !course ||
@@ -250,13 +224,11 @@ export async function updatePublicationAction(
     }
 
     let pdfPath = existing.pdfPath;
-    if (file) {
-      const newUrl = await uploadPdf(slug, file);
-      const oldUrl = existing.pdfPath;
-      pdfPath = newUrl;
-      if (oldUrl && oldUrl !== newUrl) {
+    if (newPdfPath && newPdfPath !== existing.pdfPath) {
+      pdfPath = newPdfPath;
+      if (isVercelBlobUrl(existing.pdfPath)) {
         try {
-          await del(oldUrl);
+          await del(existing.pdfPath);
         } catch {
           // best-effort blob cleanup
         }

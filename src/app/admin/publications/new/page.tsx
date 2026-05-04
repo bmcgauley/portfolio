@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { BlobFileInput } from "@/components/admin/BlobFileInput";
 import { createPublicationAction } from "../actions";
 
 type Kind = "drawn-from" | "academic" | "independent";
@@ -102,13 +103,12 @@ export default function NewPublicationPage() {
               <label className={LABEL_CLASS} htmlFor="coverImage">
                 Cover Image
               </label>
-              <input
+              <BlobFileInput
                 id="coverImage"
-                name="coverImage"
-                type="file"
-                accept=".jpg,.jpeg,.png,.webp"
+                name="coverImageUrl"
+                accept="image/jpeg,image/png,image/webp"
+                pathPrefix="publications/covers"
                 required
-                className={INPUT_CLASS}
               />
             </div>
             <div>
@@ -218,13 +218,12 @@ export default function NewPublicationPage() {
               <label className={LABEL_CLASS} htmlFor="pdf">
                 PDF
               </label>
-              <input
+              <BlobFileInput
                 id="pdf"
-                name="pdf"
-                type="file"
-                accept=".pdf"
+                name="pdfUrl"
+                accept="application/pdf"
+                pathPrefix="publications/academic"
                 required
-                className={INPUT_CLASS}
               />
             </div>
             <div>

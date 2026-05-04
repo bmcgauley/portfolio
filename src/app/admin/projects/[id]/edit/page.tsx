@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { SectionDivider } from "@/components/ui/section-divider";
+import { BlobFileInput } from "@/components/admin/BlobFileInput";
 import { getProjectById } from "@/lib/projects-db";
 import { deleteProjectAction, updateProjectAction } from "../../actions";
 
@@ -168,22 +169,17 @@ export default async function EditProjectPage({
           <label htmlFor="imageFile" className={labelClass}>
             Image File
           </label>
-          <input
+          <BlobFileInput
             id="imageFile"
-            name="imageFile"
-            type="file"
-            accept="image/*"
-            className={inputClass}
+            name="uploadedImageUrl"
+            accept="image/jpeg,image/png,image/webp"
+            pathPrefix="projects"
+            defaultUrl={project.imageUrl}
           />
           <p className={captionClass}>
             Upload an image (jpg, png, webp). Or paste a URL below — the file
             takes precedence if both provided.
           </p>
-          {project.imageUrl ? (
-            <span className={currentCaptionClass}>
-              Current: {fileNameFromUrl(project.imageUrl)} — leave empty to keep
-            </span>
-          ) : null}
         </div>
 
         <div>

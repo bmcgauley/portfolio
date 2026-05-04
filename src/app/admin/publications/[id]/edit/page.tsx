@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { BlobFileInput } from "@/components/admin/BlobFileInput";
 import { getPublicationById } from "@/lib/publications-db";
 import { updatePublicationAction } from "../../actions";
 
@@ -9,19 +10,6 @@ const INPUT_CLASS =
 
 const LABEL_CLASS =
   "block font-display uppercase tracking-[0.18em] text-xs text-crimson-deep mb-2";
-
-const CURRENT_CAPTION =
-  "block font-mono text-mono-label text-gold-shadow mt-2";
-
-function fileNameFromUrl(url: string): string {
-  try {
-    const u = new URL(url);
-    const parts = u.pathname.split("/");
-    return parts[parts.length - 1] || url;
-  } catch {
-    return url;
-  }
-}
 
 export default async function EditPublicationPage({
   params,
@@ -129,19 +117,13 @@ export default async function EditPublicationPage({
               <label className={LABEL_CLASS} htmlFor="coverImage">
                 Cover Image
               </label>
-              <input
+              <BlobFileInput
                 id="coverImage"
-                name="coverImage"
-                type="file"
-                accept=".jpg,.jpeg,.png,.webp"
-                className={INPUT_CLASS}
+                name="coverImageUrl"
+                accept="image/jpeg,image/png,image/webp"
+                pathPrefix="publications/covers"
+                defaultUrl={pub.coverImage}
               />
-              {pub.coverImage && (
-                <span className={CURRENT_CAPTION}>
-                  Current: {fileNameFromUrl(pub.coverImage)} — leave empty to
-                  keep
-                </span>
-              )}
             </div>
             <div>
               <label className={LABEL_CLASS} htmlFor="status">
@@ -256,18 +238,13 @@ export default async function EditPublicationPage({
               <label className={LABEL_CLASS} htmlFor="pdf">
                 PDF
               </label>
-              <input
+              <BlobFileInput
                 id="pdf"
-                name="pdf"
-                type="file"
-                accept=".pdf"
-                className={INPUT_CLASS}
+                name="pdfUrl"
+                accept="application/pdf"
+                pathPrefix="publications/academic"
+                defaultUrl={pub.pdfPath}
               />
-              {pub.pdfPath && (
-                <span className={CURRENT_CAPTION}>
-                  Current: {fileNameFromUrl(pub.pdfPath)} — leave empty to keep
-                </span>
-              )}
             </div>
             <div>
               <label className={LABEL_CLASS} htmlFor="authors">

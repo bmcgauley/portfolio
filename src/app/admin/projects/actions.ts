@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { put, del } from "@vercel/blob";
+import { del } from "@vercel/blob";
 import { requireAdmin, slugify } from "@/lib/admin-helpers";
 import {
   createProject,
@@ -36,17 +36,6 @@ function asCsv(v: FormDataEntryValue | null): string[] {
     .filter((s) => s.length > 0);
 }
 
-function asFile(v: FormDataEntryValue | null): File | null {
-  if (v && typeof v !== "string" && v.size > 0) return v;
-  return null;
-}
-
-function fileExt(name: string, fallback: string): string {
-  const dot = name.lastIndexOf(".");
-  if (dot < 0) return fallback;
-  return name.slice(dot + 1).toLowerCase() || fallback;
-}
-
 function isVercelBlobUrl(url: string | undefined | null): boolean {
   if (!url) return false;
   try {
@@ -62,13 +51,6 @@ function asCategory(v: FormDataEntryValue | null): Category | undefined {
   return (CATEGORIES as readonly string[]).includes(s)
     ? (s as Category)
     : undefined;
-}
-
-async function uploadProjectImage(slug: string, file: File): Promise<string> {
-  const ext = fileExt(file.name, "jpg");
-  const key = `projects/${slug}-${Date.now()}.${ext}`;
-  const blob = await put(key, file, { access: "public" });
-  return blob.url;
 }
 
 export async function createProjectAction(formData: FormData): Promise<void> {
@@ -91,15 +73,11 @@ export async function createProjectAction(formData: FormData): Promise<void> {
   const githubUrl = asOptionalString(formData.get("githubUrl"));
   const featured = formData.get("featured") === "on";
 
-  const file = asFile(formData.get("imageFile"));
+  const uploadedUrl = asOptionalString(formData.get("uploadedImageUrl"));
   const pastedUrl = asOptionalString(formData.get("imageUrl"));
 
-  let imageUrl: string | undefined;
-  if (file) {
-    imageUrl = await uploadProjectImage(slug, file);
-  } else if (pastedUrl) {
-    imageUrl = pastedUrl;
-  }
+  // Uploaded file takes precedence over pasted external URL.
+  const imageUrl = uploadedUrl ?? pastedUrl;
 
   await createProject({
     slug,
@@ -149,27 +127,16 @@ export async function updateProjectAction(
   const githubUrl = asOptionalString(formData.get("githubUrl"));
   const featured = formData.get("featured") === "on";
 
-  const file = asFile(formData.get("imageFile"));
+  const uploadedUrl = asOptionalString(formData.get("uploadedImageUrl"));
   const pastedUrl = asOptionalString(formData.get("imageUrl"));
+  const newImageUrl = uploadedUrl ?? pastedUrl;
 
   let imageUrl: string | undefined = existing.imageUrl;
-  if (file) {
-    const newUrl = await uploadProjectImage(slug, file);
-    const oldUrl = existing.imageUrl;
-    imageUrl = newUrl;
-    if (oldUrl && oldUrl !== newUrl && isVercelBlobUrl(oldUrl)) {
+  if (newImageUrl && newImageUrl !== existing.imageUrl) {
+    imageUrl = newImageUrl;
+    if (existing.imageUrl && isVercelBlobUrl(existing.imageUrl)) {
       try {
-        await del(oldUrl);
-      } catch {
-        // best-effort blob cleanup
-      }
-    }
-  } else if (pastedUrl && pastedUrl !== existing.imageUrl) {
-    const oldUrl = existing.imageUrl;
-    imageUrl = pastedUrl;
-    if (oldUrl && isVercelBlobUrl(oldUrl)) {
-      try {
-        await del(oldUrl);
+        await del(existing.imageUrl);
       } catch {
         // best-effort blob cleanup
       }

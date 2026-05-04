@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { BlobFileInput } from "@/components/admin/BlobFileInput";
 import { createProjectAction } from "../actions";
 
 const inputClass =
@@ -136,12 +137,11 @@ export default async function NewProjectPage({ searchParams }: PageProps) {
           <label htmlFor="imageFile" className={labelClass}>
             Image File
           </label>
-          <input
+          <BlobFileInput
             id="imageFile"
-            name="imageFile"
-            type="file"
-            accept="image/*"
-            className={inputClass}
+            name="uploadedImageUrl"
+            accept="image/jpeg,image/png,image/webp"
+            pathPrefix="projects"
           />
           <p className={captionClass}>
             Upload an image (jpg, png, webp). Or paste a URL below — the file
