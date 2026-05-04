@@ -8,24 +8,39 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-const achievements = [
+type Achievement = {
+  title: string;
+  date: string;
+  description: string;
+  citation?: string;
+};
+
+const achievements: Achievement[] = [
+  {
+    title: "Lewis & Virginia Eaton Business Scholarship",
+    date: "Fall 2025",
+    description:
+      "Awarded $2,000 for the 2025–2026 academic year by the Craig School of Business at CSU Fresno.",
+  },
+  {
+    title: "Re-Entry Student Award",
+    date: "May 2026",
+    description:
+      "Recognized by CSU Fresno for academic achievement among returning students.",
+    // COPY: placeholder, refine — newspaper article reference to be added
+    citation: "Newspaper article reference to come.",
+  },
   {
     title: "Phi Kappa Phi & Beta Gamma Sigma Induction",
     date: "May 2025",
     description:
-      "Inducted into two prestigious honor societies recognizing academic excellence.",
+      "Inducted into two honor societies recognizing academic standing in the top tier of the program.",
   },
   {
     title: "Robotics Competition Initiative",
     date: "Spring 2025",
     description:
       "Helped distribute robotics competition starter sets to elementary schools in Fresno and Clovis through Fresno PAL and Success from Within.",
-  },
-  {
-    title: "Educational Technology Leadership",
-    date: "Spring 2025",
-    description:
-      "Led initiatives to enhance digital learning tools and analytics platforms for student success.",
   },
 ];
 
@@ -42,7 +57,7 @@ export default function RecentAchievements() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {achievements.map((a) => (
             <Card key={a.title} className="h-full">
               <CardHeader>
@@ -50,7 +65,12 @@ export default function RecentAchievements() {
                 <CardDescription>{a.date}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow text-body">
-                {a.description}
+                <p>{a.description}</p>
+                {a.citation ? (
+                  <p className="font-mono uppercase tracking-[0.18em] text-mono-label text-gold-shadow mt-3">
+                    {a.citation}
+                  </p>
+                ) : null}
               </CardContent>
             </Card>
           ))}

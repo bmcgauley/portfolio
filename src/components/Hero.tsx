@@ -12,9 +12,9 @@ export default function Hero() {
         </div>
         <Wordmark variant="primary" as="h1" />
         <p className="font-serif italic text-body-lg text-ink-soft max-w-2xl mt-8">
-          MBA candidate, independent consultant, and educator working at the
-          intersection of organizational behavior, project management, and
-          digital modernization.
+          Incoming MBA student, independent consultant, and educator working
+          at the intersection of organizational behavior, project management,
+          and digital modernization.
         </p>
       </div>
     </section>

@@ -8,27 +8,61 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { loadPublications, type Publication } from "@/data/publications";
 
-const publications = [
-  {
-    id: "github-fundamentals",
-    title: "GitHub Fundamentals for Teams",
-    meta: "Drawn From Publishing · 2025",
-    description:
-      "A practical guide to collaborative version control.",
-    url: "/publications/github-fundamentals",
-  },
-  {
-    id: "csu-capstone",
-    title: "CSU Fresno B.S. Capstone",
-    meta: "CSU Fresno · B.S. Capstone · 2025",
-    description:
-      "Placeholder description; revise in copy punch list.",
-    url: "/publications/csu-capstone",
-  },
-];
+type CardData = {
+  id: string;
+  title: string;
+  meta: string;
+  description: string;
+  url: string;
+  external: boolean;
+};
 
-export default function FeaturedPublications() {
+function toCardData(p: Publication): CardData {
+  switch (p.kind) {
+    case "drawn-from":
+      return {
+        id: p.slug,
+        title: p.title,
+        meta: `Drawn From Publishing · ${p.releaseDate}`,
+        description: p.subtitle,
+        url: p.externalUrl ?? "/publications",
+        external: Boolean(p.externalUrl),
+      };
+    case "academic":
+      return {
+        id: p.slug,
+        title: p.title,
+        meta: `${p.course} · ${p.year}`,
+        description: p.abstract,
+        url: `/publications/${p.slug}`,
+        external: false,
+      };
+    case "independent":
+      return {
+        id: p.slug,
+        title: p.title,
+        meta: `Independent · ${p.length}`,
+        description: p.description ?? "",
+        url: p.url,
+        external: /^https?:\/\//.test(p.url),
+      };
+  }
+}
+
+export default async function FeaturedPublications() {
+  const { drawnFrom, academic, independent } = await loadPublications();
+  const featured: Publication[] = [
+    ...drawnFrom.slice(0, 1),
+    ...academic.slice(0, 1),
+    ...independent.slice(0, 1),
+  ].slice(0, 2);
+
+  if (featured.length === 0) return null;
+
+  const cards = featured.map(toCardData);
+
   return (
     <section className="bg-bone py-20 px-6">
       <div className="max-w-6xl mx-auto">
@@ -42,18 +76,28 @@ export default function FeaturedPublications() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {publications.map((pub) => (
-            <Card key={pub.id} className="h-full">
+          {cards.map((c) => (
+            <Card key={c.id} className="h-full">
               <CardHeader>
-                <CardTitle>{pub.title}</CardTitle>
-                <CardDescription>{pub.meta}</CardDescription>
+                <CardTitle>{c.title}</CardTitle>
+                <CardDescription>{c.meta}</CardDescription>
               </CardHeader>
-              <CardContent className="flex-grow font-serif italic text-body">
-                {pub.description}
+              <CardContent className="flex-grow font-serif italic text-body line-clamp-4">
+                {c.description}
               </CardContent>
               <CardFooter>
                 <Button variant="link" asChild className="px-0">
-                  <Link href={pub.url}>Read More →</Link>
+                  {c.external ? (
+                    <a
+                      href={c.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Read More →
+                    </a>
+                  ) : (
+                    <Link href={c.url}>Read More →</Link>
+                  )}
                 </Button>
               </CardFooter>
             </Card>

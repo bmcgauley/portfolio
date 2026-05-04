@@ -23,13 +23,19 @@ export default function WritingIndexPage() {
       </header>
 
       <section className="max-w-3xl mx-auto px-6 py-8 space-y-12">
-        {sorted.map((essay, i) => (
-          <EssayCard
-            key={essay.slug}
-            essay={essay}
-            isLast={i === sorted.length - 1}
-          />
-        ))}
+        {sorted.length === 0 ? (
+          <p className="font-serif italic text-body-lg text-ink-soft text-center py-16">
+            Essays in progress. New writing will appear here.
+          </p>
+        ) : (
+          sorted.map((essay, i) => (
+            <EssayCard
+              key={essay.slug}
+              essay={essay}
+              isLast={i === sorted.length - 1}
+            />
+          ))
+        )}
       </section>
     </main>
   );

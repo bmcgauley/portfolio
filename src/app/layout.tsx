@@ -24,11 +24,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Brian McGauley",
   description:
-    "Brian McGauley is an MBA candidate, independent consultant, and educator working at the intersection of organizational behavior, project management, and digital modernization.",
+    "Brian McGauley is an incoming MBA student, independent consultant, and educator working at the intersection of organizational behavior, project management, and digital modernization.",
   openGraph: {
     title: "Brian McGauley",
     description:
-      "MBA candidate, independent consultant, and educator. Imaginarii consulting, Drawn From publishing.",
+      "Incoming MBA student, independent consultant, and educator. Imaginarii consulting, Drawn From publishing.",
     url: "https://brianmcgauley.com",
     siteName: "Brian McGauley",
     locale: "en-US",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Brian McGauley",
     description:
-      "MBA candidate, independent consultant, and educator.",
+      "Incoming MBA student, independent consultant, and educator.",
   },
 };
 

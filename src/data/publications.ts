@@ -1,10 +1,29 @@
-// PDF files referenced via `pdfPath` are placeholders. The /publications/[slug]
-// viewer will 404 on those iframe sources until real PDFs are dropped into
-// /public/publications/{academic,group-projects,external}/.
+/**
+ * Publications data layer.
+ *
+ * Content is loaded at request time from JSON manifests in
+ * `public/publications/{category}/index.json`. Drop a PDF into the
+ * folder, add an entry to that folder's `index.json`, and the page
+ * picks it up. No code changes required.
+ *
+ * Categories (mapped to brand doc Part VIII sections):
+ *   public/publications/drawn-from/index.json     →  "Books" section
+ *   public/publications/academic/index.json       →  "Papers & Theses" (solo)
+ *   public/publications/group-projects/index.json →  "Papers & Theses" (collaborative)
+ *   public/publications/external/index.json       →  "Papers & Theses" (industry/newsletter)
+ *   public/publications/independent/index.json    →  "Notes & Essays"
+ *
+ * Manifest entry schemas — see the Type definitions below for each kind.
+ * The loader stamps `kind`, `category`, `collaborative`, and `pdfPath`
+ * automatically so manifests stay terse.
+ */
+
+import { promises as fs } from "fs";
+import path from "path";
 
 export type DrawnFromTitle = {
-  slug: string;
   kind: "drawn-from";
+  slug: string;
   title: string;
   subtitle: string;
   description: string;
@@ -16,8 +35,8 @@ export type DrawnFromTitle = {
 };
 
 export type AcademicPaper = {
-  slug: string;
   kind: "academic";
+  slug: string;
   title: string;
   course: string;
   venue?: string;
@@ -31,8 +50,8 @@ export type AcademicPaper = {
 };
 
 export type IndependentNote = {
-  slug: string;
   kind: "independent";
+  slug: string;
   title: string;
   date: string;
   length: string;
@@ -42,85 +61,73 @@ export type IndependentNote = {
 
 export type Publication = DrawnFromTitle | AcademicPaper | IndependentNote;
 
-export const publications: Publication[] = [
-  {
-    slug: "github-fundamentals-for-teams",
-    kind: "drawn-from",
-    title: "GitHub Fundamentals for Teams",
-    subtitle: "A practical guide to collaborative version control",
-    description:
-      "Designed for technical leads onboarding teams to git and GitHub. Covers branching strategies, code review practices, and CI integration.",
-    coverImage:
-      "/images/publications/Front-cover_github_fundamentals_for_teams.png",
-    status: "coming-soon",
-    releaseDate: "Q4 2026",
-    externalUrl: "https://drawnfrom.com",
-    tags: ["technical", "version control"],
-  },
-  // COPY: placeholder, refine
-  {
-    slug: "capstone-strategic-it-modernization",
-    kind: "academic",
-    title: "Strategic IT Modernization at Mid-Market Manufacturers",
-    course: "BA 499W — Senior Capstone",
-    year: 2025,
-    abstract:
-      "Examines the cost and risk profile of IT modernization in mid-market manufacturing. Field interviews with three Central Valley manufacturers; framework for sequencing modernization work under operational constraints.",
-    pdfPath: "/publications/academic/capstone-it-modernization.pdf",
-    authors: ["Brian McGauley"],
-    collaborative: false,
-    category: "academic",
-    tags: ["capstone", "strategy"],
-  },
-  // COPY: placeholder, refine
-  {
-    slug: "group-thesis-organizational-behavior",
-    kind: "academic",
-    title: "Organizational Behavior in Hybrid Work Settings",
-    course: "MGT 365 — Organizational Behavior",
-    year: 2025,
-    abstract:
-      "Group thesis examining team cohesion and managerial visibility in hybrid-work environments. Survey instrument administered across four organizations.",
-    pdfPath: "/publications/group-projects/ob-hybrid-work.pdf",
-    authors: ["Brian McGauley", "Co-Author A", "Co-Author B"],
-    collaborative: true,
-    category: "group-projects",
-    tags: ["group thesis", "organizational behavior"],
-  },
-  // COPY: placeholder, refine
-  {
-    slug: "external-pmi-newsletter-piece",
-    kind: "academic",
-    title: "Notes from the PMI-CCVC Spring Meeting",
-    course: "PMI-CCVC Newsletter",
-    year: 2025,
-    abstract:
-      "Summary article written for the Project Management Institute Central California Valley Chapter newsletter, covering takeaways from the spring quarterly meeting.",
-    pdfPath: "/publications/external/pmi-spring-2025.pdf",
-    authors: ["Brian McGauley"],
-    collaborative: false,
-    category: "external",
-    tags: ["industry", "PMI"],
-  },
-  {
-    slug: "on-credentialing",
-    kind: "independent",
-    title: "On Credentialing",
-    date: "2026-04-20",
-    length: "1,400 words",
-    url: "/writing/on-credentialing",
-    description: "What a credential earns and what it doesn't.",
-  },
-  {
-    slug: "notes-on-mba",
-    kind: "independent",
-    title: "Notes on the MBA",
-    date: "2026-02-14",
-    length: "900 words",
-    url: "/writing/notes-on-mba",
-  },
-];
+type DrawnFromManifestEntry = Omit<DrawnFromTitle, "kind">;
+type AcademicManifestEntry = Omit<
+  AcademicPaper,
+  "kind" | "pdfPath" | "category" | "collaborative"
+> & { pdfFile: string };
+type IndependentManifestEntry = Omit<IndependentNote, "kind">;
 
-export function getPublicationBySlug(slug: string): Publication | undefined {
-  return publications.find((p) => p.slug === slug);
+const PUBLICATIONS_ROOT = path.join(process.cwd(), "public", "publications");
+
+async function readManifest<T>(category: string): Promise<T[]> {
+  try {
+    const raw = await fs.readFile(
+      path.join(PUBLICATIONS_ROOT, category, "index.json"),
+      "utf-8",
+    );
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? (parsed as T[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+const stampAcademic =
+  (cat: AcademicPaper["category"]) =>
+  ({ pdfFile, ...rest }: AcademicManifestEntry): AcademicPaper => ({
+    ...rest,
+    kind: "academic",
+    category: cat,
+    collaborative: rest.authors.length > 1,
+    pdfPath: `/publications/${cat}/${pdfFile}`,
+  });
+
+export type LoadedPublications = {
+  drawnFrom: DrawnFromTitle[];
+  academic: AcademicPaper[];
+  independent: IndependentNote[];
+};
+
+export async function loadPublications(): Promise<LoadedPublications> {
+  const [drawnFromRaw, academicRaw, groupProjectsRaw, externalRaw, independentRaw] =
+    await Promise.all([
+      readManifest<DrawnFromManifestEntry>("drawn-from"),
+      readManifest<AcademicManifestEntry>("academic"),
+      readManifest<AcademicManifestEntry>("group-projects"),
+      readManifest<AcademicManifestEntry>("external"),
+      readManifest<IndependentManifestEntry>("independent"),
+    ]);
+
+  return {
+    drawnFrom: drawnFromRaw.map((e) => ({ ...e, kind: "drawn-from" as const })),
+    academic: [
+      ...academicRaw.map(stampAcademic("academic")),
+      ...groupProjectsRaw.map(stampAcademic("group-projects")),
+      ...externalRaw.map(stampAcademic("external")),
+    ],
+    independent: independentRaw.map((e) => ({
+      ...e,
+      kind: "independent" as const,
+    })),
+  };
+}
+
+export async function getPublicationBySlug(
+  slug: string,
+): Promise<Publication | undefined> {
+  const { drawnFrom, academic, independent } = await loadPublications();
+  return [...drawnFrom, ...academic, ...independent].find(
+    (p) => p.slug === slug,
+  );
 }

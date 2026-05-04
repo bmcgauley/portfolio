@@ -1,7 +1,7 @@
 const credentials = [
   {
-    label: "MBA CANDIDATE",
-    detail: "Craig School of Business, CSU Fresno · Expected Spring 2026",
+    label: "INCOMING MBA STUDENT",
+    detail: "Craig School of Business, CSU Fresno · Beginning Spring 2026",
   },
   {
     label: "B.S. SUMMA CUM LAUDE",

@@ -24,7 +24,7 @@ function BackLink() {
 
 export default async function PublicationDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const pub = getPublicationBySlug(slug);
+  const pub = await getPublicationBySlug(slug);
 
   if (!pub) {
     notFound();

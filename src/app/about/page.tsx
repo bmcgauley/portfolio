@@ -228,8 +228,8 @@ export default function AboutPage() {
         <div className="space-y-4">
           <CredentialCard
             institution="California State University, Fresno"
-            credential="MBA Candidate · Craig School of Business"
-            date="Expected Spring 2026"
+            credential="Incoming MBA Student · Craig School of Business"
+            date="Beginning Spring 2026"
           />
           <CredentialCard
             institution="California State University, Fresno"

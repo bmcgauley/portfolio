@@ -42,7 +42,7 @@ export default function Footer() {
           <div>
             <Wordmark variant="compact" />
             <p className="font-serif italic text-ink-soft max-w-xs mt-4">
-              MBA candidate, independent consultant, and educator.
+              Incoming MBA student, independent consultant, and educator.
             </p>
           </div>
 

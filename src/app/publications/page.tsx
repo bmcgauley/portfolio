@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { SectionDivider } from "@/components/ui/section-divider";
 import {
-  publications,
+  loadPublications,
   type AcademicPaper,
   type DrawnFromTitle,
   type IndependentNote,
@@ -161,16 +161,10 @@ function IndependentRow({ note }: { note: IndependentNote }) {
   );
 }
 
-export default function PublicationsPage() {
-  const drawnFrom = publications.filter(
-    (p): p is DrawnFromTitle => p.kind === "drawn-from",
-  );
-  const academic = publications.filter(
-    (p): p is AcademicPaper => p.kind === "academic",
-  );
-  const independent = publications.filter(
-    (p): p is IndependentNote => p.kind === "independent",
-  );
+export default async function PublicationsPage() {
+  const { drawnFrom, academic, independent } = await loadPublications();
+  const hasAnything =
+    drawnFrom.length + academic.length + independent.length > 0;
 
   return (
     <main className="bg-bone min-h-screen">
@@ -185,47 +179,62 @@ export default function PublicationsPage() {
 
       <SectionDivider />
 
-      <section className="px-6">
-        <SectionHeader
-          eyebrow="Drawn From Publishing"
-          heading="Books"
-        />
-        <div className="max-w-5xl mx-auto space-y-8">
-          {drawnFrom.map((title) => (
-            <DrawnFromCard key={title.slug} title={title} />
-          ))}
-        </div>
-      </section>
+      {!hasAnything ? (
+        <section className="max-w-2xl mx-auto px-6 pb-24 text-center">
+          <p className="font-serif italic text-body-lg text-ink-soft">
+            Publications are being curated. Check back shortly.
+          </p>
+        </section>
+      ) : null}
 
-      <SectionDivider />
+      {drawnFrom.length > 0 ? (
+        <>
+          <section className="px-6">
+            <SectionHeader eyebrow="Drawn From Publishing" heading="Books" />
+            <div className="max-w-5xl mx-auto space-y-8">
+              {drawnFrom.map((title) => (
+                <DrawnFromCard key={title.slug} title={title} />
+              ))}
+            </div>
+          </section>
+          {academic.length + independent.length > 0 ? <SectionDivider /> : null}
+        </>
+      ) : null}
 
-      <section className="px-6">
-        <SectionHeader
-          eyebrow="Academic"
-          heading="Papers & Theses"
-          intro="Solo and collaborative work from coursework and capstone projects. Group theses are noted with co-author credit."
-        />
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-          {academic.map((paper) => (
-            <AcademicPaperCard key={paper.slug} paper={paper} />
-          ))}
-        </div>
-      </section>
+      {academic.length > 0 ? (
+        <>
+          <section className="px-6">
+            <SectionHeader
+              eyebrow="Academic"
+              heading="Papers & Theses"
+              intro="Solo and collaborative work from coursework and capstone projects. Group theses are noted with co-author credit."
+            />
+            <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+              {academic.map((paper) => (
+                <AcademicPaperCard key={paper.slug} paper={paper} />
+              ))}
+            </div>
+          </section>
+          {independent.length > 0 ? <SectionDivider /> : null}
+        </>
+      ) : null}
 
-      <SectionDivider />
+      {independent.length > 0 ? (
+        <section className="px-6 pb-24">
+          <SectionHeader
+            eyebrow="Independent"
+            heading="Notes & Essays"
+            intro="Shorter writing posted on the personal site."
+          />
+          <div className="max-w-3xl mx-auto space-y-4">
+            {independent.map((note) => (
+              <IndependentRow key={note.slug} note={note} />
+            ))}
+          </div>
+        </section>
+      ) : null}
 
-      <section className="px-6 pb-24">
-        <SectionHeader
-          eyebrow="Independent"
-          heading="Notes & Essays"
-          intro="Shorter writing posted on the personal site."
-        />
-        <div className="max-w-3xl mx-auto space-y-4">
-          {independent.map((note) => (
-            <IndependentRow key={note.slug} note={note} />
-          ))}
-        </div>
-      </section>
+      {hasAnything ? <div className="pb-24" /> : null}
     </main>
   );
 }
