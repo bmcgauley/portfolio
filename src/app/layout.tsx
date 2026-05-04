@@ -1,27 +1,34 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cormorant_Garamond, JetBrains_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Brian McGauley | Web Developer, IT Consultant & MBA Student",
-  description: "Portfolio of Brian McGauley — Web Developer, IT Consultant (Imaginarii), and MBA student at Fresno State. B.S. graduate (Summa Cum Laude, Dec 2025). Specializing in web development, branding, data analytics, and electronic music production.",
+  title: "Brian McGauley",
+  description:
+    "Brian McGauley is an MBA candidate, independent consultant, and educator working at the intersection of organizational behavior, project management, and digital modernization.",
   openGraph: {
-    title: "Brian McGauley | Web Developer, IT Consultant & MBA Student",
-    description: "Web Development, IT Consulting (Imaginarii), Data Analytics, and Music Production Portfolio. B.S. Summa Cum Laude, Dec 2025. MBA student at Fresno State.",
+    title: "Brian McGauley",
+    description:
+      "MBA candidate, independent consultant, and educator. Imaginarii consulting, Drawn From publishing.",
     url: "https://brianmcgauley.com",
     siteName: "Brian McGauley",
     locale: "en-US",
@@ -29,9 +36,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Brian McGauley | Web Developer, IT Consultant & MBA Student",
-    description: "Web Development, IT Consulting (Imaginarii), Data Analytics, and Music Production Portfolio.",
-    creator: "@yourtwitterhandle",
+    title: "Brian McGauley",
+    description:
+      "MBA candidate, independent consultant, and educator.",
   },
 };
 
@@ -39,14 +46,26 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {  return (
+}>) {
+  return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script src="https://analytics.ahrefs.com/analytics.js" data-key="7FR113MWiOJxj46KEYaQkA" async></script>
-        <link rel="alternate" type="application/rss+xml" href="/rss" title="Brian McGauley – Projects & Work" />
+        {/* Trajan Pro 3 via Adobe Typekit (Part IV — Display Face) */}
+        <link rel="stylesheet" href="https://use.typekit.net/jkj2xou.css" />
+        <script
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="7FR113MWiOJxj46KEYaQkA"
+          async
+        ></script>
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          href="/rss"
+          title="Brian McGauley – Projects & Work"
+        />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-background font-sans antialiased`}
+        className={`${cormorant.variable} ${jetbrainsMono.variable} min-h-screen bg-bone text-ink antialiased`}
       >
         <div className="relative flex min-h-screen flex-col">
           <Navbar />

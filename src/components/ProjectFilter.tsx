@@ -1,9 +1,60 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Project } from '@/lib/types';
-import { cn } from '@/lib/utils';
+import { useEffect, useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Project } from "@/lib/types";
+
+export type BrandCategory = "All" | "Consulting" | "Academic" | "Volunteer" | "Personal";
+
+const BRAND_CATEGORIES: BrandCategory[] = [
+  "All",
+  "Consulting",
+  "Academic",
+  "Volunteer",
+  "Personal",
+];
+
+// Map raw project data to brand categories.
+function categorize(project: Project): Exclude<BrandCategory, "All"> {
+  const raw = (project.category ?? "").toLowerCase();
+  if (raw.includes("professional") || raw.includes("consult")) return "Consulting";
+  if (raw.includes("school") || raw.includes("academ")) return "Academic";
+  if (raw.includes("community") || raw.includes("volunteer")) return "Volunteer";
+
+  const haystack = [
+    project.title,
+    project.description,
+    ...(project.tags ?? []),
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  if (
+    haystack.includes("campaign") ||
+    haystack.includes("city council") ||
+    haystack.includes("nonprofit") ||
+    haystack.includes("chamber")
+  ) {
+    return "Volunteer";
+  }
+  if (
+    haystack.includes("fresno state") ||
+    haystack.includes("collegian") ||
+    haystack.includes("teaching") ||
+    haystack.includes("housing")
+  ) {
+    return "Academic";
+  }
+  if (
+    haystack.includes("client") ||
+    haystack.includes("wordpress") ||
+    haystack.includes("dashboard") ||
+    haystack.includes("seo")
+  ) {
+    return "Consulting";
+  }
+  return "Personal";
+}
 
 interface ProjectFilterProps {
   projects: Project[];
@@ -11,65 +62,40 @@ interface ProjectFilterProps {
 }
 
 export default function ProjectFilter({ projects, onFilter }: ProjectFilterProps) {
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [categories, setCategories] = useState<string[]>([]);
-  
-  // Extract unique categories from projects
+  const [selected, setSelected] = useState<BrandCategory>("All");
+
+  const tagged = useMemo(
+    () => projects.map((p) => ({ project: p, brandCategory: categorize(p) })),
+    [projects]
+  );
+
   useEffect(() => {
-    const categoriesSet = new Set<string>();
-    
-    // Add 'all' category
-    categoriesSet.add('all');
-    
-    // Extract unique categories from projects
-    projects.forEach(project => {
-      if (project.category) {
-        categoriesSet.add(project.category);
-      }
-      
-      // Also add technologies as categories if available
-      if (project.technologies) {
-        project.technologies.forEach(tech => categoriesSet.add(tech));
-      }
-    });
-    
-    setCategories(Array.from(categoriesSet));
-  }, [projects]);
-  
-  // Filter projects when category changes
-  useEffect(() => {
-    if (selectedCategory === 'all') {
-      onFilter(projects);
-    } else {
-      const filtered = projects.filter(project => 
-        project.category === selectedCategory || 
-        (project.technologies && project.technologies.includes(selectedCategory))
-      );
-      onFilter(filtered);
-    }
-  }, [selectedCategory, projects, onFilter]);
+    const filtered =
+      selected === "All"
+        ? projects
+        : tagged.filter((t) => t.brandCategory === selected).map((t) => t.project);
+    onFilter(filtered);
+  }, [selected, projects, tagged, onFilter]);
 
   return (
-    <div className="mb-8">
-      <h2 className="text-lg font-medium mb-4">Filter Projects</h2>
-      <div className="flex flex-wrap gap-2">
-        {categories.map((category) => (
-          <Button
-            key={category}
-            variant={selectedCategory === category ? "default" : "outline"}
-            size="sm"
-            onClick={() => setSelectedCategory(category)}
-            className={cn(
-              "capitalize transition-all",
-              selectedCategory === category 
-                ? "bg-primary text-white" 
-                : "hover:border-primary/50"
-            )}
-          >
-            {category === 'all' ? 'All Projects' : category}
-          </Button>
-        ))}
+    <div className="border-b border-gold/60">
+      <div className="flex flex-wrap gap-3 justify-center py-6">
+        {BRAND_CATEGORIES.map((category) => {
+          const isActive = selected === category;
+          return (
+            <Button
+              key={category}
+              variant={isActive ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSelected(category)}
+            >
+              {category}
+            </Button>
+          );
+        })}
       </div>
     </div>
   );
 }
+
+export { categorize };

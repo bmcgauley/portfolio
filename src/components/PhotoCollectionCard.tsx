@@ -8,7 +8,7 @@ interface PhotoCollectionCardProps {
 
 const PhotoCollectionCard = ({ collection }: PhotoCollectionCardProps) => {
   return (    <Link 
-      href={`/photography/${collection.id}`}
+      href={`/about/photography/${collection.id}`}
       className="group block"
     >
       <div className="relative h-64 overflow-hidden rounded-lg shadow-md border border-transparent transition-all duration-300 group-hover:shadow-lg group-hover:border-primary/30">

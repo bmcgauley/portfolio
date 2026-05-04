@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Photo } from '@/lib/types';
 import { Lightbox } from "@/components/ui/lightbox";
@@ -350,105 +351,117 @@ export default function PhotographyPage() {
   };
 
   return (
-    <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto pb-16">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">Photography</h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            A collection of my photographic work spanning various styles and subjects.
-            From landscapes to astrophotography, each image captures a unique moment in time.
-          </p>
-        </div>
-
-        {/* Loading Progress */}
-        <AnimatePresence mode="wait">
-          {!isComplete && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="max-w-md mx-auto mb-12"
+    <div className="bg-bone min-h-screen">
+      <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto pb-16">
+          {/* Back link */}
+          <div className="mb-8">
+            <Link
+              href="/about"
+              className="font-display uppercase tracking-[0.18em] text-sm text-crimson-deep hover:text-gold transition-colors"
             >
-              <div className="text-center mb-4">
-                <p className="text-muted-foreground">
-                  Loading gallery... {Math.round((progress / total) * 100)}%
-                </p>
-              </div>
-              <ProgressBar
-                progress={progress}
-                total={total}
-                className="h-1.5"
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+              &larr; Back to About
+            </Link>
+          </div>
 
-        <AnimatePresence>
-          {showContent && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              {/* Category Filter */}
-              <CategoryFilter
-                categories={categories}
-                selectedCategory={selectedCategory}
-                onSelectCategory={setSelectedCategory}
-                className="mb-12"
-              />
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h1 className="text-display-2 font-display uppercase text-ink mb-4">PHOTOGRAPHY</h1>
+            <p className="font-serif italic text-ink-soft max-w-2xl mx-auto text-lg">
+              A collection of my photographic work spanning various styles and subjects.
+              From landscapes to astrophotography, each image captures a unique moment in time.
+            </p>
+          </div>
 
-              {/* Photo Grid */}
-              <AnimatePresence mode="wait">
-                <div className="px-4 sm:px-0">
-                  {filteredPhotos.length > 0 ? (
-                    <MasonryGrid
-                      items={filteredPhotos}
-                      keyExtractor={(photo) => photo.src}
-                      columnCount={{
-                        mobile: 1,
-                        tablet: 2,
-                        desktop: 3
-                      }}
-                      gap={16}
-                      renderItem={(photo, index) => (
-                        <PhotoCard
-                          photo={photo}
-                          index={index}
-                          onClick={() => handleImageClick(index)}
-                          shimmerToBase64={generateBlurDataUrl}
-                          priority={index < 6 || photo.priority}
-                        />
-                      )}
-                    />
-                  ) : (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="text-center py-12"
-                    >
-                      <p className="text-muted-foreground">
-                        No photos found in this category.
-                      </p>
-                    </motion.div>
-                  )}
+          {/* Loading Progress */}
+          <AnimatePresence mode="wait">
+            {!isComplete && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="max-w-md mx-auto mb-12"
+              >
+                <div className="text-center mb-4">
+                  <p className="text-ink-muted font-mono text-sm">
+                    Loading gallery... {Math.round((progress / total) * 100)}%
+                  </p>
                 </div>
-              </AnimatePresence>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                <ProgressBar
+                  progress={progress}
+                  total={total}
+                  className="h-1.5"
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-        {/* Lightbox */}
-        {selectedImageIndex !== null && (
-          <Lightbox
-            images={filteredPhotos.map(photo => ({ src: photo.src, alt: photo.alt }))}
-            currentIndex={selectedImageIndex}
-            onClose={handleLightboxClose}
-            onNavigate={handleLightboxNavigate}
-          />
-        )}
+          <AnimatePresence>
+            {showContent && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                {/* Category Filter */}
+                <CategoryFilter
+                  categories={categories}
+                  selectedCategory={selectedCategory}
+                  onSelectCategory={setSelectedCategory}
+                  className="mb-12"
+                />
+
+                {/* Photo Grid */}
+                <AnimatePresence mode="wait">
+                  <div className="px-4 sm:px-0">
+                    {filteredPhotos.length > 0 ? (
+                      <MasonryGrid
+                        items={filteredPhotos}
+                        keyExtractor={(photo) => photo.src}
+                        columnCount={{
+                          mobile: 1,
+                          tablet: 2,
+                          desktop: 3
+                        }}
+                        gap={16}
+                        renderItem={(photo, index) => (
+                          <PhotoCard
+                            photo={photo}
+                            index={index}
+                            onClick={() => handleImageClick(index)}
+                            shimmerToBase64={generateBlurDataUrl}
+                            priority={index < 6 || photo.priority}
+                          />
+                        )}
+                      />
+                    ) : (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="text-center py-12"
+                      >
+                        <p className="font-serif italic text-ink-muted">
+                          No photos found in this category.
+                        </p>
+                      </motion.div>
+                    )}
+                  </div>
+                </AnimatePresence>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Lightbox */}
+          {selectedImageIndex !== null && (
+            <Lightbox
+              images={filteredPhotos.map(photo => ({ src: photo.src, alt: photo.alt }))}
+              currentIndex={selectedImageIndex}
+              onClose={handleLightboxClose}
+              onNavigate={handleLightboxNavigate}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

@@ -3,8 +3,14 @@
 import * as z from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
@@ -29,6 +35,12 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>
 
+const fieldClasses =
+  "bg-vellum border border-gold-shadow font-serif text-ink placeholder:text-ink-muted focus:border-crimson-deep focus-visible:border-crimson-deep focus-visible:ring-2 focus-visible:ring-crimson-deep/30 focus-visible:ring-offset-0"
+
+const labelClasses =
+  "font-display uppercase tracking-[0.18em] text-xs text-crimson-deep"
+
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -36,158 +48,172 @@ export default function ContactForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      email: "",    subject: "",
+      email: "",
+      subject: "",
       message: "",
     },
   })
 
   async function onSubmit(data: FormData) {
     setIsSubmitting(true)
-    console.log('📝 Submitting contact form...', { name: data.name, email: data.email, subject: data.subject });
-    
+
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
+      const response = await fetch("/api/contact", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-      });
+      })
 
-      const result = await response.json();
-      console.log('📨 API Response:', { status: response.status, result });
+      const result = await response.json()
 
       if (response.ok) {
         if (result.warning) {
-          toast.error(`⚠️ ${result.message}`, {
+          toast.error(result.message, {
             duration: 8000,
-            description: "Email system is not configured properly"
-          });
+            description: "Email system is not configured properly",
+          })
         } else {
-          toast.success("✅ Message sent successfully! I'll get back to you soon.", {
+          toast.success("Message sent. I'll get back to you soon.", {
             duration: 5000,
-            description: result.messageId ? `Message ID: ${result.messageId}` : undefined
-          });
+            description: result.messageId
+              ? `Message ID: ${result.messageId}`
+              : undefined,
+          })
         }
-        form.reset();
+        form.reset()
       } else {
-        // Handle different types of errors with helpful messages
         if (response.status === 503) {
-          toast.error(`❌ ${result.message}`, {
+          toast.error(result.message, {
             duration: 10000,
-            description: "If you received an email confirmation, your message was actually sent successfully despite this error."
-          });
+            description:
+              "If you received an email confirmation, your message was actually sent successfully despite this error.",
+          })
         } else {
-          throw new Error(result.message || 'Failed to send message');
+          throw new Error(result.message || "Failed to send message")
         }
       }
     } catch (error) {
-      console.error("❌ Failed to send message:", error);
-      let errorMessage = error instanceof Error ? error.message : 'Failed to send message. Please try again later.';
-      
-      // Show specific error messages for connection issues
-      if (errorMessage.includes('connection timed out') || errorMessage.includes('Greeting never received')) {
-        errorMessage = 'Connection timed out. This might be a temporary network issue.';
+      let errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Failed to send message. Please try again later."
+
+      if (
+        errorMessage.includes("connection timed out") ||
+        errorMessage.includes("Greeting never received")
+      ) {
+        errorMessage =
+          "Connection timed out. This might be a temporary network issue."
       }
-      
-      toast.error(`❌ ${errorMessage}`, {
+
+      toast.error(errorMessage, {
         duration: 10000,
-        description: "You can also reach me directly at brian@mcgauley.com"
-      });
+        description: "You can also reach me directly at bmcgauley44@gmail.com",
+      })
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-        <CardHeader>
-          <CardTitle>Get in Touch</CardTitle>
-          <CardDescription>
-            Send me a message and I&apos;ll get back to you as soon as possible.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Your name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>                    <FormControl>
-                      <Input type="email" placeholder="john@example.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="subject"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Subject</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Message subject" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Message</FormLabel>
-                    <FormControl>
-                      <Textarea 
-                        placeholder="Your message here..." 
-                        className="min-h-[150px]"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <div className="flex justify-end">
-                <Button 
-                  type="submit" 
-                  disabled={isSubmitting}
-                  className="w-full sm:w-auto"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    "Send Message"
-                  )}
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-6 py-6"
+      >
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel className={labelClasses}>Name</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Your name"
+                  className={fieldClasses}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel className={labelClasses}>Email</FormLabel>
+              <FormControl>
+                <Input
+                  type="email"
+                  placeholder="you@example.com"
+                  className={fieldClasses}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="subject"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel className={labelClasses}>Subject</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Message subject"
+                  className={fieldClasses}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="message"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel className={labelClasses}>Message</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Your message here..."
+                  className={`${fieldClasses} min-h-[180px]`}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="flex justify-center pt-2">
+          <Button
+            type="submit"
+            variant="default"
+            size="lg"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                SENDING...
+              </>
+            ) : (
+              "SEND"
+            )}
+          </Button>
+        </div>
+      </form>
+    </Form>
   )
 }

@@ -1,4 +1,8 @@
 /** @type {import('tailwindcss').Config} */
+// NOTE: This project uses Tailwind v4. The canonical theme is defined
+// in src/app/globals.css via @theme. This config exists for tooling
+// that still reads tailwind.config.js (editor plugins, etc.) and to
+// extend non-color theme values.
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -18,6 +22,26 @@ module.exports = {
     },
     extend: {
       colors: {
+        // Brand surfaces
+        bone: "var(--bone)",
+        vellum: "var(--vellum)",
+        parchment: "var(--parchment)",
+        // Brand inks
+        ink: {
+          DEFAULT: "var(--ink)",
+          soft: "var(--ink-soft)",
+          muted: "var(--ink-muted)",
+        },
+        // Brand accents
+        crimson: {
+          DEFAULT: "var(--crimson)",
+          deep: "var(--crimson-deep)",
+        },
+        gold: {
+          DEFAULT: "var(--gold)",
+          shadow: "var(--gold-shadow)",
+        },
+        // shadcn semantic aliases
         border: "var(--border)",
         input: "var(--input)",
         ring: "var(--ring)",
@@ -51,6 +75,12 @@ module.exports = {
           DEFAULT: "var(--card)",
           foreground: "var(--card-foreground)",
         },
+      },
+      fontFamily: {
+        display: ['"trajan-pro-3"', "Cinzel", '"Times New Roman"', "Georgia", "serif"],
+        serif: ["var(--font-cormorant)", "Garamond", "Georgia", "serif"],
+        sans: ["var(--font-cormorant)", "Garamond", "Georgia", "serif"],
+        mono: ["var(--font-jetbrains-mono)", '"Courier New"', "monospace"],
       },
       borderRadius: {
         lg: "var(--radius)",
