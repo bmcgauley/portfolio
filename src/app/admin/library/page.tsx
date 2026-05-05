@@ -114,9 +114,13 @@ function Section({
             name="name"
             type="text"
             required
-            placeholder="e.g. React"
+            placeholder="e.g. React  —  or paste CSV: React, Next.js, TypeScript"
             className="w-full bg-bone border border-gold-shadow rounded-[2px] px-3 py-2 font-serif text-body text-ink focus:border-crimson-deep focus:outline-none focus:ring-2 focus:ring-crimson-deep/30"
           />
+          <p className="font-serif italic text-caption text-ink-muted mt-2">
+            Single name or comma-separated list. Each entry stored separately.
+            {showCategory ? " Category applies to every name in the list." : ""}
+          </p>
         </div>
         {showCategory ? (
           <div className="flex-1 min-w-[220px]">

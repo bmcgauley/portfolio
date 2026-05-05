@@ -29,19 +29,27 @@ function asKind(v: FormDataEntryValue | null): TaxonomyKind | null {
 export async function addTaxonomyAction(formData: FormData): Promise<void> {
   await requireAdmin();
 
-  const name = asString(formData.get("name"));
+  const rawName = asString(formData.get("name"));
   const kind = asKind(formData.get("kind"));
   const category = asString(formData.get("category"));
 
-  if (!name || !kind) {
+  if (!rawName || !kind) {
     redirect("/admin/library?error=MISSING_FIELDS");
   }
 
-  await addTaxonomy({
-    name,
-    kind,
-    ...(category ? { category } : {}),
-  });
+  // Comma-separated → multiple entries. Single name still works.
+  const names = rawName
+    .split(",")
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+
+  for (const name of names) {
+    await addTaxonomy({
+      name,
+      kind,
+      ...(category ? { category } : {}),
+    });
+  }
 
   revalidatePath("/admin/library");
   revalidatePath("/admin/projects");
