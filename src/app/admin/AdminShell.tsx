@@ -22,6 +22,7 @@ const NAV: NavGroup[] = [
       { href: "/admin/writing", label: "Writing" },
       { href: "/admin/achievements", label: "Achievements" },
       { href: "/admin/projects", label: "Projects" },
+      { href: "/admin/library", label: "Library" },
     ],
   },
   {

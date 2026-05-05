@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { BlobFileInput } from "@/components/admin/BlobFileInput";
 import { BlobMultiFileInput } from "@/components/admin/BlobMultiFileInput";
+import { ChipMultiSelect } from "@/components/admin/ChipMultiSelect";
+import { listTaxonomy } from "@/lib/taxonomy-db";
 import { createProjectAction } from "../actions";
 
 const inputClass =
@@ -19,6 +21,14 @@ interface PageProps {
 
 export default async function NewProjectPage({ searchParams }: PageProps) {
   const { error } = await searchParams;
+  const taxonomy = await listTaxonomy();
+  const techLibrary = Array.from(
+    new Set(
+      taxonomy
+        .filter((t) => t.kind === "technology" || t.kind === "skill")
+        .map((t) => t.name),
+    ),
+  );
 
   return (
     <div>
@@ -122,15 +132,15 @@ export default async function NewProjectPage({ searchParams }: PageProps) {
           <label htmlFor="technologies" className={labelClass}>
             Technologies
           </label>
-          <input
+          <ChipMultiSelect
             id="technologies"
             name="technologies"
-            type="text"
-            placeholder="TypeScript, MongoDB, Tailwind"
-            className={inputClass}
+            library={techLibrary}
+            addPlaceholder="Add technology…"
           />
           <p className={captionClass}>
-            Comma-separated tech stack.
+            Toggle from your library, or add new. New names auto-save to the
+            library on submit.
           </p>
         </div>
 

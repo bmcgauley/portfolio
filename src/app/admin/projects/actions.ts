@@ -15,6 +15,7 @@ import {
   updateProject,
   type ProjectDoc,
 } from "@/lib/projects-db";
+import { addManyIfMissing } from "@/lib/taxonomy-db";
 
 const FEATURED_CAP = 5;
 
@@ -56,6 +57,32 @@ function asImageList(v: FormDataEntryValue | null): string[] {
   }
 }
 
+/**
+ * Accepts either a JSON-encoded string array (from ChipMultiSelect) or a
+ * legacy comma-separated string. Returns trimmed, non-empty names.
+ */
+function asNameList(v: FormDataEntryValue | null): string[] {
+  const raw = asString(v);
+  if (!raw) return [];
+  if (raw.startsWith("[")) {
+    try {
+      const parsed: unknown = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        return parsed
+          .filter((x): x is string => typeof x === "string")
+          .map((s) => s.trim())
+          .filter((s) => s.length > 0);
+      }
+    } catch {
+      // fall through to csv parse
+    }
+  }
+  return raw
+    .split(",")
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+}
+
 function isVercelBlobUrl(url: string | undefined | null): boolean {
   if (!url) return false;
   try {
@@ -87,7 +114,7 @@ export async function createProjectAction(formData: FormData): Promise<void> {
   const slug = providedSlug ? slugify(providedSlug) : slugify(title);
   const category = asCategory(formData.get("category"));
   const tags = asCsv(formData.get("tags"));
-  const technologies = asCsv(formData.get("technologies"));
+  const technologies = asNameList(formData.get("technologies"));
   const folderName = asOptionalString(formData.get("folderName"));
   const demoUrl = asOptionalString(formData.get("demoUrl"));
   const githubUrl = asOptionalString(formData.get("githubUrl"));
@@ -118,6 +145,10 @@ export async function createProjectAction(formData: FormData): Promise<void> {
     featured,
   });
 
+  if (technologies.length > 0) {
+    await addManyIfMissing(technologies, "technology");
+  }
+
   revalidatePath("/admin/projects");
   revalidatePath("/projects");
   revalidatePath("/");
@@ -146,7 +177,7 @@ export async function updateProjectAction(
   const slug = providedSlug ? slugify(providedSlug) : slugify(title);
   const category = asCategory(formData.get("category"));
   const tags = asCsv(formData.get("tags"));
-  const technologies = asCsv(formData.get("technologies"));
+  const technologies = asNameList(formData.get("technologies"));
   const folderName = asOptionalString(formData.get("folderName"));
   const demoUrl = asOptionalString(formData.get("demoUrl"));
   const githubUrl = asOptionalString(formData.get("githubUrl"));
@@ -195,6 +226,10 @@ export async function updateProjectAction(
     githubUrl,
     featured,
   });
+
+  if (technologies.length > 0) {
+    await addManyIfMissing(technologies, "technology");
+  }
 
   revalidatePath("/admin/projects");
   revalidatePath("/projects");

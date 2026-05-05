@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { SectionDivider } from "@/components/ui/section-divider";
 import { BlobFileInput } from "@/components/admin/BlobFileInput";
 import { BlobMultiFileInput } from "@/components/admin/BlobMultiFileInput";
+import { ChipMultiSelect } from "@/components/admin/ChipMultiSelect";
 import { getProjectById } from "@/lib/projects-db";
+import { listTaxonomy } from "@/lib/taxonomy-db";
 import { deleteProjectAction, updateProjectAction } from "../../actions";
 
 const inputClass =
@@ -29,6 +31,15 @@ export default async function EditProjectPage({
   const { error } = await searchParams;
   const project = await getProjectById(id);
   if (!project) notFound();
+
+  const taxonomy = await listTaxonomy();
+  const techLibrary = Array.from(
+    new Set(
+      taxonomy
+        .filter((t) => t.kind === "technology" || t.kind === "skill")
+        .map((t) => t.name),
+    ),
+  );
 
   const projectId = project._id.toString();
   const tagsValue = project.tags.join(", ");
@@ -140,16 +151,16 @@ export default async function EditProjectPage({
           <label htmlFor="technologies" className={labelClass}>
             Technologies
           </label>
-          <input
+          <ChipMultiSelect
             id="technologies"
             name="technologies"
-            type="text"
-            placeholder="TypeScript, MongoDB, Tailwind"
-            defaultValue={technologiesValue}
-            className={inputClass}
+            library={techLibrary}
+            defaultValue={project.technologies ?? []}
+            addPlaceholder="Add technology…"
           />
           <p className={captionClass}>
-            Comma-separated tech stack.
+            Toggle from your library, or add new. New names auto-save to the
+            library on submit.
           </p>
         </div>
 
