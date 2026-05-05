@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { projects } from '@/lib/data';
+import { loadProjects } from '@/lib/data';
 import ImageGallery from '@/components/ImageGallery';
 import RefreshPreviewButton from '@/components/RefreshPreviewButton';
 import { Markdown } from "@/components/ui/markdown";
@@ -14,9 +14,8 @@ export async function generateMetadata({
 }: {
   params: ParamsType;
 }): Promise<Metadata> {
-  // Get the project ID from params
   const { id } = await params;
-  // Find the project
+  const projects = await loadProjects();
   const project = projects.find((p) => p.id === id);
 
   if (!project) {
@@ -36,9 +35,8 @@ export default async function ProjectPage({
 }: {
   params: ParamsType;
 }) {
-  // Get the project ID from params
   const { id } = await params;
-  // Find the project
+  const projects = await loadProjects();
   const project = projects.find((p) => p.id === id);
 
   if (!project) {
