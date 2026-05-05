@@ -11,7 +11,15 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Markdown } from "@/components/ui/markdown";
-import { experiences, loadHobbies, loadSkills } from "@/lib/data";
+import {
+  loadAboutExperiences,
+  loadCertifications,
+  loadEngagements,
+  loadHobbies,
+  loadHonors,
+  loadInvolvements,
+  loadSkills,
+} from "@/lib/data";
 
 const PROFILE_IMAGE_PATH = "/images/profile/me-studio-portrait.png";
 
@@ -33,7 +41,7 @@ type Involvement = {
   description: string;
 };
 
-const involvements: Involvement[] = [
+const fallbackInvolvements: Involvement[] = [
   {
     org: "PMI CCVC Chapter",
     date: "May 2025 – Present",
@@ -84,7 +92,7 @@ type Certification = {
   description: string;
 };
 
-const certifications: Certification[] = [
+const fallbackCertifications: Certification[] = [
   {
     title: "Introduction to Packet Tracer",
     issuer: "Cisco Networking Academy",
@@ -94,7 +102,7 @@ const certifications: Certification[] = [
   },
 ];
 
-const honors: Honor[] = [
+const fallbackHonors: Honor[] = [
   {
     award: "Lewis & Virginia Eaton Business Scholarship",
     body: "CSU Fresno",
@@ -112,7 +120,7 @@ const honors: Honor[] = [
   { award: "Summa Cum Laude", body: "CSU Fresno", date: "December 2025" },
 ];
 
-const engagements: Engagement[] = [
+const fallbackEngagements: Engagement[] = [
   {
     org: "Kerman Chamber of Commerce",
     role: "Web & branding consultant",
@@ -141,8 +149,32 @@ const engagements: Engagement[] = [
 ];
 
 export default async function AboutPage() {
-  const skills = await loadSkills();
-  const hobbies = await loadHobbies();
+  const [
+    skills,
+    hobbies,
+    engagementsDb,
+    involvementsDb,
+    certificationsDb,
+    honorsDb,
+    experiences,
+  ] = await Promise.all([
+    loadSkills(),
+    loadHobbies(),
+    loadEngagements(),
+    loadInvolvements(),
+    loadCertifications(),
+    loadHonors(),
+    loadAboutExperiences(),
+  ]);
+
+  const engagements: Engagement[] =
+    engagementsDb.length > 0 ? engagementsDb : fallbackEngagements;
+  const involvements: Involvement[] =
+    involvementsDb.length > 0 ? involvementsDb : fallbackInvolvements;
+  const certifications: Certification[] =
+    certificationsDb.length > 0 ? certificationsDb : fallbackCertifications;
+  const honors: Honor[] = honorsDb.length > 0 ? honorsDb : fallbackHonors;
+
   return (
     <div className="bg-bone min-h-screen">
       <section className="bg-bone py-16 px-6">

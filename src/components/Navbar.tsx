@@ -15,6 +15,7 @@ const routes = [
   { href: "/projects", label: "Projects" },
   { href: "/publications", label: "Publications" },
   { href: "/writing", label: "Writing" },
+  { href: "/photography", label: "Photography" },
   { href: "/contact", label: "Contact" },
 ]
 

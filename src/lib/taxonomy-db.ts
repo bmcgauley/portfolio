@@ -51,10 +51,12 @@ export async function addTaxonomy(input: {
       $setOnInsert: {
         kind: input.kind,
         name: trimmed,
-        ...(input.category ? { category: input.category } : {}),
         createdAt: now,
       },
-      $set: { updatedAt: now },
+      $set: {
+        updatedAt: now,
+        ...(input.category ? { category: input.category } : {}),
+      },
     },
     { upsert: true },
   );

@@ -366,6 +366,122 @@ export async function loadHobbies(): Promise<string[]> {
   }
 }
 
+export async function loadEngagements(): Promise<
+  Array<{ org: string; role: string; date: string }>
+> {
+  try {
+    const { listEngagements } = await import("./engagements-db");
+    const docs = await listEngagements();
+    if (docs.length > 0) {
+      return docs.map((d) => ({ org: d.org, role: d.role, date: d.date }));
+    }
+  } catch {
+    // fall through
+  }
+  return [];
+}
+
+export async function loadInvolvements(): Promise<
+  Array<{ org: string; date: string; description: string }>
+> {
+  try {
+    const { listInvolvements } = await import("./involvements-db");
+    const docs = await listInvolvements();
+    if (docs.length > 0) {
+      return docs.map((d) => ({
+        org: d.org,
+        date: d.date,
+        description: d.description,
+      }));
+    }
+  } catch {
+    // fall through
+  }
+  return [];
+}
+
+export async function loadCertifications(): Promise<
+  Array<{ title: string; issuer: string; date: string; description: string }>
+> {
+  try {
+    const { listCertifications } = await import("./certifications-db");
+    const docs = await listCertifications();
+    if (docs.length > 0) {
+      return docs.map((d) => ({
+        title: d.title,
+        issuer: d.issuer,
+        date: d.date,
+        description: d.description,
+      }));
+    }
+  } catch {
+    // fall through
+  }
+  return [];
+}
+
+export async function loadAboutExperiences(): Promise<
+  Array<{
+    id: string;
+    position: string;
+    company: string;
+    startDate: string;
+    endDate: string | null;
+    description: string;
+    skills?: string[];
+  }>
+> {
+  try {
+    const { listExperiences } = await import("./experiences-db");
+    const docs = await listExperiences();
+    if (docs.length > 0) {
+      return docs.map((d) => ({
+        id: d._id.toString(),
+        position: d.position,
+        company: d.company,
+        startDate: d.startDate,
+        endDate: d.endDate,
+        description: d.description,
+        skills: d.skills,
+      }));
+    }
+  } catch {
+    // fall through
+  }
+  return experiences.map((e) => ({
+    id: e.id,
+    position: e.position,
+    company: e.company,
+    startDate: e.startDate,
+    endDate: e.endDate,
+    description: e.description,
+    skills: e.skills,
+  }));
+}
+
+/**
+ * Honors section on the about page maps from the achievements collection
+ * since they are conceptually the same data ("award/recognition" entries).
+ */
+export async function loadHonors(): Promise<
+  Array<{ award: string; body: string; date: string }>
+> {
+  try {
+    const { listAchievements } = await import("./achievements-db");
+    const docs = await listAchievements();
+    if (docs.length > 0) {
+      return docs.map((d) => ({
+        award: d.title,
+        body: d.citation ?? "",
+        date: d.date,
+      }));
+    }
+  } catch {
+    // fall through
+  }
+  return [];
+}
+
 export const skills = [
   {
     category: 'Frontend Development',
