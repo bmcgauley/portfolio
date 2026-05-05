@@ -4,10 +4,19 @@ import { SectionDivider } from "@/components/ui/section-divider";
 import RefreshAllPreviewsButton from "@/components/RefreshAllPreviewsButton";
 import { listProjects } from "@/lib/projects-db";
 import { SortableAdminList } from "@/components/admin/SortableAdminList";
-import { deleteProjectAction, reorderProjectsAction } from "./actions";
+import {
+  deleteProjectAction,
+  reorderProjectsAction,
+  toggleProjectFeaturedAction,
+} from "./actions";
 
-export default async function AdminProjectsPage() {
+export default async function AdminProjectsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ error?: string; cap?: string }>;
+}) {
   const projects = await listProjects();
+  const params = (await searchParams) ?? {};
 
   return (
     <div>
@@ -30,6 +39,13 @@ export default async function AdminProjectsPage() {
           </Button>
         </div>
       </header>
+
+      {params.error === "FEATURED_CAP" ? (
+        <p className="bg-vellum border-l-4 border-crimson-deep rounded-[2px] px-4 py-3 font-serif italic text-body text-ink mb-8">
+          You can feature at most {params.cap ?? 5} projects at a time. Unfeature
+          one before adding another.
+        </p>
+      ) : null}
 
       {projects.length === 0 ? (
         <p className="font-serif italic text-body text-gold-shadow">
@@ -102,6 +118,21 @@ export default async function AdminProjectsPage() {
                       ) : null}
                     </div>
                     <div className="flex items-center gap-3">
+                      <form action={toggleProjectFeaturedAction}>
+                        <input type="hidden" name="id" value={id} />
+                        <input
+                          type="hidden"
+                          name="next"
+                          value={project.featured ? "false" : "true"}
+                        />
+                        <Button
+                          type="submit"
+                          variant={project.featured ? "secondary" : "outline"}
+                          size="sm"
+                        >
+                          {project.featured ? "Unfeature" : "Feature"}
+                        </Button>
+                      </form>
                       <Button asChild variant="outline" size="sm">
                         <Link href={`/admin/projects/${id}/edit`}>Edit</Link>
                       </Button>

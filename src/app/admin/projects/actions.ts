@@ -6,13 +6,17 @@ import { del } from "@vercel/blob";
 import { requireAdmin, slugify } from "@/lib/admin-helpers";
 import {
   bumpAllProjectOrders,
+  countFeaturedProjects,
   createProject,
   deleteProject,
   getProjectById,
   reorderProjects,
+  setProjectFeatured,
   updateProject,
   type ProjectDoc,
 } from "@/lib/projects-db";
+
+const FEATURED_CAP = 5;
 
 type Category = NonNullable<ProjectDoc["category"]>;
 const CATEGORIES: readonly Category[] = [
@@ -206,6 +210,37 @@ export async function reorderProjectsAction(
   revalidatePath("/admin/projects");
   revalidatePath("/projects");
   revalidatePath("/");
+}
+
+export async function toggleProjectFeaturedAction(
+  formData: FormData,
+): Promise<void> {
+  await requireAdmin();
+
+  const id = asString(formData.get("id"));
+  if (!id) {
+    redirect("/admin/projects?error=MISSING_ID");
+  }
+
+  // Hidden "next" field carries the desired state. If absent, default to true
+  // (unlikely path; guards against a malformed form).
+  const next = formData.get("next") === "true";
+
+  if (next) {
+    const currentFeatured = await countFeaturedProjects(id);
+    if (currentFeatured >= FEATURED_CAP) {
+      redirect(
+        `/admin/projects?error=FEATURED_CAP&cap=${FEATURED_CAP}`,
+      );
+    }
+  }
+
+  await setProjectFeatured(id, next);
+
+  revalidatePath("/admin/projects");
+  revalidatePath("/projects");
+  revalidatePath("/");
+  redirect("/admin/projects");
 }
 
 export async function deleteProjectAction(formData: FormData): Promise<void> {

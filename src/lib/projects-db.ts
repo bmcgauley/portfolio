@@ -136,3 +136,26 @@ export async function bumpAllProjectOrders(): Promise<void> {
   const col = await collection();
   await col.updateMany({}, { $inc: { order: 1 }, $set: { updatedAt: new Date() } });
 }
+
+export async function countFeaturedProjects(
+  excludeId?: string,
+): Promise<number> {
+  const col = await collection();
+  const filter: Record<string, unknown> = { featured: true };
+  if (excludeId && ObjectId.isValid(excludeId)) {
+    filter._id = { $ne: new ObjectId(excludeId) };
+  }
+  return col.countDocuments(filter);
+}
+
+export async function setProjectFeatured(
+  id: string,
+  featured: boolean,
+): Promise<void> {
+  if (!ObjectId.isValid(id)) return;
+  const col = await collection();
+  await col.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { featured, updatedAt: new Date() } },
+  );
+}
