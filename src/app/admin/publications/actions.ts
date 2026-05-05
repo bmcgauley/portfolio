@@ -5,9 +5,9 @@ import { redirect } from "next/navigation";
 import { del } from "@vercel/blob";
 import { requireAdmin, slugify } from "@/lib/admin-helpers";
 import {
+  bumpAllPublicationOrders,
   createPublication,
   deletePublication,
-  getMaxPublicationOrder,
   getPublicationById,
   reorderPublications,
   updatePublication,
@@ -70,7 +70,8 @@ export async function createPublicationAction(
 
   const slug = asOptionalString(formData.get("slug")) ?? slugify(title);
 
-  const order = (await getMaxPublicationOrder()) + 1;
+  await bumpAllPublicationOrders();
+  const order = 0;
 
   const allowDownload = formData.get("allowDownload") === "on";
 

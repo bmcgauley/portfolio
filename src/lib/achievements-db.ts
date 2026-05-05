@@ -85,13 +85,7 @@ export async function reorderAchievements(orderedIds: string[]): Promise<void> {
   );
 }
 
-export async function getMaxAchievementOrder(): Promise<number> {
+export async function bumpAllAchievementOrders(): Promise<void> {
   const col = await collection();
-  const top = await col
-    .find({})
-    .sort({ order: -1 })
-    .limit(1)
-    .project<{ order?: number }>({ order: 1 })
-    .toArray();
-  return top[0]?.order ?? -1;
+  await col.updateMany({}, { $inc: { order: 1 }, $set: { updatedAt: new Date() } });
 }

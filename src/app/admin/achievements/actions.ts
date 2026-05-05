@@ -4,9 +4,9 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/admin-helpers";
 import {
+  bumpAllAchievementOrders,
   createAchievement,
   deleteAchievement,
-  getMaxAchievementOrder,
   reorderAchievements,
   updateAchievement,
 } from "@/lib/achievements-db";
@@ -43,7 +43,7 @@ export async function createAchievementAction(
 
   if (!title || !date || !description) failNew("MISSING_FIELDS");
 
-  const order = (await getMaxAchievementOrder()) + 1;
+  await bumpAllAchievementOrders();
 
   await createAchievement({
     title,
@@ -51,7 +51,7 @@ export async function createAchievementAction(
     description,
     ...(citation ? { citation } : {}),
     ...(citationUrl ? { citationUrl } : {}),
-    order,
+    order: 0,
   });
 
   revalidatePath("/admin/achievements");

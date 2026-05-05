@@ -5,9 +5,9 @@ import { redirect } from "next/navigation";
 import { del } from "@vercel/blob";
 import { requireAdmin, slugify } from "@/lib/admin-helpers";
 import {
+  bumpAllProjectOrders,
   createProject,
   deleteProject,
-  getMaxProjectOrder,
   getProjectById,
   reorderProjects,
   updateProject,
@@ -81,14 +81,14 @@ export async function createProjectAction(formData: FormData): Promise<void> {
   // Uploaded file takes precedence over pasted external URL.
   const imageUrl = uploadedUrl ?? pastedUrl;
 
-  const order = (await getMaxProjectOrder()) + 1;
+  await bumpAllProjectOrders();
 
   await createProject({
     slug,
     title,
     description,
     tags,
-    order,
+    order: 0,
     ...(category ? { category } : {}),
     ...(technologies.length > 0 ? { technologies } : {}),
     ...(imageUrl ? { imageUrl } : {}),
