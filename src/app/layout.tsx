@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/next";
+import { getSiteSettings } from "@/lib/site-settings-db";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -21,32 +22,39 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Brian McGauley",
-  description:
-    "Brian McGauley is an incoming MBA student, independent consultant, and educator working at the intersection of organizational behavior, project management, and digital modernization.",
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  return {
     title: "Brian McGauley",
     description:
-      "Incoming MBA student, independent consultant, and educator. Imaginarii consulting, Drawn From publishing.",
-    url: "https://brianmcgauley.com",
-    siteName: "Brian McGauley",
-    locale: "en-US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Brian McGauley",
-    description:
-      "Incoming MBA student, independent consultant, and educator.",
-  },
-};
+      "Brian McGauley is an incoming MBA student, independent consultant, and educator working at the intersection of organizational behavior, project management, and digital modernization.",
+    openGraph: {
+      title: "Brian McGauley",
+      description:
+        "Incoming MBA student, independent consultant, and educator. Imaginarii consulting, Drawn From publishing.",
+      url: "https://brianmcgauley.com",
+      siteName: "Brian McGauley",
+      locale: "en-US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Brian McGauley",
+      description:
+        "Incoming MBA student, independent consultant, and educator.",
+    },
+    ...(settings?.faviconUrl
+      ? { icons: { icon: settings.faviconUrl } }
+      : {}),
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSiteSettings();
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -68,7 +76,7 @@ export default function RootLayout({
         className={`${cormorant.variable} ${jetbrainsMono.variable} min-h-screen bg-bone text-ink antialiased`}
       >
         <div className="relative flex min-h-screen flex-col">
-          <Navbar />
+          <Navbar logoUrl={settings?.logoUrl} />
           <main className="flex-1">{children}</main>
           <Footer />
         </div>

@@ -1,7 +1,16 @@
+import Image from "next/image";
 import { auth } from "@/auth";
 import { getDb } from "@/lib/mongodb";
 import { getAdminEmails } from "@/lib/admin-allowlist";
 import { Ornament } from "@/components/ui/ornament";
+import { Button } from "@/components/ui/button";
+import { BlobFileInput } from "@/components/admin/BlobFileInput";
+import { getSiteSettings } from "@/lib/site-settings-db";
+import {
+  clearSiteFaviconAction,
+  clearSiteLogoAction,
+  updateSiteSettingsAction,
+} from "./actions";
 
 async function getSystemStatus() {
   let mongoOk = false;
@@ -21,12 +30,18 @@ async function getSystemStatus() {
   return { mongoOk, collectionCounts };
 }
 
-export default async function SettingsPage() {
+export default async function SettingsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ saved?: string; cleared?: string }>;
+}) {
   const session = await auth();
   const status = await getSystemStatus();
+  const branding = await getSiteSettings();
   const adminEmails = getAdminEmails();
   const blobConfigured = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
   const googleConfigured = Boolean(process.env.GOOGLE_CLIENT_ID);
+  const params = (await searchParams) ?? {};
 
   const userEmail = session?.user?.email ?? "—";
   const userName = session?.user?.name ?? "—";
@@ -45,6 +60,128 @@ export default async function SettingsPage() {
           not here.
         </p>
       </header>
+
+      {params.saved ? (
+        <p className="bg-vellum border-l-4 border-gold rounded-[2px] px-4 py-3 font-serif italic text-body text-ink mb-8">
+          Branding saved.
+        </p>
+      ) : null}
+      {params.cleared ? (
+        <p className="bg-vellum border-l-4 border-gold rounded-[2px] px-4 py-3 font-serif italic text-body text-ink mb-8">
+          {params.cleared === "logo" ? "Logo" : "Favicon"} cleared.
+        </p>
+      ) : null}
+
+      <section className="mb-12">
+        <header className="mb-4">
+          <p className="font-mono uppercase tracking-[0.22em] text-[10px] text-gold-shadow mb-2">
+            Branding
+          </p>
+          <h2 className="font-display font-bold uppercase tracking-[0.04em] text-h2 text-ink">
+            Logo &amp; Favicon
+          </h2>
+          <p className="font-serif italic text-caption text-ink-muted mt-2">
+            Logo replaces the &ldquo;Brian McGauley&rdquo; wordmark in the
+            header and on the homepage hero. Favicon shows in browser tabs and
+            bookmarks.
+          </p>
+        </header>
+
+        <form
+          action={updateSiteSettingsAction}
+          className="bg-vellum border-l-8 border-parchment rounded-[2px] px-8 py-6 space-y-8"
+        >
+          <div>
+            <label
+              htmlFor="logoFile"
+              className="block font-mono uppercase tracking-[0.22em] text-[10px] text-crimson-deep mb-2"
+            >
+              Logo
+            </label>
+            {branding?.logoUrl ? (
+              <div className="mb-4 bg-bone rounded-[2px] p-4 inline-block">
+                <Image
+                  src={branding.logoUrl}
+                  alt="Current logo"
+                  width={300}
+                  height={120}
+                  className="max-h-32 w-auto object-contain"
+                  unoptimized
+                />
+              </div>
+            ) : null}
+            <BlobFileInput
+              id="logoFile"
+              name="logoUrl"
+              accept="image/jpeg,image/png,image/webp"
+              pathPrefix="settings/logo"
+              defaultUrl={branding?.logoUrl}
+            />
+            <p className="font-serif italic text-caption text-ink-muted mt-2">
+              Recommended: PNG or WebP, transparent background, at least 800px
+              wide. Leave empty to keep the current logo.
+            </p>
+          </div>
+
+          <div>
+            <label
+              htmlFor="faviconFile"
+              className="block font-mono uppercase tracking-[0.22em] text-[10px] text-crimson-deep mb-2"
+            >
+              Favicon
+            </label>
+            {branding?.faviconUrl ? (
+              <div className="mb-4 bg-bone rounded-[2px] p-3 inline-flex items-center gap-3">
+                <Image
+                  src={branding.faviconUrl}
+                  alt="Current favicon"
+                  width={48}
+                  height={48}
+                  className="h-12 w-12 object-contain"
+                  unoptimized
+                />
+                <span className="font-serif italic text-caption text-ink-muted">
+                  Current favicon
+                </span>
+              </div>
+            ) : null}
+            <BlobFileInput
+              id="faviconFile"
+              name="faviconUrl"
+              accept="image/png,image/webp"
+              pathPrefix="settings/favicon"
+              defaultUrl={branding?.faviconUrl}
+            />
+            <p className="font-serif italic text-caption text-ink-muted mt-2">
+              Recommended: square PNG, 512&times;512. Browsers cache favicons
+              aggressively &mdash; you may need a hard refresh to see changes.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-4 pt-4 border-t border-gold/40">
+            <Button type="submit">Save Branding</Button>
+          </div>
+        </form>
+
+        {(branding?.logoUrl || branding?.faviconUrl) && (
+          <div className="mt-6 flex items-center gap-3 flex-wrap">
+            {branding?.logoUrl ? (
+              <form action={clearSiteLogoAction}>
+                <Button type="submit" variant="destructive" size="sm">
+                  Remove Logo
+                </Button>
+              </form>
+            ) : null}
+            {branding?.faviconUrl ? (
+              <form action={clearSiteFaviconAction}>
+                <Button type="submit" variant="destructive" size="sm">
+                  Remove Favicon
+                </Button>
+              </form>
+            ) : null}
+          </div>
+        )}
+      </section>
 
       <section className="mb-12">
         <header className="mb-4">

@@ -1,7 +1,9 @@
-import { Wordmark } from "@/components/ui/wordmark";
+import { SiteLogo } from "@/components/ui/site-logo";
 import { Ornament } from "@/components/ui/ornament";
+import { getSiteSettings } from "@/lib/site-settings-db";
 
-export default function Hero() {
+export default async function Hero() {
+  const settings = await getSiteSettings();
   return (
     <section className="bg-bone py-24 md:py-32 px-6">
       <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
@@ -10,7 +12,7 @@ export default function Hero() {
           <Ornament />
           <Ornament />
         </div>
-        <Wordmark variant="primary" as="h1" />
+        <SiteLogo logoUrl={settings?.logoUrl} variant="primary" />
         <p className="font-serif italic text-body-lg text-ink-soft max-w-2xl mt-8">
           Incoming MBA student, independent consultant, and educator working
           at the intersection of organizational behavior, project management,
