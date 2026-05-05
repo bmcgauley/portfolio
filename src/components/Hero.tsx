@@ -12,7 +12,11 @@ export default async function Hero() {
           <Ornament />
           <Ornament />
         </div>
-        <SiteLogo logoUrl={settings?.logoUrl} variant="primary" />
+        <SiteLogo
+          logoUrl={settings?.logoUrl}
+          variant="primary"
+          heroMaxWidth={settings?.logoHeroMaxWidth}
+        />
         <p className="font-serif italic text-body-lg text-ink-soft max-w-2xl mt-8">
           Incoming MBA student, independent consultant, and educator working
           at the intersection of organizational behavior, project management,

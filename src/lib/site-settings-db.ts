@@ -4,6 +4,10 @@ export interface SiteSettingsDoc {
   _id: "site";
   logoUrl?: string;
   faviconUrl?: string;
+  /** Navbar logo height in pixels at md+ breakpoints. Default 48. */
+  logoNavHeight?: number;
+  /** Homepage hero logo max-width in pixels. Default 400. */
+  logoHeroMaxWidth?: number;
   updatedAt: Date;
 }
 

@@ -19,6 +19,18 @@ function asOptionalString(v: FormDataEntryValue | null): string | undefined {
   return s.length > 0 ? s : undefined;
 }
 
+function asOptionalNumber(
+  v: FormDataEntryValue | null,
+  min: number,
+  max: number,
+): number | undefined {
+  const s = asString(v);
+  if (!s) return undefined;
+  const n = Number.parseInt(s, 10);
+  if (Number.isNaN(n)) return undefined;
+  return Math.min(Math.max(n, min), max);
+}
+
 function isVercelBlobUrl(url: string | undefined | null): url is string {
   if (!url) return false;
   try {
@@ -37,8 +49,29 @@ export async function updateSiteSettingsAction(
 
   const newLogoUrl = asOptionalString(formData.get("logoUrl"));
   const newFaviconUrl = asOptionalString(formData.get("faviconUrl"));
+  const navHeight = asOptionalNumber(formData.get("logoNavHeight"), 24, 120);
+  const heroMaxWidth = asOptionalNumber(
+    formData.get("logoHeroMaxWidth"),
+    120,
+    1000,
+  );
 
-  const patch: { logoUrl?: string; faviconUrl?: string } = {};
+  const patch: {
+    logoUrl?: string;
+    faviconUrl?: string;
+    logoNavHeight?: number;
+    logoHeroMaxWidth?: number;
+  } = {};
+
+  if (navHeight !== undefined && navHeight !== existing?.logoNavHeight) {
+    patch.logoNavHeight = navHeight;
+  }
+  if (
+    heroMaxWidth !== undefined &&
+    heroMaxWidth !== existing?.logoHeroMaxWidth
+  ) {
+    patch.logoHeroMaxWidth = heroMaxWidth;
+  }
 
   if (newLogoUrl && newLogoUrl !== existing?.logoUrl) {
     patch.logoUrl = newLogoUrl;

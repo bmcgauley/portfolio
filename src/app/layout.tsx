@@ -76,7 +76,10 @@ export default async function RootLayout({
         className={`${cormorant.variable} ${jetbrainsMono.variable} min-h-screen bg-bone text-ink antialiased`}
       >
         <div className="relative flex min-h-screen flex-col">
-          <Navbar logoUrl={settings?.logoUrl} />
+          <Navbar
+            logoUrl={settings?.logoUrl}
+            navHeight={settings?.logoNavHeight}
+          />
           <main className="flex-1">{children}</main>
           <Footer />
         </div>

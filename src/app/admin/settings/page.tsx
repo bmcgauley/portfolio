@@ -121,6 +121,49 @@ export default async function SettingsPage({
               Recommended: PNG or WebP, transparent background, at least 800px
               wide. Leave empty to keep the current logo.
             </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+              <div>
+                <label
+                  htmlFor="logoNavHeight"
+                  className="block font-mono uppercase tracking-[0.22em] text-[10px] text-crimson-deep mb-2"
+                >
+                  Navbar logo height (px)
+                </label>
+                <input
+                  id="logoNavHeight"
+                  name="logoNavHeight"
+                  type="number"
+                  min={24}
+                  max={120}
+                  defaultValue={branding?.logoNavHeight ?? 48}
+                  className="w-full bg-vellum border border-gold-shadow rounded-[2px] px-4 py-3 font-serif text-body text-ink focus:border-crimson-deep focus:outline-none focus:ring-2 focus:ring-crimson-deep/30"
+                />
+                <p className="font-serif italic text-caption text-ink-muted mt-2">
+                  24&ndash;120 px. Default 48.
+                </p>
+              </div>
+              <div>
+                <label
+                  htmlFor="logoHeroMaxWidth"
+                  className="block font-mono uppercase tracking-[0.22em] text-[10px] text-crimson-deep mb-2"
+                >
+                  Hero logo max width (px)
+                </label>
+                <input
+                  id="logoHeroMaxWidth"
+                  name="logoHeroMaxWidth"
+                  type="number"
+                  min={120}
+                  max={1000}
+                  defaultValue={branding?.logoHeroMaxWidth ?? 400}
+                  className="w-full bg-vellum border border-gold-shadow rounded-[2px] px-4 py-3 font-serif text-body text-ink focus:border-crimson-deep focus:outline-none focus:ring-2 focus:ring-crimson-deep/30"
+                />
+                <p className="font-serif italic text-caption text-ink-muted mt-2">
+                  120&ndash;1000 px. Default 400.
+                </p>
+              </div>
+            </div>
           </div>
 
           <div>

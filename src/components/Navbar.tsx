@@ -18,7 +18,13 @@ const routes = [
   { href: "/contact", label: "Contact" },
 ]
 
-export default function Navbar({ logoUrl }: { logoUrl?: string }) {
+export default function Navbar({
+  logoUrl,
+  navHeight,
+}: {
+  logoUrl?: string;
+  navHeight?: number;
+}) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
 
@@ -26,7 +32,7 @@ export default function Navbar({ logoUrl }: { logoUrl?: string }) {
     <header className="sticky top-0 z-50 w-full border-b border-gold bg-bone/90 backdrop-blur-md">
       <div className="container mx-auto flex h-[60px] items-center justify-between px-4 sm:px-6 md:h-[72px] lg:px-8">
         <Link href="/" aria-label="Brian McGauley — Home">
-          <SiteLogo logoUrl={logoUrl} variant="compact" />
+          <SiteLogo logoUrl={logoUrl} variant="compact" navHeight={navHeight} />
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
@@ -68,7 +74,7 @@ export default function Navbar({ logoUrl }: { logoUrl?: string }) {
           <SheetContent side="right" className="w-[80vw] sm:w-[350px] border-l border-gold bg-bone">
             <div className="px-2 py-6">
               <Link href="/" className="mb-8 inline-block" onClick={() => setOpen(false)}>
-                <SiteLogo logoUrl={logoUrl} variant="compact" />
+                <SiteLogo logoUrl={logoUrl} variant="compact" navHeight={navHeight} />
               </Link>
               <nav className="flex flex-col gap-1">
                 {routes.slice(0, -1).map((route) => {
