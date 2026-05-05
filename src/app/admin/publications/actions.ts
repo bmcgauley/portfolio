@@ -10,8 +10,8 @@ import {
   getPublicationById,
   updatePublication,
   type AcademicDoc,
-  type DrawnFromDoc,
-  type IndependentDoc,
+  type BookDoc,
+  type BookStatus,
   type PublicationDoc,
 } from "@/lib/publications-db";
 
@@ -34,7 +34,13 @@ function asCsv(v: FormDataEntryValue | null): string[] {
 }
 
 function isVercelBlobUrl(url: string | undefined): url is string {
-  return Boolean(url && /\.public\.blob\.vercel-storage\.com\//.test(url));
+  if (!url) return false;
+  try {
+    const host = new URL(url).hostname;
+    return /\.blob\.vercel-storage\.com$/.test(host);
+  } catch {
+    return false;
+  }
 }
 
 function failNew(reason: string): never {
@@ -53,27 +59,41 @@ export async function createPublicationAction(
   await requireAdmin();
 
   const kind = asString(formData.get("kind")) as Kind;
+  if (kind !== "book" && kind !== "academic") {
+    failNew("INVALID_KIND");
+  }
+
   const title = asString(formData.get("title"));
   if (!title) failNew("MISSING_TITLE");
 
-  const slug =
-    asOptionalString(formData.get("slug")) ?? slugify(title);
+  const slug = asOptionalString(formData.get("slug")) ?? slugify(title);
 
-  if (kind === "drawn-from") {
+  const orderRaw = asString(formData.get("order"));
+  const orderParsed = Number.parseInt(orderRaw, 10);
+  const order = Number.isNaN(orderParsed) ? 0 : orderParsed;
+
+  // Checkbox: "on" if checked, absent if unchecked. Default true if absent.
+  const allowDownloadRaw = formData.get("allowDownload");
+  const allowDownload =
+    allowDownloadRaw === null ? true : allowDownloadRaw === "on";
+
+  if (kind === "book") {
     const subtitle = asString(formData.get("subtitle"));
     const description = asString(formData.get("description"));
-    const status = asString(formData.get("status")) as DrawnFromDoc["status"];
-    const releaseDate = asString(formData.get("releaseDate"));
-    const externalUrl = asOptionalString(formData.get("externalUrl"));
-    const tags = asCsv(formData.get("tags"));
     const coverImage = asString(formData.get("coverImageUrl"));
+    const status = asString(formData.get("status")) as BookStatus;
+    const releaseDate = asString(formData.get("releaseDate"));
+    const publisher = asOptionalString(formData.get("publisher"));
+    const externalUrl = asOptionalString(formData.get("externalUrl"));
+    const pdfUrl = asOptionalString(formData.get("pdfUrl"));
+    const tags = asCsv(formData.get("tags"));
 
-    if (!subtitle || !description || !status || !releaseDate || !coverImage) {
+    if (!subtitle || !description || !coverImage || !status || !releaseDate) {
       failNew("MISSING_FIELDS");
     }
 
-    const data: Omit<DrawnFromDoc, "_id" | "createdAt" | "updatedAt"> = {
-      kind: "drawn-from",
+    const data: Omit<BookDoc, "_id" | "createdAt" | "updatedAt"> = {
+      kind: "book",
       slug,
       title,
       subtitle,
@@ -81,30 +101,34 @@ export async function createPublicationAction(
       coverImage,
       status,
       releaseDate,
+      order,
+      allowDownload,
+      ...(publisher ? { publisher } : {}),
       ...(externalUrl ? { externalUrl } : {}),
+      ...(pdfUrl ? { pdfUrl } : {}),
       ...(tags.length > 0 ? { tags } : {}),
     };
     await createPublication(data);
-  } else if (kind === "academic") {
+  } else {
     const course = asString(formData.get("course"));
     const venue = asOptionalString(formData.get("venue"));
     const yearRaw = asString(formData.get("year"));
     const year = Number.parseInt(yearRaw, 10);
     const abstract = asString(formData.get("abstract"));
+    const pdfPath = asString(formData.get("pdfUrl"));
     const authors = asCsv(formData.get("authors"));
     const category = asString(
       formData.get("category"),
     ) as AcademicDoc["category"];
     const tags = asCsv(formData.get("tags"));
-    const pdfPath = asString(formData.get("pdfUrl"));
 
     if (
       !course ||
       !abstract ||
+      !pdfPath ||
       !category ||
       authors.length === 0 ||
-      Number.isNaN(year) ||
-      !pdfPath
+      Number.isNaN(year)
     ) {
       failNew("MISSING_FIELDS");
     }
@@ -120,29 +144,11 @@ export async function createPublicationAction(
       pdfPath,
       authors,
       category,
+      order,
+      allowDownload,
       ...(tags.length > 0 ? { tags } : {}),
     };
     await createPublication(data);
-  } else if (kind === "independent") {
-    const date = asString(formData.get("date"));
-    const length = asString(formData.get("length"));
-    const url = asString(formData.get("url"));
-    const description = asOptionalString(formData.get("description"));
-
-    if (!date || !length || !url) failNew("MISSING_FIELDS");
-
-    const data: Omit<IndependentDoc, "_id" | "createdAt" | "updatedAt"> = {
-      kind: "independent",
-      slug,
-      title,
-      date,
-      length,
-      url,
-      ...(description ? { description } : {}),
-    };
-    await createPublication(data);
-  } else {
-    failNew("INVALID_KIND");
   }
 
   revalidatePath("/admin/publications");
@@ -157,21 +163,31 @@ export async function updatePublicationAction(
   await requireAdmin();
 
   const existing = await getPublicationById(id);
-  if (!existing) failEdit(id, "NOT_FOUND");
+  if (!existing) redirect("/admin/publications?error=NOT_FOUND");
 
   const title = asString(formData.get("title"));
   if (!title) failEdit(id, "MISSING_TITLE");
 
   const slug = asOptionalString(formData.get("slug")) ?? slugify(title);
 
-  if (existing.kind === "drawn-from") {
+  const orderRaw = asString(formData.get("order"));
+  const orderParsed = Number.parseInt(orderRaw, 10);
+  const order = Number.isNaN(orderParsed) ? 0 : orderParsed;
+
+  const allowDownloadRaw = formData.get("allowDownload");
+  const allowDownload =
+    allowDownloadRaw === null ? true : allowDownloadRaw === "on";
+
+  if (existing.kind === "book") {
     const subtitle = asString(formData.get("subtitle"));
     const description = asString(formData.get("description"));
-    const status = asString(formData.get("status")) as DrawnFromDoc["status"];
+    const status = asString(formData.get("status")) as BookStatus;
     const releaseDate = asString(formData.get("releaseDate"));
+    const publisher = asOptionalString(formData.get("publisher"));
     const externalUrl = asOptionalString(formData.get("externalUrl"));
     const tags = asCsv(formData.get("tags"));
     const newCoverImage = asString(formData.get("coverImageUrl"));
+    const newPdfUrl = asString(formData.get("pdfUrl"));
 
     if (!subtitle || !description || !status || !releaseDate) {
       failEdit(id, "MISSING_FIELDS");
@@ -189,6 +205,18 @@ export async function updatePublicationAction(
       }
     }
 
+    let pdfUrl: string | undefined = existing.pdfUrl;
+    if (newPdfUrl && newPdfUrl !== existing.pdfUrl) {
+      pdfUrl = newPdfUrl;
+      if (isVercelBlobUrl(existing.pdfUrl)) {
+        try {
+          await del(existing.pdfUrl as string);
+        } catch {
+          // best-effort blob cleanup
+        }
+      }
+    }
+
     await updatePublication(id, {
       slug,
       title,
@@ -197,10 +225,14 @@ export async function updatePublicationAction(
       coverImage,
       status,
       releaseDate,
+      publisher,
       externalUrl,
+      pdfUrl,
+      allowDownload,
+      order,
       tags: tags.length > 0 ? tags : undefined,
     } as Parameters<typeof updatePublication>[1]);
-  } else if (existing.kind === "academic") {
+  } else {
     const course = asString(formData.get("course"));
     const venue = asOptionalString(formData.get("venue"));
     const yearRaw = asString(formData.get("year"));
@@ -245,23 +277,9 @@ export async function updatePublicationAction(
       pdfPath,
       authors,
       category,
+      allowDownload,
+      order,
       tags: tags.length > 0 ? tags : undefined,
-    } as Parameters<typeof updatePublication>[1]);
-  } else {
-    const date = asString(formData.get("date"));
-    const length = asString(formData.get("length"));
-    const url = asString(formData.get("url"));
-    const description = asOptionalString(formData.get("description"));
-
-    if (!date || !length || !url) failEdit(id, "MISSING_FIELDS");
-
-    await updatePublication(id, {
-      slug,
-      title,
-      date,
-      length,
-      url,
-      description,
     } as Parameters<typeof updatePublication>[1]);
   }
 
@@ -280,9 +298,10 @@ export async function deletePublicationAction(
 
   const { blobsToDelete } = await deletePublication(id);
 
-  if (blobsToDelete.length > 0) {
+  const blobUrls = blobsToDelete.filter(isVercelBlobUrl);
+  if (blobUrls.length > 0) {
     try {
-      await del(blobsToDelete);
+      await del(blobUrls);
     } catch {
       // best-effort blob cleanup; doc is already gone
     }

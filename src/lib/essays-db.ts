@@ -12,6 +12,10 @@ export interface EssayDoc {
   body: string;
   tags?: string[];
   published: boolean;
+  /** Optional PDF attachment hosted on Vercel Blob. */
+  pdfUrl?: string;
+  /** Whether the PDF (if any) is downloadable on the public viewer. */
+  allowDownload?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -71,8 +75,14 @@ export async function updateEssay(
   );
 }
 
-export async function deleteEssay(id: string): Promise<void> {
-  if (!ObjectId.isValid(id)) return;
+export async function deleteEssay(
+  id: string,
+): Promise<{ blobsToDelete: string[] }> {
+  if (!ObjectId.isValid(id)) return { blobsToDelete: [] };
   const col = await collection();
+  const existing = await col.findOne({ _id: new ObjectId(id) });
+  const blobs: string[] = [];
+  if (existing?.pdfUrl) blobs.push(existing.pdfUrl);
   await col.deleteOne({ _id: new ObjectId(id) });
+  return { blobsToDelete: blobs };
 }

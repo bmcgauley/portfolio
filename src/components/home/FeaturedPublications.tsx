@@ -21,13 +21,15 @@ type CardData = {
 
 function toCardData(p: Publication): CardData {
   switch (p.kind) {
-    case "drawn-from":
+    case "book":
       return {
         id: p.slug,
         title: p.title,
-        meta: `Drawn From Publishing · ${p.releaseDate}`,
+        meta: p.publisher
+          ? `${p.publisher} · ${p.releaseDate}`
+          : p.releaseDate,
         description: p.subtitle,
-        url: p.externalUrl ?? "/publications",
+        url: p.externalUrl ?? `/publications/${p.slug}`,
         external: Boolean(p.externalUrl),
       };
     case "academic":
@@ -39,25 +41,15 @@ function toCardData(p: Publication): CardData {
         url: `/publications/${p.slug}`,
         external: false,
       };
-    case "independent":
-      return {
-        id: p.slug,
-        title: p.title,
-        meta: `Independent · ${p.length}`,
-        description: p.description ?? "",
-        url: p.url,
-        external: /^https?:\/\//.test(p.url),
-      };
   }
 }
 
 export default async function FeaturedPublications() {
-  const { drawnFrom, academic, independent } = await loadPublications();
+  const { books, academic } = await loadPublications();
   const featured: Publication[] = [
-    ...drawnFrom.slice(0, 1),
+    ...books.slice(0, 1),
     ...academic.slice(0, 1),
-    ...independent.slice(0, 1),
-  ].slice(0, 2);
+  ];
 
   if (featured.length === 0) return null;
 

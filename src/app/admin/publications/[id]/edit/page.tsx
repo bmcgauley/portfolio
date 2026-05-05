@@ -1,15 +1,18 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { SectionDivider } from "@/components/ui/section-divider";
 import { BlobFileInput } from "@/components/admin/BlobFileInput";
 import { getPublicationById } from "@/lib/publications-db";
-import { updatePublicationAction } from "../../actions";
+import { deletePublicationAction, updatePublicationAction } from "../../actions";
 
 const INPUT_CLASS =
   "w-full bg-vellum border border-gold-shadow rounded-[2px] px-4 py-3 font-serif text-body text-ink placeholder:text-ink-muted focus:border-crimson-deep focus:outline-none focus:ring-2 focus:ring-crimson-deep/30";
 
 const LABEL_CLASS =
   "block font-display uppercase tracking-[0.18em] text-xs text-crimson-deep mb-2";
+
+const CAPTION_CLASS = "mt-2 font-serif italic text-caption text-ink-muted";
 
 export default async function EditPublicationPage({
   params,
@@ -20,7 +23,12 @@ export default async function EditPublicationPage({
   const pub = await getPublicationById(id);
   if (!pub) notFound();
 
-  const action = updatePublicationAction.bind(null, pub._id.toString());
+  if (pub.kind !== "book" && pub.kind !== "academic") {
+    notFound();
+  }
+
+  const pubId = pub._id.toString();
+  const action = updatePublicationAction.bind(null, pubId);
 
   return (
     <div>
@@ -52,41 +60,26 @@ export default async function EditPublicationPage({
             disabled
             className={INPUT_CLASS}
           >
-            <option value="drawn-from">Book (Drawn-From)</option>
+            <option value="book">Book</option>
             <option value="academic">Academic Paper</option>
-            <option value="independent">Independent Note</option>
           </select>
         </div>
 
-        <div>
-          <label className={LABEL_CLASS} htmlFor="title">
-            Title
-          </label>
-          <input
-            id="title"
-            name="title"
-            type="text"
-            required
-            defaultValue={pub.title}
-            className={INPUT_CLASS}
-          />
-        </div>
-
-        <div>
-          <label className={LABEL_CLASS} htmlFor="slug">
-            Slug
-          </label>
-          <input
-            id="slug"
-            name="slug"
-            type="text"
-            defaultValue={pub.slug}
-            className={INPUT_CLASS}
-          />
-        </div>
-
-        {pub.kind === "drawn-from" && (
+        {pub.kind === "book" && (
           <>
+            <div>
+              <label className={LABEL_CLASS} htmlFor="title">
+                Title
+              </label>
+              <input
+                id="title"
+                name="title"
+                type="text"
+                required
+                defaultValue={pub.title}
+                className={INPUT_CLASS}
+              />
+            </div>
             <div>
               <label className={LABEL_CLASS} htmlFor="subtitle">
                 Subtitle
@@ -101,17 +94,34 @@ export default async function EditPublicationPage({
               />
             </div>
             <div>
+              <label className={LABEL_CLASS} htmlFor="slug">
+                Slug
+              </label>
+              <input
+                id="slug"
+                name="slug"
+                type="text"
+                defaultValue={pub.slug}
+                className={INPUT_CLASS}
+              />
+              <p className={CAPTION_CLASS}>Auto-derived from title if blank.</p>
+            </div>
+            <div>
               <label className={LABEL_CLASS} htmlFor="description">
                 Description
               </label>
               <textarea
                 id="description"
                 name="description"
-                rows={4}
+                rows={6}
                 required
                 defaultValue={pub.description}
                 className={INPUT_CLASS}
               />
+              <p className={CAPTION_CLASS}>
+                Markdown supported. Use **bold**, *italic*, blank lines for
+                paragraphs, lists, etc.
+              </p>
             </div>
             <div>
               <label className={LABEL_CLASS} htmlFor="coverImage">
@@ -136,9 +146,14 @@ export default async function EditPublicationPage({
                 defaultValue={pub.status}
                 className={INPUT_CLASS}
               >
-                <option value="available">Available</option>
+                <option value="in-progress">
+                  In Progress (still being written)
+                </option>
+                <option value="coming-soon">
+                  Coming Soon (written, not released)
+                </option>
                 <option value="pre-order">Pre-Order</option>
-                <option value="coming-soon">Coming Soon</option>
+                <option value="available">Available</option>
               </select>
             </div>
             <div>
@@ -150,7 +165,21 @@ export default async function EditPublicationPage({
                 name="releaseDate"
                 type="text"
                 required
+                placeholder="e.g. May 2026 or Q4 2026"
                 defaultValue={pub.releaseDate}
+                className={INPUT_CLASS}
+              />
+            </div>
+            <div>
+              <label className={LABEL_CLASS} htmlFor="publisher">
+                Publisher (optional)
+              </label>
+              <input
+                id="publisher"
+                name="publisher"
+                type="text"
+                placeholder="e.g. Drawn From Publishing, Self-Published"
+                defaultValue={pub.publisher ?? ""}
                 className={INPUT_CLASS}
               />
             </div>
@@ -165,10 +194,49 @@ export default async function EditPublicationPage({
                 defaultValue={pub.externalUrl ?? ""}
                 className={INPUT_CLASS}
               />
+              <p className={CAPTION_CLASS}>
+                Retailer or external store link.
+              </p>
+            </div>
+            <div>
+              <label className={LABEL_CLASS} htmlFor="pdf">
+                PDF (optional)
+              </label>
+              <BlobFileInput
+                id="pdf"
+                name="pdfUrl"
+                accept="application/pdf"
+                pathPrefix="publications/books"
+                defaultUrl={pub.pdfUrl}
+              />
+              <p className={CAPTION_CLASS}>
+                Optional. Attach a PDF to host directly on this site.
+              </p>
+            </div>
+            <div className="flex items-start gap-3">
+              <input
+                id="allowDownload"
+                name="allowDownload"
+                type="checkbox"
+                defaultChecked={pub.allowDownload ?? true}
+                className="mt-1 h-4 w-4 accent-crimson-deep"
+              />
+              <div>
+                <label
+                  htmlFor="allowDownload"
+                  className="font-serif text-body text-ink"
+                >
+                  Allow visitors to download the PDF
+                </label>
+                <p className={CAPTION_CLASS}>
+                  Uncheck to hide the download button on the viewer
+                  (best-effort; PDFs in iframes can still be saved).
+                </p>
+              </div>
             </div>
             <div>
               <label className={LABEL_CLASS} htmlFor="tags">
-                Tags (comma-separated)
+                Tags (optional, comma-separated)
               </label>
               <input
                 id="tags"
@@ -178,11 +246,53 @@ export default async function EditPublicationPage({
                 className={INPUT_CLASS}
               />
             </div>
+            <div>
+              <label className={LABEL_CLASS} htmlFor="order">
+                Order (optional)
+              </label>
+              <input
+                id="order"
+                name="order"
+                type="number"
+                placeholder="0"
+                defaultValue={pub.order ?? 0}
+                className={INPUT_CLASS}
+              />
+              <p className={CAPTION_CLASS}>
+                Lower numbers appear first. Leave blank for default sort.
+              </p>
+            </div>
           </>
         )}
 
         {pub.kind === "academic" && (
           <>
+            <div>
+              <label className={LABEL_CLASS} htmlFor="title">
+                Title
+              </label>
+              <input
+                id="title"
+                name="title"
+                type="text"
+                required
+                defaultValue={pub.title}
+                className={INPUT_CLASS}
+              />
+            </div>
+            <div>
+              <label className={LABEL_CLASS} htmlFor="slug">
+                Slug
+              </label>
+              <input
+                id="slug"
+                name="slug"
+                type="text"
+                defaultValue={pub.slug}
+                className={INPUT_CLASS}
+              />
+              <p className={CAPTION_CLASS}>Auto-derived from title if blank.</p>
+            </div>
             <div>
               <label className={LABEL_CLASS} htmlFor="course">
                 Course
@@ -192,6 +302,7 @@ export default async function EditPublicationPage({
                 name="course"
                 type="text"
                 required
+                placeholder="e.g. MGT 471 — Strategic Management"
                 defaultValue={pub.course}
                 className={INPUT_CLASS}
               />
@@ -233,6 +344,7 @@ export default async function EditPublicationPage({
                 defaultValue={pub.abstract}
                 className={INPUT_CLASS}
               />
+              <p className={CAPTION_CLASS}>Markdown supported.</p>
             </div>
             <div>
               <label className={LABEL_CLASS} htmlFor="pdf">
@@ -255,6 +367,7 @@ export default async function EditPublicationPage({
                 name="authors"
                 type="text"
                 required
+                placeholder="Brian McGauley, Jane Doe"
                 defaultValue={pub.authors.join(", ")}
                 className={INPUT_CLASS}
               />
@@ -275,9 +388,30 @@ export default async function EditPublicationPage({
                 <option value="external">External</option>
               </select>
             </div>
+            <div className="flex items-start gap-3">
+              <input
+                id="allowDownload"
+                name="allowDownload"
+                type="checkbox"
+                defaultChecked={pub.allowDownload ?? true}
+                className="mt-1 h-4 w-4 accent-crimson-deep"
+              />
+              <div>
+                <label
+                  htmlFor="allowDownload"
+                  className="font-serif text-body text-ink"
+                >
+                  Allow visitors to download the PDF
+                </label>
+                <p className={CAPTION_CLASS}>
+                  Uncheck to hide the download button on the viewer
+                  (best-effort; PDFs in iframes can still be saved).
+                </p>
+              </div>
+            </div>
             <div>
               <label className={LABEL_CLASS} htmlFor="tags">
-                Tags (comma-separated)
+                Tags (optional, comma-separated)
               </label>
               <input
                 id="tags"
@@ -287,61 +421,21 @@ export default async function EditPublicationPage({
                 className={INPUT_CLASS}
               />
             </div>
-          </>
-        )}
-
-        {pub.kind === "independent" && (
-          <>
             <div>
-              <label className={LABEL_CLASS} htmlFor="date">
-                Date
+              <label className={LABEL_CLASS} htmlFor="order">
+                Order (optional)
               </label>
               <input
-                id="date"
-                name="date"
-                type="date"
-                required
-                defaultValue={pub.date}
+                id="order"
+                name="order"
+                type="number"
+                placeholder="0"
+                defaultValue={pub.order ?? 0}
                 className={INPUT_CLASS}
               />
-            </div>
-            <div>
-              <label className={LABEL_CLASS} htmlFor="length">
-                Length
-              </label>
-              <input
-                id="length"
-                name="length"
-                type="text"
-                required
-                defaultValue={pub.length}
-                className={INPUT_CLASS}
-              />
-            </div>
-            <div>
-              <label className={LABEL_CLASS} htmlFor="url">
-                URL
-              </label>
-              <input
-                id="url"
-                name="url"
-                type="text"
-                required
-                defaultValue={pub.url}
-                className={INPUT_CLASS}
-              />
-            </div>
-            <div>
-              <label className={LABEL_CLASS} htmlFor="description">
-                Description (optional)
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                rows={3}
-                defaultValue={pub.description ?? ""}
-                className={INPUT_CLASS}
-              />
+              <p className={CAPTION_CLASS}>
+                Lower numbers appear first. Leave blank for default sort.
+              </p>
             </div>
           </>
         )}
@@ -356,6 +450,26 @@ export default async function EditPublicationPage({
           </Link>
         </div>
       </form>
+
+      <SectionDivider />
+
+      <section className="max-w-3xl">
+        <p className="font-mono uppercase tracking-[0.22em] text-[10px] text-crimson-deep mb-3">
+          Danger Zone
+        </p>
+        <h2 className="font-display font-bold uppercase tracking-[0.04em] text-h3 text-ink mb-3">
+          Delete Publication
+        </h2>
+        <p className="font-serif italic text-body text-ink-soft mb-4">
+          This permanently removes the publication and any uploaded PDF/cover.
+        </p>
+        <form action={deletePublicationAction}>
+          <input type="hidden" name="id" value={pubId} />
+          <Button type="submit" variant="destructive">
+            Delete Publication
+          </Button>
+        </form>
+      </section>
     </div>
   );
 }

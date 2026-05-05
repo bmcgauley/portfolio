@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { getEssayBySlug, loadEssays } from "@/data/writing";
 import { SectionDivider } from "@/components/ui/section-divider";
 import { PullQuote } from "@/components/writing/PullQuote";
+import { Markdown } from "@/components/ui/markdown";
+import { PdfViewer } from "@/components/publications/PdfViewer";
 
 type Segment =
   | { type: "paragraph"; text: string }
@@ -77,6 +79,9 @@ export default async function EssayPage({
 
   const segments = parseBody(essay.body);
 
+  const { pdfUrl, allowDownload } = essay;
+  const downloadAllowed = allowDownload !== false;
+
   return (
     <main className="bg-bone min-h-screen">
       <article className="max-w-2xl mx-auto px-6 py-16">
@@ -90,6 +95,18 @@ export default async function EssayPage({
           <p className="font-serif italic text-body-lg text-ink-soft mt-2">
             {essay.subtitle}
           </p>
+          {pdfUrl && downloadAllowed ? (
+            <p className="font-mono uppercase tracking-[0.18em] text-mono-label mt-4">
+              <a
+                href={pdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-crimson-deep hover:underline underline-offset-4"
+              >
+                Available as PDF →
+              </a>
+            </p>
+          ) : null}
         </header>
 
         <SectionDivider />
@@ -97,17 +114,23 @@ export default async function EssayPage({
         <div>
           {segments.map((seg, i) =>
             seg.type === "paragraph" ? (
-              <p
-                key={i}
-                className="font-serif text-body-lg text-ink leading-[1.7] my-6"
-              >
-                {seg.text}
-              </p>
+              <Markdown key={i} content={seg.text} variant="prose" />
             ) : (
               <PullQuote key={i}>{seg.text}</PullQuote>
             ),
           )}
         </div>
+
+        {pdfUrl && !downloadAllowed ? (
+          <>
+            <SectionDivider />
+            <PdfViewer
+              src={pdfUrl}
+              title={essay.title}
+              allowDownload={false}
+            />
+          </>
+        ) : null}
 
         <SectionDivider />
 

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { SectionDivider } from "@/components/ui/section-divider";
 import { PdfViewer } from "@/components/publications/PdfViewer";
 import { Button } from "@/components/ui/button";
+import { Markdown } from "@/components/ui/markdown";
 import { getPublicationBySlug } from "@/data/publications";
 
 type PageProps = {
@@ -50,14 +51,18 @@ export default async function PublicationDetailPage({ params }: PageProps) {
             <p className="font-serif italic text-body-lg text-ink-soft mb-6">
               {authorsLine}
             </p>
-            <p className="font-serif text-body-lg text-ink leading-[1.7] max-w-2xl">
-              {pub.abstract}
-            </p>
+            <div className="max-w-2xl">
+              <Markdown content={pub.abstract} variant="prose" />
+            </div>
           </header>
 
           <SectionDivider />
 
-          <PdfViewer src={pub.pdfPath} title={pub.title} />
+          <PdfViewer
+            src={pub.pdfPath}
+            title={pub.title}
+            allowDownload={pub.allowDownload}
+          />
 
           <SectionDivider />
 
@@ -69,96 +74,72 @@ export default async function PublicationDetailPage({ params }: PageProps) {
     );
   }
 
-  if (pub.kind === "drawn-from") {
-    return (
-      <main className="bg-bone min-h-screen">
-        <article className="max-w-4xl mx-auto px-6 py-12">
-          <header className="mb-10 text-center">
-            <p className="font-mono uppercase tracking-[0.18em] text-mono-label text-gold-shadow mb-4">
-              Drawn From Publishing · {pub.releaseDate}
-            </p>
-            <h1 className="text-display-2 font-display font-bold uppercase tracking-[0.04em] text-ink mb-3">
-              {pub.title}
-            </h1>
-            <p className="font-serif italic text-body-lg text-ink-soft">
-              {pub.subtitle}
-            </p>
-          </header>
+  // pub.kind === "book"
+  const ctaLabel = pub.externalUrl
+    ? pub.publisher
+      ? `Visit ${pub.publisher}`
+      : "Visit Site"
+    : null;
 
-          <div className="flex flex-col md:flex-row gap-10 items-start">
-            <div className="relative aspect-[2/3] w-[260px] mx-auto md:mx-0 flex-shrink-0 border border-gold-shadow rounded-[2px] overflow-hidden bg-parchment">
-              <Image
-                src={pub.coverImage}
-                alt={`${pub.title} cover`}
-                fill
-                sizes="260px"
-                className="object-cover"
-                priority
-              />
-            </div>
-            <div className="flex-1">
-              <p className="font-serif text-body text-ink leading-relaxed mb-6">
-                {pub.description}
-              </p>
-              {pub.externalUrl ? (
+  return (
+    <main className="bg-bone min-h-screen">
+      <article className="max-w-4xl mx-auto px-6 py-12">
+        <header className="mb-10 text-center">
+          <p className="font-mono uppercase tracking-[0.18em] text-mono-label text-gold-shadow mb-4">
+            {pub.publisher ? `${pub.publisher} · ` : ""}
+            {pub.releaseDate}
+          </p>
+          <h1 className="text-display-2 font-display font-bold uppercase tracking-[0.04em] text-ink mb-3">
+            {pub.title}
+          </h1>
+          <p className="font-serif italic text-body-lg text-ink-soft">
+            {pub.subtitle}
+          </p>
+        </header>
+
+        <div className="flex flex-col md:flex-row gap-10 items-start">
+          <div className="relative aspect-[2/3] w-[260px] mx-auto md:mx-0 flex-shrink-0 border border-gold-shadow rounded-[2px] overflow-hidden bg-parchment">
+            <Image
+              src={pub.coverImage}
+              alt={`${pub.title} cover`}
+              fill
+              sizes="260px"
+              className="object-cover"
+              priority
+            />
+          </div>
+          <div className="flex-1">
+            <Markdown content={pub.description} variant="compact" />
+            {ctaLabel ? (
+              <div className="mt-6">
                 <Button asChild>
                   <a
                     href={pub.externalUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Visit Drawn From
+                    {ctaLabel}
                   </a>
                 </Button>
-              ) : null}
-            </div>
+              </div>
+            ) : null}
           </div>
+        </div>
 
-          <SectionDivider />
-
-          <footer className="text-center">
-            <BackLink />
-          </footer>
-        </article>
-      </main>
-    );
-  }
-
-  // independent
-  const isExternal = /^https?:\/\//.test(pub.url);
-  return (
-    <main className="bg-bone min-h-screen">
-      <article className="max-w-3xl mx-auto px-6 py-12 text-center">
-        <header className="mb-10">
-          <p className="font-mono uppercase tracking-[0.18em] text-mono-label text-gold-shadow mb-4">
-            Independent · {pub.length}
-          </p>
-          <h1 className="text-display-2 font-display font-bold uppercase tracking-[0.04em] text-ink mb-3">
-            {pub.title}
-          </h1>
-          {pub.description ? (
-            <p className="font-serif italic text-body-lg text-ink-soft">
-              {pub.description}
-            </p>
-          ) : null}
-        </header>
-
-        <p className="font-serif text-body text-ink mb-6">
-          Read at:{" "}
-          <Link
-            href={pub.url}
-            {...(isExternal
-              ? { target: "_blank", rel: "noopener noreferrer" }
-              : {})}
-            className="text-crimson-deep underline-offset-4 hover:underline"
-          >
-            {pub.url}
-          </Link>
-        </p>
+        {pub.pdfUrl ? (
+          <>
+            <SectionDivider />
+            <PdfViewer
+              src={pub.pdfUrl}
+              title={pub.title}
+              allowDownload={pub.allowDownload}
+            />
+          </>
+        ) : null}
 
         <SectionDivider />
 
-        <footer>
+        <footer className="text-center">
           <BackLink />
         </footer>
       </article>

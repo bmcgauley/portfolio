@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { SectionDivider } from "@/components/ui/section-divider";
+import { BlobFileInput } from "@/components/admin/BlobFileInput";
 import { getEssayById } from "@/lib/essays-db";
 import { deleteEssayAction, updateEssayAction } from "../../actions";
 
@@ -10,6 +11,8 @@ const inputClass =
 
 const labelClass =
   "block font-display uppercase tracking-[0.18em] text-xs text-crimson-deep mb-2";
+
+const captionClass = "mt-2 font-serif italic text-caption text-ink-muted";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -132,6 +135,15 @@ export default async function EditEssayPage({
             defaultValue={essay.excerpt}
             className={inputClass}
           />
+          <p className={captionClass}>
+            Markdown supported. Use <strong>**bold**</strong>,{" "}
+            <em>*italic*</em>, blank lines for paragraphs, lists, headings (#
+            ## ###), links [text](url), code, etc. Insert pull quotes with{" "}
+            <code className="font-mono not-italic text-ink-soft">
+              ---PULLQUOTE: your quote here---
+            </code>{" "}
+            on its own line.
+          </p>
         </div>
 
         <div>
@@ -146,13 +158,48 @@ export default async function EditEssayPage({
             defaultValue={essay.body}
             className={inputClass}
           />
-          <p className="mt-2 font-serif italic text-caption text-ink-muted">
-            Markdown-ish: use blank lines between paragraphs. Insert pull
-            quotes with{" "}
+          <p className={captionClass}>
+            Markdown supported. Use <strong>**bold**</strong>,{" "}
+            <em>*italic*</em>, blank lines for paragraphs, lists, headings (#
+            ## ###), links [text](url), code, etc. Insert pull quotes with{" "}
             <code className="font-mono not-italic text-ink-soft">
               ---PULLQUOTE: your quote here---
             </code>{" "}
             on its own line.
+          </p>
+        </div>
+
+        <div>
+          <label className={labelClass} htmlFor="pdf">
+            PDF (optional)
+          </label>
+          <BlobFileInput
+            id="pdf"
+            name="pdfUrl"
+            pathPrefix="essays"
+            accept="application/pdf"
+            defaultUrl={essay.pdfUrl}
+          />
+          <p className={captionClass}>
+            Optional. Attach a PDF version of this essay (e.g. for distribution
+            or longer-form pieces).
+          </p>
+        </div>
+
+        <div>
+          <label className="flex items-center gap-3 font-serif text-body text-ink cursor-pointer">
+            <input
+              type="checkbox"
+              name="allowDownload"
+              defaultChecked={essay.allowDownload !== false}
+              className="w-4 h-4 accent-crimson-deep"
+            />
+            <span>Allow visitors to download the PDF</span>
+          </label>
+          <p className={captionClass}>
+            Uncheck to hide the download button on the public viewer
+            (best-effort; PDFs in iframes can still be saved by determined
+            users).
           </p>
         </div>
 

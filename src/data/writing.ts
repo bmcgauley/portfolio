@@ -7,6 +7,8 @@ export type Essay = {
   excerpt: string;
   body: string;
   tags?: string[];
+  pdfUrl?: string;
+  allowDownload?: boolean;
 };
 
 // Hardcoded fallback. Becomes dead code after Phase F migration.
@@ -35,6 +37,8 @@ export async function loadEssays(opts?: {
         excerpt: d.excerpt,
         body: d.body,
         tags: d.tags,
+        pdfUrl: d.pdfUrl,
+        allowDownload: d.allowDownload,
       }));
     }
   } catch {
@@ -57,6 +61,8 @@ export async function getEssayBySlug(slug: string): Promise<Essay | null> {
         excerpt: doc.excerpt,
         body: doc.body,
         tags: doc.tags,
+        pdfUrl: doc.pdfUrl,
+        allowDownload: doc.allowDownload,
       };
     }
   } catch {

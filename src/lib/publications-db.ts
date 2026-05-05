@@ -3,21 +3,35 @@ import { getDb } from "@/lib/mongodb";
 
 interface BasePub {
   _id: ObjectId;
-  kind: "drawn-from" | "academic" | "independent";
+  kind: "book" | "academic";
   slug: string;
+  /** Manual sort weight; lower = earlier. Tie-break by date/year desc. */
+  order?: number;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface DrawnFromDoc extends BasePub {
-  kind: "drawn-from";
+export type BookStatus =
+  | "in-progress"
+  | "coming-soon"
+  | "pre-order"
+  | "available";
+
+export interface BookDoc extends BasePub {
+  kind: "book";
   title: string;
   subtitle: string;
   description: string;
   coverImage: string;
-  status: "available" | "pre-order" | "coming-soon";
+  status: BookStatus;
   releaseDate: string;
+  /** Free-text imprint/publisher, e.g. "Drawn From Publishing", "Self-Published". */
+  publisher?: string;
   externalUrl?: string;
+  /** Optional direct PDF if the book is also hostable on-site. */
+  pdfUrl?: string;
+  /** Whether the PDF (if any) is downloadable on the public viewer. */
+  allowDownload?: boolean;
   tags?: string[];
 }
 
@@ -31,19 +45,12 @@ export interface AcademicDoc extends BasePub {
   pdfPath: string;
   authors: string[];
   category: "academic" | "group-projects" | "external";
+  /** Whether the PDF is downloadable on the public viewer. Defaults to true. */
+  allowDownload?: boolean;
   tags?: string[];
 }
 
-export interface IndependentDoc extends BasePub {
-  kind: "independent";
-  title: string;
-  date: string;
-  length: string;
-  url: string;
-  description?: string;
-}
-
-export type PublicationDoc = DrawnFromDoc | AcademicDoc | IndependentDoc;
+export type PublicationDoc = BookDoc | AcademicDoc;
 
 const COLLECTION = "publications";
 
@@ -54,7 +61,10 @@ async function collection() {
 
 export async function listPublications(): Promise<PublicationDoc[]> {
   const col = await collection();
-  const docs = await col.find({}).sort({ createdAt: -1 }).toArray();
+  const docs = await col
+    .find({})
+    .sort({ order: 1, createdAt: -1 })
+    .toArray();
   return docs as PublicationDoc[];
 }
 
@@ -88,10 +98,7 @@ export async function updatePublication(
   if (!ObjectId.isValid(id)) return;
   const col = await collection();
   const update = { ...patch, updatedAt: new Date() } as Record<string, unknown>;
-  await col.updateOne(
-    { _id: new ObjectId(id) },
-    { $set: update },
-  );
+  await col.updateOne({ _id: new ObjectId(id) }, { $set: update });
 }
 
 export async function deletePublication(
@@ -102,8 +109,9 @@ export async function deletePublication(
   const existing = await col.findOne({ _id: new ObjectId(id) });
   const blobs: string[] = [];
   if (existing) {
-    if (existing.kind === "drawn-from" && existing.coverImage) {
-      blobs.push(existing.coverImage);
+    if (existing.kind === "book") {
+      if (existing.coverImage) blobs.push(existing.coverImage);
+      if (existing.pdfUrl) blobs.push(existing.pdfUrl);
     } else if (existing.kind === "academic" && existing.pdfPath) {
       blobs.push(existing.pdfPath);
     }

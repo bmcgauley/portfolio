@@ -4,19 +4,17 @@ import { listPublications, type PublicationDoc } from "@/lib/publications-db";
 import { deletePublicationAction } from "./actions";
 
 const KIND_LABEL: Record<PublicationDoc["kind"], string> = {
-  "drawn-from": "BOOK",
+  book: "BOOK",
   academic: "PAPER",
-  independent: "NOTE",
 };
 
 function metaLine(pub: PublicationDoc): string {
-  if (pub.kind === "drawn-from") {
-    return `${pub.status} · ${pub.releaseDate}`;
+  if (pub.kind === "book") {
+    const parts = [pub.status, pub.releaseDate];
+    if (pub.publisher) parts.push(pub.publisher);
+    return parts.join(" · ");
   }
-  if (pub.kind === "academic") {
-    return `${pub.course} · ${pub.year}`;
-  }
-  return pub.date;
+  return `${pub.course} · ${pub.year}`;
 }
 
 export default async function AdminPublicationsPage() {
@@ -33,7 +31,7 @@ export default async function AdminPublicationsPage() {
             Publications
           </h1>
           <p className="font-serif italic text-body text-ink-soft mt-3">
-            Manage books, papers, and notes.
+            Manage books and academic papers.
           </p>
         </div>
         <Button asChild>
