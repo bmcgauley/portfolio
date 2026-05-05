@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Markdown } from "@/components/ui/markdown";
-import { experiences, skills } from "@/lib/data";
+import { experiences, loadHobbies, loadSkills } from "@/lib/data";
 
 const PROFILE_IMAGE_PATH = "/images/profile/me-studio-portrait.png";
 
@@ -140,7 +140,9 @@ const engagements: Engagement[] = [
   },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const skills = await loadSkills();
+  const hobbies = await loadHobbies();
   return (
     <div className="bg-bone min-h-screen">
       <section className="bg-bone py-16 px-6">
@@ -411,6 +413,32 @@ export default function AboutPage() {
           ))}
         </div>
       </section>
+
+      {hobbies.length > 0 ? (
+        <>
+          <SectionDivider />
+          <section className="max-w-5xl mx-auto px-6">
+            <header className="mb-8">
+              <p className="font-mono uppercase tracking-[0.18em] text-caption text-gold-shadow">
+                Personal
+              </p>
+              <h2 className="font-display font-bold uppercase tracking-[0.04em] text-h1 text-ink mt-2">
+                Hobbies & Interests
+              </h2>
+            </header>
+            <ul className="flex flex-wrap gap-2">
+              {hobbies.map((hobby) => (
+                <li
+                  key={hobby}
+                  className="inline-flex items-center bg-vellum border border-gold-shadow rounded-full px-4 py-1.5 font-serif text-body text-ink"
+                >
+                  {hobby}
+                </li>
+              ))}
+            </ul>
+          </section>
+        </>
+      ) : null}
 
       <SectionDivider />
 

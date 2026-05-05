@@ -327,6 +327,45 @@ export const education = [
   }
 ];
 
+/**
+ * DB-first skills loader. Queries the taxonomy collection for kind='skill'
+ * and groups by category. Falls back to the hardcoded `skills` array if the
+ * DB is empty or unreachable.
+ */
+export async function loadSkills(): Promise<
+  Array<{ category: string; items: string[] }>
+> {
+  try {
+    const { listTaxonomy } = await import("./taxonomy-db");
+    const docs = await listTaxonomy("skill");
+    if (docs.length > 0) {
+      const grouped = new Map<string, string[]>();
+      for (const d of docs) {
+        const key = d.category && d.category.trim() ? d.category : "Other";
+        if (!grouped.has(key)) grouped.set(key, []);
+        grouped.get(key)!.push(d.name);
+      }
+      return Array.from(grouped, ([category, items]) => ({ category, items }));
+    }
+  } catch {
+    // DB unreachable — fall through
+  }
+  return skills;
+}
+
+/**
+ * DB-first hobbies loader. Returns names for kind='hobby'. Empty if none.
+ */
+export async function loadHobbies(): Promise<string[]> {
+  try {
+    const { listTaxonomy } = await import("./taxonomy-db");
+    const docs = await listTaxonomy("hobby");
+    return docs.map((d) => d.name);
+  } catch {
+    return [];
+  }
+}
+
 export const skills = [
   {
     category: 'Frontend Development',

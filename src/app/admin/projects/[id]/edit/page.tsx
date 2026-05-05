@@ -42,8 +42,6 @@ export default async function EditProjectPage({
   );
 
   const projectId = project._id.toString();
-  const tagsValue = project.tags.join(", ");
-  const technologiesValue = project.technologies?.join(", ") ?? "";
 
   return (
     <div>
@@ -134,16 +132,16 @@ export default async function EditProjectPage({
           <label htmlFor="tags" className={labelClass}>
             Tags
           </label>
-          <input
+          <ChipMultiSelect
             id="tags"
             name="tags"
-            type="text"
-            placeholder="Next.js, React, Branding"
-            defaultValue={tagsValue}
-            className={inputClass}
+            library={techLibrary}
+            defaultValue={project.tags ?? []}
+            addPlaceholder="Add tag…"
           />
           <p className={captionClass}>
-            Comma-separated, e.g. &lsquo;Next.js, React, Branding&rsquo;
+            Free-form labels for filtering. Picks from the same library as
+            Technologies; new names auto-save on submit.
           </p>
         </div>
 

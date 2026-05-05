@@ -116,15 +116,15 @@ export default async function NewProjectPage({ searchParams }: PageProps) {
           <label htmlFor="tags" className={labelClass}>
             Tags
           </label>
-          <input
+          <ChipMultiSelect
             id="tags"
             name="tags"
-            type="text"
-            placeholder="Next.js, React, Branding"
-            className={inputClass}
+            library={techLibrary}
+            addPlaceholder="Add tag…"
           />
           <p className={captionClass}>
-            Comma-separated, e.g. &lsquo;Next.js, React, Branding&rsquo;
+            Free-form labels for filtering. Picks from the same library as
+            Technologies; new names auto-save on submit.
           </p>
         </div>
 

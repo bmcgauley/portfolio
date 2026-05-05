@@ -36,13 +36,6 @@ function asOptionalString(v: FormDataEntryValue | null): string | undefined {
   return s.length > 0 ? s : undefined;
 }
 
-function asCsv(v: FormDataEntryValue | null): string[] {
-  return asString(v)
-    .split(",")
-    .map((s) => s.trim())
-    .filter((s) => s.length > 0);
-}
-
 function asImageList(v: FormDataEntryValue | null): string[] {
   const raw = asString(v);
   if (!raw) return [];
@@ -113,7 +106,7 @@ export async function createProjectAction(formData: FormData): Promise<void> {
   const providedSlug = asString(formData.get("slug"));
   const slug = providedSlug ? slugify(providedSlug) : slugify(title);
   const category = asCategory(formData.get("category"));
-  const tags = asCsv(formData.get("tags"));
+  const tags = asNameList(formData.get("tags"));
   const technologies = asNameList(formData.get("technologies"));
   const folderName = asOptionalString(formData.get("folderName"));
   const demoUrl = asOptionalString(formData.get("demoUrl"));
@@ -148,6 +141,9 @@ export async function createProjectAction(formData: FormData): Promise<void> {
   if (technologies.length > 0) {
     await addManyIfMissing(technologies, "technology");
   }
+  if (tags.length > 0) {
+    await addManyIfMissing(tags, "technology");
+  }
 
   revalidatePath("/admin/projects");
   revalidatePath("/projects");
@@ -176,7 +172,7 @@ export async function updateProjectAction(
   const providedSlug = asString(formData.get("slug"));
   const slug = providedSlug ? slugify(providedSlug) : slugify(title);
   const category = asCategory(formData.get("category"));
-  const tags = asCsv(formData.get("tags"));
+  const tags = asNameList(formData.get("tags"));
   const technologies = asNameList(formData.get("technologies"));
   const folderName = asOptionalString(formData.get("folderName"));
   const demoUrl = asOptionalString(formData.get("demoUrl"));
@@ -229,6 +225,9 @@ export async function updateProjectAction(
 
   if (technologies.length > 0) {
     await addManyIfMissing(technologies, "technology");
+  }
+  if (tags.length > 0) {
+    await addManyIfMissing(tags, "technology");
   }
 
   revalidatePath("/admin/projects");
