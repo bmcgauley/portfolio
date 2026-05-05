@@ -5,11 +5,15 @@ import { redirect } from "next/navigation";
 import { del } from "@vercel/blob";
 import { requireAdmin, slugify } from "@/lib/admin-helpers";
 import {
+  countFeaturedEssays,
   createEssay,
   deleteEssay,
   getEssayById,
+  setEssayFeatured,
   updateEssay,
 } from "@/lib/essays-db";
+
+const ESSAY_FEATURED_CAP = 4;
 
 function parseTags(raw: FormDataEntryValue | null): string[] {
   if (typeof raw !== "string") return [];
@@ -183,5 +187,27 @@ export async function togglePublishAction(formData: FormData): Promise<void> {
   revalidatePath("/admin/writing");
   revalidatePath("/writing");
   revalidatePath(`/writing/${existing.slug}`);
+  redirect("/admin/writing");
+}
+
+export async function toggleEssayFeaturedAction(
+  formData: FormData,
+): Promise<void> {
+  await requireAdmin();
+  const id = str(formData.get("id"));
+  if (!id) redirect("/admin/writing?error=MISSING_ID");
+  const next = formData.get("next") === "true";
+  if (next) {
+    const count = await countFeaturedEssays(id);
+    if (count >= ESSAY_FEATURED_CAP) {
+      redirect(
+        `/admin/writing?error=FEATURED_CAP&cap=${ESSAY_FEATURED_CAP}`,
+      );
+    }
+  }
+  await setEssayFeatured(id, next);
+  revalidatePath("/admin/writing");
+  revalidatePath("/writing");
+  revalidatePath("/");
   redirect("/admin/writing");
 }

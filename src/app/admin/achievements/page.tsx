@@ -5,10 +5,16 @@ import { SortableAdminList } from "@/components/admin/SortableAdminList";
 import {
   deleteAchievementAction,
   reorderAchievementsAction,
+  toggleAchievementFeaturedAction,
 } from "./actions";
 
-export default async function AdminAchievementsPage() {
+export default async function AdminAchievementsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ error?: string; cap?: string }>;
+}) {
   const achievements = await listAchievements();
+  const params = (await searchParams) ?? {};
 
   const sortableItems = achievements.map((a) => {
     const id = a._id.toString();
@@ -44,6 +50,21 @@ export default async function AdminAchievementsPage() {
             ) : null}
           </div>
           <div className="flex items-center gap-3 shrink-0">
+            <form action={toggleAchievementFeaturedAction}>
+              <input type="hidden" name="id" value={id} />
+              <input
+                type="hidden"
+                name="next"
+                value={a.featured ? "false" : "true"}
+              />
+              <Button
+                type="submit"
+                variant={a.featured ? "secondary" : "outline"}
+                size="sm"
+              >
+                {a.featured ? "Unfeature" : "Feature"}
+              </Button>
+            </form>
             <Button asChild variant="outline" size="sm">
               <Link href={`/admin/achievements/${id}/edit`}>Edit</Link>
             </Button>
@@ -78,6 +99,13 @@ export default async function AdminAchievementsPage() {
           <Link href="/admin/achievements/new">+ New Achievement</Link>
         </Button>
       </header>
+
+      {params.error === "FEATURED_CAP" ? (
+        <p className="bg-vellum border-l-4 border-crimson-deep rounded-[2px] px-4 py-3 font-serif italic text-body text-ink mb-8">
+          You can feature at most {params.cap ?? 4} achievements at a time.
+          Unfeature one before adding another.
+        </p>
+      ) : null}
 
       {sortableItems.length === 0 ? (
         <p className="font-serif italic text-body text-gold-shadow">

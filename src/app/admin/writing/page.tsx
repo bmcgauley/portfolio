@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { listEssays } from "@/lib/essays-db";
-import { deleteEssayAction } from "./actions";
+import { deleteEssayAction, toggleEssayFeaturedAction } from "./actions";
 
 function formatDate(iso: string): string {
   if (!iso) return "—";
@@ -16,8 +16,13 @@ function formatDate(iso: string): string {
     .toUpperCase();
 }
 
-export default async function AdminWritingPage() {
+export default async function AdminWritingPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ error?: string; cap?: string }>;
+}) {
   const essays = await listEssays({ includeDrafts: true });
+  const params = (await searchParams) ?? {};
 
   return (
     <div>
@@ -37,6 +42,13 @@ export default async function AdminWritingPage() {
           <Link href="/admin/writing/new">+ New Essay</Link>
         </Button>
       </header>
+
+      {params.error === "FEATURED_CAP" ? (
+        <p className="bg-vellum border-l-4 border-crimson-deep rounded-[2px] px-4 py-3 font-serif italic text-body text-ink mb-8">
+          You can feature at most {params.cap ?? 4} essays at a time. Unfeature
+          one before adding another.
+        </p>
+      ) : null}
 
       {essays.length === 0 ? (
         <p className="font-serif italic text-body text-gold-shadow">
@@ -80,20 +92,42 @@ export default async function AdminWritingPage() {
                 </div>
 
                 <div className="flex flex-col items-start md:items-end gap-3">
-                  {essay.published ? (
-                    <span className="bg-vellum text-crimson-deep border border-gold font-mono uppercase tracking-[0.18em] text-[11px] px-2 py-1 rounded-[2px]">
-                      PUBLISHED
-                    </span>
-                  ) : (
-                    <span className="bg-parchment text-gold-shadow font-mono uppercase tracking-[0.18em] text-[11px] px-2 py-1 rounded-[2px]">
-                      DRAFT
-                    </span>
-                  )}
+                  <div className="flex items-center gap-2">
+                    {essay.published ? (
+                      <span className="bg-vellum text-crimson-deep border border-gold font-mono uppercase tracking-[0.18em] text-[11px] px-2 py-1 rounded-[2px]">
+                        PUBLISHED
+                      </span>
+                    ) : (
+                      <span className="bg-parchment text-gold-shadow font-mono uppercase tracking-[0.18em] text-[11px] px-2 py-1 rounded-[2px]">
+                        DRAFT
+                      </span>
+                    )}
+                    {essay.featured ? (
+                      <span className="bg-gold text-ink font-mono uppercase tracking-[0.18em] text-[11px] px-2 py-1 rounded-[2px]">
+                        FEATURED
+                      </span>
+                    ) : null}
+                  </div>
                   <p className="font-mono uppercase tracking-[0.18em] text-[10px] text-ink-muted">
                     {formatDate(essay.date)}
                     {essay.readingTime ? ` · ${essay.readingTime}` : ""}
                   </p>
                   <div className="flex items-center gap-3">
+                    <form action={toggleEssayFeaturedAction}>
+                      <input type="hidden" name="id" value={id} />
+                      <input
+                        type="hidden"
+                        name="next"
+                        value={essay.featured ? "false" : "true"}
+                      />
+                      <Button
+                        type="submit"
+                        variant={essay.featured ? "secondary" : "outline"}
+                        size="sm"
+                      >
+                        {essay.featured ? "Unfeature" : "Feature"}
+                      </Button>
+                    </form>
                     <Link
                       href={`/admin/writing/${id}/edit`}
                       className="font-display uppercase tracking-[0.05em] text-xs text-crimson-deep hover:underline"

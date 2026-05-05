@@ -5,6 +5,7 @@ import { SortableAdminList } from "@/components/admin/SortableAdminList";
 import {
   deletePublicationAction,
   reorderPublicationsAction,
+  togglePublicationFeaturedAction,
 } from "./actions";
 
 const KIND_LABEL: Record<PublicationDoc["kind"], string> = {
@@ -21,8 +22,13 @@ function metaLine(pub: PublicationDoc): string {
   return `${pub.course} · ${pub.year}`;
 }
 
-export default async function AdminPublicationsPage() {
+export default async function AdminPublicationsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ error?: string; cap?: string }>;
+}) {
   const pubs = await listPublications();
+  const params = (await searchParams) ?? {};
 
   const sortableItems = pubs.map((pub) => {
     const id = pub._id.toString();
@@ -42,6 +48,21 @@ export default async function AdminPublicationsPage() {
             </p>
           </div>
           <div className="flex items-center gap-3 shrink-0">
+            <form action={togglePublicationFeaturedAction}>
+              <input type="hidden" name="id" value={id} />
+              <input
+                type="hidden"
+                name="next"
+                value={pub.featured ? "false" : "true"}
+              />
+              <Button
+                type="submit"
+                variant={pub.featured ? "secondary" : "outline"}
+                size="sm"
+              >
+                {pub.featured ? "Unfeature" : "Feature"}
+              </Button>
+            </form>
             <Button asChild variant="outline" size="sm">
               <Link href={`/admin/publications/${id}/edit`}>Edit</Link>
             </Button>
@@ -76,6 +97,13 @@ export default async function AdminPublicationsPage() {
           <Link href="/admin/publications/new">+ New Publication</Link>
         </Button>
       </header>
+
+      {params.error === "FEATURED_CAP" ? (
+        <p className="bg-vellum border-l-4 border-crimson-deep rounded-[2px] px-4 py-3 font-serif italic text-body text-ink mb-8">
+          You can feature at most {params.cap ?? 4} publications at a time.
+          Unfeature one before adding another.
+        </p>
+      ) : null}
 
       {sortableItems.length === 0 ? (
         <p className="font-serif italic text-body text-gold-shadow">

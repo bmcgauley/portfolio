@@ -5,11 +5,15 @@ import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/admin-helpers";
 import {
   bumpAllAchievementOrders,
+  countFeaturedAchievements,
   createAchievement,
   deleteAchievement,
   reorderAchievements,
+  setAchievementFeatured,
   updateAchievement,
 } from "@/lib/achievements-db";
+
+const ACHIEVEMENT_FEATURED_CAP = 4;
 
 function asString(v: FormDataEntryValue | null): string {
   return typeof v === "string" ? v.trim() : "";
@@ -108,4 +112,25 @@ export async function reorderAchievementsAction(
   await reorderAchievements(orderedIds);
   revalidatePath("/admin/achievements");
   revalidatePath("/");
+}
+
+export async function toggleAchievementFeaturedAction(
+  formData: FormData,
+): Promise<void> {
+  await requireAdmin();
+  const id = asString(formData.get("id"));
+  if (!id) redirect("/admin/achievements?error=MISSING_ID");
+  const next = formData.get("next") === "true";
+  if (next) {
+    const count = await countFeaturedAchievements(id);
+    if (count >= ACHIEVEMENT_FEATURED_CAP) {
+      redirect(
+        `/admin/achievements?error=FEATURED_CAP&cap=${ACHIEVEMENT_FEATURED_CAP}`,
+      );
+    }
+  }
+  await setAchievementFeatured(id, next);
+  revalidatePath("/admin/achievements");
+  revalidatePath("/");
+  redirect("/admin/achievements");
 }

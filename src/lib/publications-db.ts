@@ -32,6 +32,8 @@ export interface BookDoc extends BasePub {
   pdfUrl?: string;
   /** Whether the PDF (if any) is downloadable on the public viewer. */
   allowDownload?: boolean;
+  /** When true, surfaces in the home page Selected Writing grid. */
+  featured?: boolean;
   tags?: string[];
 }
 
@@ -47,6 +49,8 @@ export interface AcademicDoc extends BasePub {
   category: "academic" | "group-projects" | "external";
   /** Whether the PDF is downloadable on the public viewer. Defaults to true. */
   allowDownload?: boolean;
+  /** When true, surfaces in the home page Selected Writing grid. */
+  featured?: boolean;
   tags?: string[];
 }
 
@@ -99,6 +103,29 @@ export async function updatePublication(
   const col = await collection();
   const update = { ...patch, updatedAt: new Date() } as Record<string, unknown>;
   await col.updateOne({ _id: new ObjectId(id) }, { $set: update });
+}
+
+export async function countFeaturedPublications(
+  excludeId?: string,
+): Promise<number> {
+  const col = await collection();
+  const filter: Record<string, unknown> = { featured: true };
+  if (excludeId && ObjectId.isValid(excludeId)) {
+    filter._id = { $ne: new ObjectId(excludeId) };
+  }
+  return col.countDocuments(filter);
+}
+
+export async function setPublicationFeatured(
+  id: string,
+  featured: boolean,
+): Promise<void> {
+  if (!ObjectId.isValid(id)) return;
+  const col = await collection();
+  await col.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { featured, updatedAt: new Date() } },
+  );
 }
 
 export async function reorderPublications(orderedIds: string[]): Promise<void> {

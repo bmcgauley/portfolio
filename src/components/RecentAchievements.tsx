@@ -52,7 +52,9 @@ async function loadAchievements(): Promise<Achievement[]> {
     const { listAchievements } = await import("@/lib/achievements-db");
     const docs = await listAchievements();
     if (docs.length > 0) {
-      return docs.map((d) => ({
+      const featured = docs.filter((d) => d.featured);
+      const pool = featured.length > 0 ? featured : docs;
+      return pool.slice(0, 4).map((d) => ({
         title: d.title,
         date: d.date,
         description: d.description,

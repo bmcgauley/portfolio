@@ -6,16 +6,20 @@ import { del } from "@vercel/blob";
 import { requireAdmin, slugify } from "@/lib/admin-helpers";
 import {
   bumpAllPublicationOrders,
+  countFeaturedPublications,
   createPublication,
   deletePublication,
   getPublicationById,
   reorderPublications,
+  setPublicationFeatured,
   updatePublication,
   type AcademicDoc,
   type BookDoc,
   type BookStatus,
   type PublicationDoc,
 } from "@/lib/publications-db";
+
+const PUBLICATION_FEATURED_CAP = 4;
 
 type Kind = PublicationDoc["kind"];
 
@@ -285,6 +289,28 @@ export async function reorderPublicationsAction(
   await reorderPublications(orderedIds);
   revalidatePath("/admin/publications");
   revalidatePath("/publications");
+}
+
+export async function togglePublicationFeaturedAction(
+  formData: FormData,
+): Promise<void> {
+  await requireAdmin();
+  const id = asString(formData.get("id"));
+  if (!id) redirect("/admin/publications?error=MISSING_ID");
+  const next = formData.get("next") === "true";
+  if (next) {
+    const count = await countFeaturedPublications(id);
+    if (count >= PUBLICATION_FEATURED_CAP) {
+      redirect(
+        `/admin/publications?error=FEATURED_CAP&cap=${PUBLICATION_FEATURED_CAP}`,
+      );
+    }
+  }
+  await setPublicationFeatured(id, next);
+  revalidatePath("/admin/publications");
+  revalidatePath("/publications");
+  revalidatePath("/");
+  redirect("/admin/publications");
 }
 
 export async function deletePublicationAction(

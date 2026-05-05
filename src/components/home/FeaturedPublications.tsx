@@ -47,11 +47,12 @@ function toCardData(p: Publication): CardData {
 
 export default async function FeaturedPublications() {
   const { books, academic } = await loadPublications();
-  const featured: Publication[] = [
-    ...books.slice(0, 1),
-    ...academic.slice(0, 1),
-  ];
+  const all: Publication[] = [...books, ...academic];
+  const flagged = all.filter((p) => p.featured);
+  const pool = flagged.length > 0 ? flagged : all;
 
+  // Cap at 4 to match the homepage grid (and the admin cap).
+  const featured = pool.slice(0, 4);
   if (featured.length === 0) return null;
 
   const cards = featured.map(toCardData);

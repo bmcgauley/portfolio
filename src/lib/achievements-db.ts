@@ -9,6 +9,8 @@ export interface AchievementDoc {
   citation?: string;
   citationUrl?: string;
   order: number;
+  /** When true, surfaces in the home page Recent Achievements grid. */
+  featured?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -88,4 +90,27 @@ export async function reorderAchievements(orderedIds: string[]): Promise<void> {
 export async function bumpAllAchievementOrders(): Promise<void> {
   const col = await collection();
   await col.updateMany({}, { $inc: { order: 1 }, $set: { updatedAt: new Date() } });
+}
+
+export async function countFeaturedAchievements(
+  excludeId?: string,
+): Promise<number> {
+  const col = await collection();
+  const filter: Record<string, unknown> = { featured: true };
+  if (excludeId && ObjectId.isValid(excludeId)) {
+    filter._id = { $ne: new ObjectId(excludeId) };
+  }
+  return col.countDocuments(filter);
+}
+
+export async function setAchievementFeatured(
+  id: string,
+  featured: boolean,
+): Promise<void> {
+  if (!ObjectId.isValid(id)) return;
+  const col = await collection();
+  await col.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { featured, updatedAt: new Date() } },
+  );
 }

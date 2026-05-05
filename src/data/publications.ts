@@ -25,6 +25,7 @@ export type Book = {
   externalUrl?: string;
   pdfUrl?: string;
   allowDownload?: boolean;
+  featured?: boolean;
   tags?: string[];
 };
 
@@ -41,6 +42,7 @@ export type AcademicPaper = {
   collaborative: boolean;
   category: "academic" | "group-projects" | "external";
   allowDownload?: boolean;
+  featured?: boolean;
   tags?: string[];
 };
 
@@ -76,6 +78,7 @@ export async function loadPublications(): Promise<LoadedPublications> {
           externalUrl: doc.externalUrl,
           pdfUrl: doc.pdfUrl,
           allowDownload: doc.allowDownload,
+          featured: doc.featured,
           tags: doc.tags,
         });
       } else {
@@ -92,6 +95,7 @@ export async function loadPublications(): Promise<LoadedPublications> {
           collaborative: doc.authors.length > 1,
           category: doc.category,
           allowDownload: doc.allowDownload,
+          featured: doc.featured,
           tags: doc.tags,
         });
       }

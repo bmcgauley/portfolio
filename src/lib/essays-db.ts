@@ -16,6 +16,8 @@ export interface EssayDoc {
   pdfUrl?: string;
   /** Whether the PDF (if any) is downloadable on the public viewer. */
   allowDownload?: boolean;
+  /** When true, surfaces in the home page Selected Writing grid. */
+  featured?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -72,6 +74,29 @@ export async function updateEssay(
   await col.updateOne(
     { _id: new ObjectId(id) },
     { $set: { ...patch, updatedAt: new Date() } },
+  );
+}
+
+export async function countFeaturedEssays(
+  excludeId?: string,
+): Promise<number> {
+  const col = await collection();
+  const filter: Record<string, unknown> = { featured: true };
+  if (excludeId && ObjectId.isValid(excludeId)) {
+    filter._id = { $ne: new ObjectId(excludeId) };
+  }
+  return col.countDocuments(filter);
+}
+
+export async function setEssayFeatured(
+  id: string,
+  featured: boolean,
+): Promise<void> {
+  if (!ObjectId.isValid(id)) return;
+  const col = await collection();
+  await col.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { featured, updatedAt: new Date() } },
   );
 }
 
