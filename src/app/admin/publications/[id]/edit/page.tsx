@@ -246,22 +246,6 @@ export default async function EditPublicationPage({
                 className={INPUT_CLASS}
               />
             </div>
-            <div>
-              <label className={LABEL_CLASS} htmlFor="order">
-                Order (optional)
-              </label>
-              <input
-                id="order"
-                name="order"
-                type="number"
-                placeholder="0"
-                defaultValue={pub.order ?? 0}
-                className={INPUT_CLASS}
-              />
-              <p className={CAPTION_CLASS}>
-                Lower numbers appear first. Leave blank for default sort.
-              </p>
-            </div>
           </>
         )}
 
@@ -420,22 +404,6 @@ export default async function EditPublicationPage({
                 defaultValue={pub.tags?.join(", ") ?? ""}
                 className={INPUT_CLASS}
               />
-            </div>
-            <div>
-              <label className={LABEL_CLASS} htmlFor="order">
-                Order (optional)
-              </label>
-              <input
-                id="order"
-                name="order"
-                type="number"
-                placeholder="0"
-                defaultValue={pub.order ?? 0}
-                className={INPUT_CLASS}
-              />
-              <p className={CAPTION_CLASS}>
-                Lower numbers appear first. Leave blank for default sort.
-              </p>
             </div>
           </>
         )}

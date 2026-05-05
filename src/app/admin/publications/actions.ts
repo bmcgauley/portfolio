@@ -7,7 +7,9 @@ import { requireAdmin, slugify } from "@/lib/admin-helpers";
 import {
   createPublication,
   deletePublication,
+  getMaxPublicationOrder,
   getPublicationById,
+  reorderPublications,
   updatePublication,
   type AcademicDoc,
   type BookDoc,
@@ -68,9 +70,7 @@ export async function createPublicationAction(
 
   const slug = asOptionalString(formData.get("slug")) ?? slugify(title);
 
-  const orderRaw = asString(formData.get("order"));
-  const orderParsed = Number.parseInt(orderRaw, 10);
-  const order = Number.isNaN(orderParsed) ? 0 : orderParsed;
+  const order = (await getMaxPublicationOrder()) + 1;
 
   const allowDownload = formData.get("allowDownload") === "on";
 
@@ -167,10 +167,6 @@ export async function updatePublicationAction(
 
   const slug = asOptionalString(formData.get("slug")) ?? slugify(title);
 
-  const orderRaw = asString(formData.get("order"));
-  const orderParsed = Number.parseInt(orderRaw, 10);
-  const order = Number.isNaN(orderParsed) ? 0 : orderParsed;
-
   const allowDownload = formData.get("allowDownload") === "on";
 
   if (existing.kind === "book") {
@@ -224,7 +220,6 @@ export async function updatePublicationAction(
       externalUrl,
       pdfUrl,
       allowDownload,
-      order,
       tags: tags.length > 0 ? tags : undefined,
     } as Parameters<typeof updatePublication>[1]);
   } else {
@@ -273,7 +268,6 @@ export async function updatePublicationAction(
       authors,
       category,
       allowDownload,
-      order,
       tags: tags.length > 0 ? tags : undefined,
     } as Parameters<typeof updatePublication>[1]);
   }
@@ -281,6 +275,15 @@ export async function updatePublicationAction(
   revalidatePath("/admin/publications");
   revalidatePath("/publications");
   redirect("/admin/publications");
+}
+
+export async function reorderPublicationsAction(
+  orderedIds: string[],
+): Promise<void> {
+  await requireAdmin();
+  await reorderPublications(orderedIds);
+  revalidatePath("/admin/publications");
+  revalidatePath("/publications");
 }
 
 export async function deletePublicationAction(

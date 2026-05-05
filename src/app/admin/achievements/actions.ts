@@ -6,6 +6,8 @@ import { requireAdmin } from "@/lib/admin-helpers";
 import {
   createAchievement,
   deleteAchievement,
+  getMaxAchievementOrder,
+  reorderAchievements,
   updateAchievement,
 } from "@/lib/achievements-db";
 
@@ -16,13 +18,6 @@ function asString(v: FormDataEntryValue | null): string {
 function asOptionalString(v: FormDataEntryValue | null): string | undefined {
   const s = asString(v);
   return s.length > 0 ? s : undefined;
-}
-
-function asOrder(v: FormDataEntryValue | null): number {
-  const s = asString(v);
-  if (!s) return 0;
-  const n = Number.parseInt(s, 10);
-  return Number.isNaN(n) ? 0 : n;
 }
 
 function failNew(reason: string): never {
@@ -45,9 +40,10 @@ export async function createAchievementAction(
   const description = asString(formData.get("description"));
   const citation = asOptionalString(formData.get("citation"));
   const citationUrl = asOptionalString(formData.get("citationUrl"));
-  const order = asOrder(formData.get("order"));
 
   if (!title || !date || !description) failNew("MISSING_FIELDS");
+
+  const order = (await getMaxAchievementOrder()) + 1;
 
   await createAchievement({
     title,
@@ -74,7 +70,6 @@ export async function updateAchievementAction(
   const description = asString(formData.get("description"));
   const citation = asOptionalString(formData.get("citation"));
   const citationUrl = asOptionalString(formData.get("citationUrl"));
-  const order = asOrder(formData.get("order"));
 
   if (!title || !date || !description) failEdit(id, "MISSING_FIELDS");
 
@@ -84,7 +79,6 @@ export async function updateAchievementAction(
     description,
     citation,
     citationUrl,
-    order,
   });
 
   revalidatePath("/admin/achievements");
@@ -105,4 +99,13 @@ export async function deleteAchievementAction(
   revalidatePath("/admin/achievements");
   revalidatePath("/");
   redirect("/admin/achievements");
+}
+
+export async function reorderAchievementsAction(
+  orderedIds: string[],
+): Promise<void> {
+  await requireAdmin();
+  await reorderAchievements(orderedIds);
+  revalidatePath("/admin/achievements");
+  revalidatePath("/");
 }

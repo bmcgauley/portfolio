@@ -23,6 +23,8 @@ export interface ProjectDoc {
   demoUrl?: string;
   githubUrl?: string;
   featured: boolean;
+  /** Manual sort weight for admin reordering; lower = earlier. */
+  order?: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -48,7 +50,7 @@ export async function listProjects(): Promise<ProjectDoc[]> {
   const col = await collection();
   const docs = await col
     .find({})
-    .sort({ featured: -1, createdAt: -1 })
+    .sort({ order: 1, createdAt: -1 })
     .toArray();
   return docs as ProjectDoc[];
 }
@@ -108,4 +110,30 @@ export async function deleteProject(
     await col.deleteOne({ _id: new ObjectId(id) });
   }
   return { blobsToDelete: blobs };
+}
+
+export async function reorderProjects(orderedIds: string[]): Promise<void> {
+  const valid = orderedIds.filter((id) => ObjectId.isValid(id));
+  if (valid.length === 0) return;
+  const col = await collection();
+  const now = new Date();
+  await col.bulkWrite(
+    valid.map((id, index) => ({
+      updateOne: {
+        filter: { _id: new ObjectId(id) },
+        update: { $set: { order: index, updatedAt: now } },
+      },
+    })),
+  );
+}
+
+export async function getMaxProjectOrder(): Promise<number> {
+  const col = await collection();
+  const top = await col
+    .find({})
+    .sort({ order: -1 })
+    .limit(1)
+    .project<{ order?: number }>({ order: 1 })
+    .toArray();
+  return top[0]?.order ?? -1;
 }

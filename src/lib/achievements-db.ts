@@ -69,3 +69,29 @@ export async function deleteAchievement(id: string): Promise<void> {
   const col = await collection();
   await col.deleteOne({ _id: new ObjectId(id) });
 }
+
+export async function reorderAchievements(orderedIds: string[]): Promise<void> {
+  const valid = orderedIds.filter((id) => ObjectId.isValid(id));
+  if (valid.length === 0) return;
+  const col = await collection();
+  const now = new Date();
+  await col.bulkWrite(
+    valid.map((id, index) => ({
+      updateOne: {
+        filter: { _id: new ObjectId(id) },
+        update: { $set: { order: index, updatedAt: now } },
+      },
+    })),
+  );
+}
+
+export async function getMaxAchievementOrder(): Promise<number> {
+  const col = await collection();
+  const top = await col
+    .find({})
+    .sort({ order: -1 })
+    .limit(1)
+    .project<{ order?: number }>({ order: 1 })
+    .toArray();
+  return top[0]?.order ?? -1;
+}

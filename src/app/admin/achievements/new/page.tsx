@@ -109,22 +109,6 @@ export default async function NewAchievementPage({
           <p className={HELPER_CLASS}>Optional link for the citation.</p>
         </div>
 
-        <div>
-          <label htmlFor="order" className={LABEL_CLASS}>
-            Order
-          </label>
-          <input
-            id="order"
-            name="order"
-            type="number"
-            defaultValue={0}
-            className={INPUT_CLASS}
-          />
-          <p className={HELPER_CLASS}>
-            Lower numbers appear first. Use 0&ndash;10 typically.
-          </p>
-        </div>
-
         <div className="flex items-center gap-4 pt-2">
           <Button type="submit">Create Achievement</Button>
           <Link

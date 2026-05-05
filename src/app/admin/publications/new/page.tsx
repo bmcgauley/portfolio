@@ -226,22 +226,6 @@ export default function NewPublicationPage() {
                 className={INPUT_CLASS}
               />
             </div>
-            <div>
-              <label className={LABEL_CLASS} htmlFor="order">
-                Order (optional)
-              </label>
-              <input
-                id="order"
-                name="order"
-                type="number"
-                placeholder="0"
-                defaultValue={0}
-                className={INPUT_CLASS}
-              />
-              <p className={CAPTION_CLASS}>
-                Lower numbers appear first. Leave blank for default sort.
-              </p>
-            </div>
           </>
         )}
 
@@ -392,22 +376,6 @@ export default function NewPublicationPage() {
                 type="text"
                 className={INPUT_CLASS}
               />
-            </div>
-            <div>
-              <label className={LABEL_CLASS} htmlFor="order">
-                Order (optional)
-              </label>
-              <input
-                id="order"
-                name="order"
-                type="number"
-                placeholder="0"
-                defaultValue={0}
-                className={INPUT_CLASS}
-              />
-              <p className={CAPTION_CLASS}>
-                Lower numbers appear first. Leave blank for default sort.
-              </p>
             </div>
           </>
         )}

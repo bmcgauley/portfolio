@@ -7,7 +7,9 @@ import { requireAdmin, slugify } from "@/lib/admin-helpers";
 import {
   createProject,
   deleteProject,
+  getMaxProjectOrder,
   getProjectById,
+  reorderProjects,
   updateProject,
   type ProjectDoc,
 } from "@/lib/projects-db";
@@ -79,11 +81,14 @@ export async function createProjectAction(formData: FormData): Promise<void> {
   // Uploaded file takes precedence over pasted external URL.
   const imageUrl = uploadedUrl ?? pastedUrl;
 
+  const order = (await getMaxProjectOrder()) + 1;
+
   await createProject({
     slug,
     title,
     description,
     tags,
+    order,
     ...(category ? { category } : {}),
     ...(technologies.length > 0 ? { technologies } : {}),
     ...(imageUrl ? { imageUrl } : {}),
@@ -161,6 +166,16 @@ export async function updateProjectAction(
   revalidatePath("/projects");
   revalidatePath("/");
   redirect("/admin/projects");
+}
+
+export async function reorderProjectsAction(
+  orderedIds: string[],
+): Promise<void> {
+  await requireAdmin();
+  await reorderProjects(orderedIds);
+  revalidatePath("/admin/projects");
+  revalidatePath("/projects");
+  revalidatePath("/");
 }
 
 export async function deleteProjectAction(formData: FormData): Promise<void> {
