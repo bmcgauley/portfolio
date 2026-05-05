@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   Card,
@@ -16,6 +17,7 @@ type FeaturedItem = {
   meta: string;
   description: string;
   url: string;
+  imageUrl?: string;
 };
 
 // Hardcoded fallback. Used only if DB is empty or unreachable.
@@ -57,6 +59,7 @@ async function loadFeatured(): Promise<FeaturedItem[]> {
         meta: p.category ?? "",
         description: p.description,
         url: `/projects/${p.slug}`,
+        imageUrl: p.imageUrl,
       }));
     }
   } catch {
@@ -84,21 +87,37 @@ export default async function FeaturedProjects() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((project) => (
-            <Card key={project.id} className="h-full">
-              <CardHeader>
-                <CardTitle>{project.title}</CardTitle>
-                {project.meta ? (
-                  <CardDescription>{project.meta}</CardDescription>
-                ) : null}
-              </CardHeader>
-              <CardContent className="flex-grow text-body">
-                <Markdown content={project.description} variant="tight" />
-              </CardContent>
-              <CardFooter>
-                <Button variant="link" asChild className="px-0">
-                  <Link href={project.url}>View Project →</Link>
-                </Button>
-              </CardFooter>
+            <Card key={project.id} className="h-full overflow-hidden p-0 gap-0">
+              {project.imageUrl ? (
+                <Link
+                  href={project.url}
+                  className="relative block aspect-[16/10] w-full border-b border-gold-shadow/40"
+                >
+                  <Image
+                    src={project.imageUrl}
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                </Link>
+              ) : null}
+              <div className="flex flex-1 flex-col p-7 md:p-8 gap-5">
+                <CardHeader className="p-0 gap-2">
+                  <CardTitle>{project.title}</CardTitle>
+                  {project.meta ? (
+                    <CardDescription>{project.meta}</CardDescription>
+                  ) : null}
+                </CardHeader>
+                <CardContent className="p-0 flex-grow text-body">
+                  <Markdown content={project.description} variant="tight" />
+                </CardContent>
+                <CardFooter className="p-0">
+                  <Button variant="link" asChild className="px-0">
+                    <Link href={project.url}>View Project →</Link>
+                  </Button>
+                </CardFooter>
+              </div>
             </Card>
           ))}
         </div>
