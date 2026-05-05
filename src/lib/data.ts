@@ -23,6 +23,7 @@ export async function loadProjects(): Promise<Project[]> {
         category: d.category,
         technologies: d.technologies,
         imageUrl: d.imageUrl,
+        images: d.images,
         folderName: d.folderName,
         demoUrl: d.demoUrl,
         githubUrl: d.githubUrl,

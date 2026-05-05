@@ -19,6 +19,8 @@ export interface ProjectDoc {
   category?: "Consulting" | "Academic" | "Volunteer" | "Personal";
   technologies?: string[];
   imageUrl?: string;
+  /** Additional gallery images (Vercel Blob URLs). */
+  images?: string[];
   folderName?: string;
   demoUrl?: string;
   githubUrl?: string;

@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { loadProjects } from '@/lib/data';
-import ImageGallery from '@/components/ImageGallery';
+import { ClientImageGallery } from '@/components/ImageGallery';
 import RefreshPreviewButton from '@/components/RefreshPreviewButton';
 import { Markdown } from "@/components/ui/markdown";
 import { Metadata } from "next";
@@ -74,9 +74,18 @@ export default async function ProjectPage({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
           {/* Project Gallery */}
-          {project.folderName && (
-            <ImageGallery projectFolder={project.folderName} />
-          )}
+          {(() => {
+            const galleryImages: string[] = [
+              ...(project.images ?? []),
+              ...(project.imageUrl &&
+              !(project.images ?? []).includes(project.imageUrl)
+                ? [project.imageUrl]
+                : []),
+            ];
+            return galleryImages.length > 0 ? (
+              <ClientImageGallery images={galleryImages} title={project.title} />
+            ) : null;
+          })()}
 
           {/* Project Content */}
           <div className="mt-8">            <h1 className="text-3xl font-bold">{project.title}</h1>

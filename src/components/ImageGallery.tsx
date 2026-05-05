@@ -15,7 +15,7 @@ interface ServerImageGalleryProps {
   projectFolder: string;
 }
 
-const ClientImageGallery = ({ images, title, fullScreen = false }: ClientImageGalleryProps) => {
+export const ClientImageGallery = ({ images, title, fullScreen = false }: ClientImageGalleryProps) => {
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   
   const closeModal = () => {

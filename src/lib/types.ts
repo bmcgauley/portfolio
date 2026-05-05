@@ -37,7 +37,10 @@ export interface Project {
   tags: string[];
   category?: string;
   technologies?: string[];
+  /** Hero / card thumbnail image. */
   imageUrl?: string;
+  /** Additional gallery images (Vercel Blob URLs) rendered on the detail page. */
+  images?: string[];
   folderName?: string;
   demoUrl?: string;
   githubUrl?: string;
