@@ -38,6 +38,20 @@ function asCsv(v: FormDataEntryValue | null): string[] {
     .filter((s) => s.length > 0);
 }
 
+function asImageList(v: FormDataEntryValue | null): string[] {
+  const raw = asString(v);
+  if (!raw) return [];
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (x): x is string => typeof x === "string" && x.length > 0,
+    );
+  } catch {
+    return [];
+  }
+}
+
 function isVercelBlobUrl(url: string | undefined | null): boolean {
   if (!url) return false;
   try {
@@ -77,6 +91,7 @@ export async function createProjectAction(formData: FormData): Promise<void> {
 
   const uploadedUrl = asOptionalString(formData.get("uploadedImageUrl"));
   const pastedUrl = asOptionalString(formData.get("imageUrl"));
+  const galleryImages = asImageList(formData.get("images"));
 
   // Uploaded file takes precedence over pasted external URL.
   const imageUrl = uploadedUrl ?? pastedUrl;
@@ -92,6 +107,7 @@ export async function createProjectAction(formData: FormData): Promise<void> {
     ...(category ? { category } : {}),
     ...(technologies.length > 0 ? { technologies } : {}),
     ...(imageUrl ? { imageUrl } : {}),
+    ...(galleryImages.length > 0 ? { images: galleryImages } : {}),
     ...(folderName ? { folderName } : {}),
     ...(demoUrl ? { demoUrl } : {}),
     ...(githubUrl ? { githubUrl } : {}),
@@ -135,6 +151,7 @@ export async function updateProjectAction(
   const uploadedUrl = asOptionalString(formData.get("uploadedImageUrl"));
   const pastedUrl = asOptionalString(formData.get("imageUrl"));
   const newImageUrl = uploadedUrl ?? pastedUrl;
+  const galleryImages = asImageList(formData.get("images"));
 
   let imageUrl: string | undefined = existing.imageUrl;
   if (newImageUrl && newImageUrl !== existing.imageUrl) {
@@ -148,6 +165,18 @@ export async function updateProjectAction(
     }
   }
 
+  // Delete blobs that were removed from the gallery in the admin UI.
+  const removedGalleryBlobs = (existing.images ?? []).filter(
+    (url) => !galleryImages.includes(url) && isVercelBlobUrl(url),
+  );
+  if (removedGalleryBlobs.length > 0) {
+    try {
+      await del(removedGalleryBlobs);
+    } catch {
+      // best-effort
+    }
+  }
+
   await updateProject(id, {
     slug,
     title,
@@ -156,6 +185,7 @@ export async function updateProjectAction(
     category,
     technologies: technologies.length > 0 ? technologies : undefined,
     imageUrl,
+    images: galleryImages.length > 0 ? galleryImages : undefined,
     folderName,
     demoUrl,
     githubUrl,

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { BlobFileInput } from "@/components/admin/BlobFileInput";
+import { BlobMultiFileInput } from "@/components/admin/BlobMultiFileInput";
 import { createProjectAction } from "../actions";
 
 const inputClass =
@@ -161,6 +162,23 @@ export default async function NewProjectPage({ searchParams }: PageProps) {
           />
           <p className={captionClass}>
             External URL (e.g. screenshot host). Used only if no file uploaded.
+          </p>
+        </div>
+
+        <div>
+          <label htmlFor="galleryFiles" className={labelClass}>
+            Gallery Images (optional)
+          </label>
+          <BlobMultiFileInput
+            id="galleryFiles"
+            name="images"
+            accept="image/jpeg,image/png,image/webp"
+            pathPrefix="projects/gallery"
+          />
+          <p className={captionClass}>
+            Additional images shown in the project gallery on the detail page.
+            Select multiple at once. Drag the arrows under each thumbnail to
+            reorder.
           </p>
         </div>
 

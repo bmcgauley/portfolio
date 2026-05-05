@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { SectionDivider } from "@/components/ui/section-divider";
 import { BlobFileInput } from "@/components/admin/BlobFileInput";
+import { BlobMultiFileInput } from "@/components/admin/BlobMultiFileInput";
 import { getProjectById } from "@/lib/projects-db";
 import { deleteProjectAction, updateProjectAction } from "../../actions";
 
@@ -182,6 +183,23 @@ export default async function EditProjectPage({
           />
           <p className={captionClass}>
             External URL (e.g. screenshot host). Used only if no file uploaded.
+          </p>
+        </div>
+
+        <div>
+          <label htmlFor="galleryFiles" className={labelClass}>
+            Gallery Images (optional)
+          </label>
+          <BlobMultiFileInput
+            id="galleryFiles"
+            name="images"
+            accept="image/jpeg,image/png,image/webp"
+            pathPrefix="projects/gallery"
+            defaultUrls={project.images ?? []}
+          />
+          <p className={captionClass}>
+            Additional images shown in the project gallery on the detail page.
+            Add or remove individual images; the arrows reorder them.
           </p>
         </div>
 

@@ -109,6 +109,9 @@ export async function deleteProject(
     if (isVercelBlobUrl(existing.imageUrl)) {
       blobs.push(existing.imageUrl as string);
     }
+    for (const url of existing.images ?? []) {
+      if (isVercelBlobUrl(url)) blobs.push(url);
+    }
     await col.deleteOne({ _id: new ObjectId(id) });
   }
   return { blobsToDelete: blobs };
