@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Markdown } from "@/components/ui/markdown";
 import { loadPublications, type Publication } from "@/data/publications";
 
 type CardData = {
@@ -75,7 +76,7 @@ export default async function FeaturedPublications() {
                 <CardDescription>{c.meta}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow font-serif italic text-body line-clamp-4">
-                {c.description}
+                <Markdown content={c.description} variant="tight" />
               </CardContent>
               <CardFooter>
                 <Button variant="link" asChild className="px-0">

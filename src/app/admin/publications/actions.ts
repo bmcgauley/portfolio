@@ -72,10 +72,7 @@ export async function createPublicationAction(
   const orderParsed = Number.parseInt(orderRaw, 10);
   const order = Number.isNaN(orderParsed) ? 0 : orderParsed;
 
-  // Checkbox: "on" if checked, absent if unchecked. Default true if absent.
-  const allowDownloadRaw = formData.get("allowDownload");
-  const allowDownload =
-    allowDownloadRaw === null ? true : allowDownloadRaw === "on";
+  const allowDownload = formData.get("allowDownload") === "on";
 
   if (kind === "book") {
     const subtitle = asString(formData.get("subtitle"));
@@ -174,9 +171,7 @@ export async function updatePublicationAction(
   const orderParsed = Number.parseInt(orderRaw, 10);
   const order = Number.isNaN(orderParsed) ? 0 : orderParsed;
 
-  const allowDownloadRaw = formData.get("allowDownload");
-  const allowDownload =
-    allowDownloadRaw === null ? true : allowDownloadRaw === "on";
+  const allowDownload = formData.get("allowDownload") === "on";
 
   if (existing.kind === "book") {
     const subtitle = asString(formData.get("subtitle"));

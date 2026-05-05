@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import { Markdown } from "@/components/ui/markdown";
 import { cn } from "@/lib/utils";
 
 const TORCH_IMAGE_PATH = "/images/profile/torch_high+res.fw.png";
@@ -139,7 +140,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
           </CardHeader>
 
           <CardContent className="p-0 text-body line-clamp-3">
-            {project.description}
+            <Markdown content={project.description} variant="tight" />
           </CardContent>
 
           {visibleTags.length > 0 && (

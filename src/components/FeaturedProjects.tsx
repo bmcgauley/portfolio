@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Markdown } from "@/components/ui/markdown";
 
 type FeaturedItem = {
   id: string;
@@ -91,7 +92,7 @@ export default async function FeaturedProjects() {
                 ) : null}
               </CardHeader>
               <CardContent className="flex-grow text-body">
-                {project.description}
+                <Markdown content={project.description} variant="tight" />
               </CardContent>
               <CardFooter>
                 <Button variant="link" asChild className="px-0">

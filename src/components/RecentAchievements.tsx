@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Markdown } from "@/components/ui/markdown";
 
 type Achievement = {
   title: string;
@@ -90,7 +91,7 @@ export default async function RecentAchievements() {
                 <CardDescription>{a.date}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow text-body">
-                <p>{a.description}</p>
+                <Markdown content={a.description} variant="tight" />
                 {a.citation ? (
                   <p className="font-mono uppercase tracking-[0.18em] text-mono-label text-gold-shadow mt-3">
                     {a.citationUrl ? (

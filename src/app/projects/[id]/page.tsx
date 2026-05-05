@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { projects } from '@/lib/data';
 import ImageGallery from '@/components/ImageGallery';
 import RefreshPreviewButton from '@/components/RefreshPreviewButton';
+import { Markdown } from "@/components/ui/markdown";
 import { Metadata } from "next";
 
 type ParamsType = Promise<{ id: string }>;
@@ -91,10 +92,8 @@ export default async function ProjectPage({
                 </span>
               ))}
             </div>
-            <div className="mt-6 prose dark:prose-invert max-w-none">
-              <p className="text-lg">{project.description}</p>
-              <h2>Project Details</h2>
-              <p>{project.description}</p>
+            <div className="mt-6 max-w-none">
+              <Markdown content={project.description} variant="prose" />
             </div>
           </div>
         </div>        {/* Sidebar */}

@@ -2,12 +2,15 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { cn } from "@/lib/utils";
 
-type Variant = "compact" | "prose";
+type Variant = "compact" | "prose" | "tight";
 
 /**
- * Renders user-authored markdown in the brand's typography. Two variants:
+ * Renders user-authored markdown in the brand's typography. Three variants:
  * - `compact`  → for descriptions/excerpts/abstracts (tighter spacing).
  * - `prose`    → for long-form essay bodies (generous leading + my-spacing).
+ * - `tight`    → for card/inline descriptions inside line-clamp boxes;
+ *                paragraphs have no margins and inherit parent typography
+ *                so existing text-* / font-* / italic classes still apply.
  *
  * Raw HTML is stripped (react-markdown's default). Supports GFM:
  * tables, strikethrough, task lists, autolinks.
@@ -22,9 +25,12 @@ export function Markdown({
   className?: string;
 }) {
   const isProse = variant === "prose";
+  const isTight = variant === "tight";
   const paragraphClass = isProse
     ? "font-serif text-body-lg text-ink leading-[1.7] my-6"
-    : "font-serif text-body text-ink leading-[1.6] my-3";
+    : isTight
+      ? "m-0"
+      : "font-serif text-body text-ink leading-[1.6] my-3";
 
   return (
     <div className={cn(className)}>

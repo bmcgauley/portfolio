@@ -10,6 +10,7 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Markdown } from "@/components/ui/markdown";
 import { experiences, skills } from "@/lib/data";
 
 const PROFILE_IMAGE_PATH = "/images/profile/me-studio-portrait.png";
@@ -363,9 +364,9 @@ export default function AboutPage() {
                 <p className="font-serif italic text-gold-shadow text-caption mt-1">
                   {exp.company}
                 </p>
-                <p className="font-serif text-body text-ink mt-3">
-                  {exp.description}
-                </p>
+                <div className="font-serif text-body text-ink mt-3">
+                  <Markdown content={exp.description} variant="tight" />
+                </div>
                 {exp.skills && exp.skills.length > 0 && (
                   <ul className="flex flex-wrap gap-x-3 gap-y-1 mt-4">
                     {exp.skills.map((skill) => (
@@ -430,7 +431,7 @@ export default function AboutPage() {
                 <CardDescription>{item.date}</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>{item.description}</p>
+                <Markdown content={item.description} variant="tight" />
               </CardContent>
             </Card>
           ))}
@@ -458,7 +459,7 @@ export default function AboutPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p>{cert.description}</p>
+                <Markdown content={cert.description} variant="tight" />
               </CardContent>
             </Card>
           ))}
