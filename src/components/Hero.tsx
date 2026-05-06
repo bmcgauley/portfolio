@@ -9,7 +9,7 @@ export default async function Hero() {
       <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
         <div className="flex items-center justify-center gap-3 mb-8">
           <Ornament />
-          <Ornament />
+          <Ornament className="text-crimson-deep" />
           <Ornament />
         </div>
         <SiteLogo

@@ -46,7 +46,7 @@ export default function Navbar({
                 className={cn(
                   "font-display uppercase text-sm tracking-[0.05em] transition-colors",
                   isActive
-                    ? "text-crimson-deep border-b-2 border-gold pb-0.5"
+                    ? "text-crimson-deep border-b-2 border-crimson-deep pb-0.5"
                     : "text-ink-soft hover:text-ink"
                 )}
               >
@@ -88,7 +88,7 @@ export default function Navbar({
                       className={cn(
                         "font-display uppercase text-sm tracking-[0.05em] py-2 transition-colors",
                         isActive
-                          ? "text-crimson-deep border-l-4 border-gold pl-3"
+                          ? "text-crimson-deep border-l-4 border-crimson-deep pl-3"
                           : "text-ink-soft hover:text-ink pl-3"
                       )}
                     >

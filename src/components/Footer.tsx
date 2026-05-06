@@ -36,18 +36,18 @@ const otherProperties = [
 
 export default function Footer() {
   return (
-    <footer className="border-t-2 border-gold bg-parchment">
+    <footer className="border-t-4 border-crimson-deep bg-ink text-vellum">
       <div className="mx-auto max-w-6xl py-16 px-6 md:px-12">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
           <div>
-            <Wordmark variant="compact" />
-            <p className="font-serif italic text-ink-soft max-w-xs mt-4">
+            <Wordmark variant="compact" className="[&_.text-ink]:text-vellum [&_.text-crimson-deep]:text-crimson" />
+            <p className="font-serif italic text-vellum/70 max-w-xs mt-4">
               Incoming MBA student, independent consultant, and educator.
             </p>
           </div>
 
           <div>
-            <h3 className="font-display uppercase tracking-[0.18em] text-xs text-crimson-deep mb-4">
+            <h3 className="font-display uppercase tracking-[0.18em] text-xs text-crimson mb-4">
               NAVIGATE
             </h3>
             <ul>
@@ -55,7 +55,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="font-serif text-ink-soft hover:text-ink block py-1"
+                    className="font-serif text-vellum/80 hover:text-vellum block py-1"
                   >
                     {link.label}
                   </Link>
@@ -65,7 +65,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-display uppercase tracking-[0.18em] text-xs text-crimson-deep mb-4">
+            <h3 className="font-display uppercase tracking-[0.18em] text-xs text-crimson mb-4">
               OTHER PROPERTIES
             </h3>
             <ul className="space-y-3">
@@ -77,10 +77,10 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     className="block group"
                   >
-                    <span className="font-display uppercase text-sm tracking-[0.05em] text-ink">
+                    <span className="font-display uppercase text-sm tracking-[0.05em] text-vellum group-hover:text-crimson transition-colors">
                       {property.name}
                     </span>
-                    <span className="block font-serif italic text-ink-muted text-sm">
+                    <span className="block font-serif italic text-vellum/60 text-sm">
                       {property.description}
                     </span>
                   </a>
@@ -91,10 +91,10 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-gold">
+      <div className="border-t border-gold/40">
         <div className="mx-auto max-w-6xl py-6 px-6 md:px-12 flex items-center justify-center gap-4">
           <Ornament />
-          <span className="font-mono uppercase tracking-[0.18em] text-[11px] text-gold-shadow">
+          <span className="font-mono uppercase tracking-[0.18em] text-[11px] text-gold">
             © MMXXVI · BRIANMCGAULEY.COM
           </span>
           <Ornament />
