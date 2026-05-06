@@ -4,11 +4,18 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Project } from "@/lib/types";
 
-export type BrandCategory = "All" | "Consulting" | "Academic" | "Volunteer" | "Personal";
+export type BrandCategory =
+  | "All"
+  | "Consulting"
+  | "Professional"
+  | "Academic"
+  | "Volunteer"
+  | "Personal";
 
 const BRAND_CATEGORIES: BrandCategory[] = [
   "All",
   "Consulting",
+  "Professional",
   "Academic",
   "Volunteer",
   "Personal",
@@ -17,7 +24,8 @@ const BRAND_CATEGORIES: BrandCategory[] = [
 // Map raw project data to brand categories.
 function categorize(project: Project): Exclude<BrandCategory, "All"> {
   const raw = (project.category ?? "").toLowerCase();
-  if (raw.includes("professional") || raw.includes("consult")) return "Consulting";
+  if (raw.includes("professional")) return "Professional";
+  if (raw.includes("consult")) return "Consulting";
   if (raw.includes("school") || raw.includes("academ")) return "Academic";
   if (raw.includes("community") || raw.includes("volunteer")) return "Volunteer";
 

@@ -106,6 +106,7 @@ export default async function NewProjectPage({ searchParams }: PageProps) {
           >
             <option value="">— None —</option>
             <option value="Consulting">Consulting</option>
+            <option value="Professional">Professional</option>
             <option value="Academic">Academic</option>
             <option value="Volunteer">Volunteer</option>
             <option value="Personal">Personal</option>

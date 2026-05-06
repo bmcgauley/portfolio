@@ -22,6 +22,7 @@ const FEATURED_CAP = 5;
 type Category = NonNullable<ProjectDoc["category"]>;
 const CATEGORIES: readonly Category[] = [
   "Consulting",
+  "Professional",
   "Academic",
   "Volunteer",
   "Personal",
