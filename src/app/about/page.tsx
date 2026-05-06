@@ -269,7 +269,7 @@ export default async function AboutPage() {
           <CredentialCard
             institution="California State University, Fresno"
             credential="Incoming MBA Student · Craig School of Business"
-            date="Beginning Spring 2026"
+            date="Starting in Spring 2026"
           />
           <div className="space-y-0">
             <CredentialCard

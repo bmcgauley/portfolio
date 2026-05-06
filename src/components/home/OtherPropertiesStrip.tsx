@@ -11,7 +11,7 @@ const properties = [
   },
   {
     name: "MCGAULEY LABS",
-    href: "https://mcgauleylabs.com",
+    href: "https://mcgauleylabs.news",
     description: "AI news & writing.",
   },
   {

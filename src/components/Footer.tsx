@@ -23,7 +23,7 @@ const otherProperties = [
     description: "Publishing imprint.",
   },
   {
-    href: "https://mcgauleylabs.com",
+    href: "https://mcgauleylabs.news",
     name: "MCGAULEY LABS",
     description: "AI news & writing.",
   },
